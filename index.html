@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HerWorld — Empowering Women Everywhere</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose: #E8556D; --blush: #F7C5CC; --cream: #FDF6F0;
+  --dark: #1A0A0F; --muted: #7A5C65; --gold: #C9A96E; --white: #FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--blush);display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:70px;}
+.logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--rose);letter-spacing:-0.5px;cursor:pointer;}
+.logo span{color:var(--gold);}
+.nav-links{display:flex;gap:2rem;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--dark);font-weight:500;font-size:0.9rem;transition:color 0.3s;cursor:pointer;}
+.nav-links a:hover{color:var(--rose);}
+.nav-btn{background:var(--rose);color:white;border:none;padding:0.6rem 1.4rem;border-radius:50px;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:0.85rem;transition:all 0.3s;}
+.nav-btn:hover{background:var(--dark);}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding-top:70px;}
+.page.active{display:block;}
+
+/* HERO */
+.hero{min-height:calc(100vh - 70px);background:linear-gradient(135deg,#FDF6F0 0%,#FCE8EC 50%,#F7C5CC 100%);display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:5% 8%;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,85,109,0.08) 0%,transparent 70%);top:-200px;right:-100px;}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(232,85,109,0.1);border:1px solid rgba(232,85,109,0.3);color:var(--rose);padding:0.4rem 1rem;border-radius:50px;font-size:0.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:1.5rem;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5vw,4.5rem);font-weight:900;line-height:1.1;margin-bottom:1.5rem;}
+.hero h1 em{color:var(--rose);font-style:italic;}
+.hero>div>p{font-size:1.05rem;color:var(--muted);line-height:1.8;max-width:480px;margin-bottom:2rem;}
+.hero-year{display:inline-block;background:var(--dark);color:var(--gold);padding:0.3rem 1rem;border-radius:50px;font-size:0.85rem;font-weight:700;margin-bottom:1rem;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+.btn-primary{background:var(--rose);color:white;padding:0.85rem 2rem;border-radius:50px;border:none;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.95rem;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--dark);transform:translateY(-2px);box-shadow:0 10px 30px rgba(232,85,109,0.3);}
+.btn-secondary{background:transparent;color:var(--rose);padding:0.85rem 2rem;border-radius:50px;border:2px solid var(--rose);font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.95rem;cursor:pointer;transition:all 0.3s;}
+.btn-secondary:hover{background:var(--rose);color:white;}
+.hero-visual{display:flex;justify-content:center;align-items:center;}
+.hero-circle{width:420px;height:420px;border-radius:50%;background:linear-gradient(135deg,var(--rose),#C9396F);display:flex;align-items:center;justify-content:center;font-size:8rem;box-shadow:0 30px 80px rgba(232,85,109,0.35);animation:float 6s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);background:var(--dark);padding:2.5rem 8%;}
+.stat{text-align:center;border-right:1px solid rgba(255,255,255,0.1);}
+.stat:last-child{border-right:none;}
+.stat h3{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--rose);font-weight:900;}
+.stat p{color:rgba(255,255,255,0.6);font-size:0.8rem;margin-top:0.3rem;}
+
+/* SECTION HEADER */
+.section-header{text-align:center;padding:5rem 5% 2rem;}
+.section-header h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:900;margin-bottom:1rem;}
+.section-header h2 em{color:var(--rose);font-style:italic;}
+.section-header p{color:var(--muted);font-size:1rem;max-width:550px;margin:0 auto;line-height:1.7;}
+.divider{width:60px;height:3px;background:var(--rose);margin:1rem auto;border-radius:2px;}
+
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:0.7rem;flex-wrap:wrap;padding:0 5% 2rem;justify-content:center;}
+.cat-tab{padding:0.55rem 1.3rem;border-radius:50px;border:2px solid #EDD8DC;background:white;color:var(--muted);cursor:pointer;font-weight:600;font-size:0.82rem;transition:all 0.3s;font-family:'DM Sans',sans-serif;}
+.cat-tab.active,.cat-tab:hover{background:var(--rose);color:white;border-color:var(--rose);}
+
+/* BLOG GRID */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem;padding:0 5% 5rem;}
+.blog-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(26,10,15,0.07);transition:all 0.4s;cursor:pointer;}
+.blog-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(232,85,109,0.18);}
+.card-img{width:100%;height:210px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;background:linear-gradient(135deg,var(--rose),#C9396F);}
+.card-body{padding:1.5rem;}
+.card-tag{background:var(--blush);color:var(--rose);font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:50px;display:inline-block;margin-bottom:0.8rem;}
+.card-body h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;line-height:1.4;}
+.card-body p{color:var(--muted);font-size:0.85rem;line-height:1.6;margin-bottom:1rem;}
+.card-meta{display:flex;align-items:center;gap:0.6rem;font-size:0.78rem;color:var(--muted);}
+.avatar{width:26px;height:26px;border-radius:50%;background:var(--rose);display:inline-flex;align-items:center;justify-content:center;color:white;font-size:0.65rem;font-weight:700;flex-shrink:0;}
+.card-read{display:inline-block;margin-top:0.8rem;color:var(--rose);font-weight:700;font-size:0.82rem;}
+
+/* BLOG MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,10,15,0.75);z-index:2000;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:24px;max-width:820px;width:100%;margin:auto;}
+.modal-img{width:100%;height:280px;display:flex;align-items:center;justify-content:center;font-size:6rem;background:linear-gradient(135deg,var(--rose),#C9396F);border-radius:24px 24px 0 0;position:relative;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.25);backdrop-filter:blur(5px);color:white;border:none;width:38px;height:38px;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+.modal-body{padding:2.5rem;}
+.modal-body .card-tag{margin-bottom:1rem;}
+.modal-body h2{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;margin-bottom:1rem;line-height:1.3;}
+.modal-meta{display:flex;gap:0.8rem;align-items:center;padding:1rem 0;border-top:1px solid var(--blush);border-bottom:1px solid var(--blush);margin-bottom:1.5rem;}
+.modal-meta span{font-size:0.82rem;color:var(--muted);}
+.blog-content p{line-height:1.9;color:#333;margin-bottom:1.1rem;font-size:0.97rem;}
+.blog-content h4{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--dark);margin:1.8rem 0 0.7rem;font-weight:700;}
+.blog-content ul{padding-left:1.5rem;margin-bottom:1rem;}
+.blog-content ul li{margin-bottom:0.4rem;color:#333;font-size:0.95rem;line-height:1.7;}
+
+/* INFOGRAPHIC */
+.infographic{background:linear-gradient(135deg,var(--rose),#C9396F);border-radius:16px;padding:2rem;color:white;margin:1.5rem 0;}
+.infographic h4{font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;text-align:center;}
+.inf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center;}
+.inf-stat h5{font-size:1.9rem;font-weight:900;}
+.inf-stat p{font-size:0.72rem;opacity:0.88;margin-top:0.2rem;}
+
+/* CTA BOX */
+.cta-box{background:linear-gradient(135deg,var(--dark),#3D1520);border-radius:16px;padding:2rem;color:white;text-align:center;margin:2rem 0 0;}
+.cta-box h4{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:0.6rem;}
+.cta-box p{font-size:0.88rem;opacity:0.8;margin-bottom:1.2rem;line-height:1.6;}
+.cta-box .btn-primary{font-size:0.88rem;padding:0.7rem 1.5rem;}
+
+/* ABOUT */
+.about-hero{background:linear-gradient(135deg,var(--dark),#3D1520);color:white;padding:6rem 8%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+.about-hero h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:900;line-height:1.2;margin-bottom:1.5rem;}
+.about-hero h2 em{color:var(--rose);}
+.about-hero p{color:rgba(255,255,255,0.75);line-height:1.9;font-size:0.97rem;margin-bottom:1rem;}
+.about-visual{background:linear-gradient(135deg,var(--rose),#C9396F);border-radius:30px;padding:3rem;text-align:center;}
+.about-visual .big-emoji{font-size:5rem;display:block;margin-bottom:1rem;}
+.about-visual h3{font-family:'Playfair Display',serif;font-size:1.5rem;color:white;margin-bottom:0.5rem;}
+.about-visual p{color:rgba(255,255,255,0.85);font-size:0.88rem;}
+.values{padding:5rem 8%;}
+.values h2{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;margin-bottom:3rem;text-align:center;}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:2rem;}
+.value-card{background:white;border-radius:20px;padding:2rem;text-align:center;box-shadow:0 4px 20px rgba(26,10,15,0.06);}
+.value-card .icon{font-size:2.5rem;margin-bottom:1rem;}
+.value-card h4{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:0.5rem;}
+.value-card p{color:var(--muted);font-size:0.85rem;line-height:1.6;}
+.author-section{background:var(--rose);color:white;padding:5rem 8%;text-align:center;}
+.author-avatar{width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:0 auto 1.5rem;border:3px solid rgba(255,255,255,0.4);}
+.author-section h3{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:0.5rem;}
+.author-section .email-tag{background:rgba(255,255,255,0.2);padding:0.4rem 1.2rem;border-radius:50px;font-size:0.85rem;display:inline-block;margin-bottom:1rem;}
+.author-section p{max-width:600px;margin:0 auto;line-height:1.8;opacity:0.9;font-size:0.97rem;}
+
+/* CONTACT */
+.contact-wrap{padding:4rem 8%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+.contact-info h2{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:900;margin-bottom:1rem;}
+.contact-info h2 em{color:var(--rose);}
+.contact-info p{color:var(--muted);line-height:1.8;margin-bottom:2rem;}
+.contact-detail{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;}
+.contact-icon{width:45px;height:45px;background:var(--blush);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.contact-detail p{margin:0;color:var(--muted);font-size:0.88rem;}
+.contact-detail strong{display:block;color:var(--dark);font-size:0.92rem;}
+.contact-form{background:white;border-radius:24px;padding:2.5rem;box-shadow:0 10px 40px rgba(26,10,15,0.08);}
+.contact-form h3{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:1.5rem;}
+.form-group{margin-bottom:1.1rem;}
+.form-group label{display:block;font-size:0.82rem;font-weight:700;margin-bottom:0.4rem;color:var(--dark);text-transform:uppercase;letter-spacing:0.5px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:0.8rem 1rem;border:1.5px solid #EDD8DC;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:var(--cream);transition:border 0.3s;outline:none;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--rose);}
+.form-group textarea{resize:vertical;min-height:110px;}
+.form-success{display:none;background:#d4edda;color:#155724;padding:1rem;border-radius:12px;margin-top:1rem;text-align:center;font-weight:600;}
+
+/* NEWSLETTER */
+.newsletter{background:linear-gradient(135deg,var(--rose),#C9396F);padding:4rem 5%;text-align:center;color:white;}
+.newsletter h3{font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:0.8rem;}
+.newsletter p{opacity:0.9;margin-bottom:1.5rem;font-size:0.97rem;}
+.newsletter-form{display:flex;gap:1rem;max-width:480px;margin:0 auto;flex-wrap:wrap;}
+.newsletter-form input{flex:1;padding:0.85rem 1.2rem;border:none;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;}
+.newsletter-form button{background:var(--dark);color:white;border:none;padding:0.85rem 1.8rem;border-radius:50px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ADMIN */
+.admin-login{min-height:100vh;padding-top:70px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--dark),#3D1520);}
+.login-box{background:white;border-radius:24px;padding:3rem;width:400px;text-align:center;}
+.login-box h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:0.5rem;}
+.login-box p{color:var(--muted);font-size:0.88rem;margin-bottom:2rem;}
+.admin-panel{min-height:100vh;padding-top:70px;background:#f8f0f2;}
+.admin-header{background:var(--dark);color:white;padding:2rem 5%;display:flex;justify-content:space-between;align-items:center;}
+.admin-header h2{font-family:'Playfair Display',serif;font-size:1.5rem;}
+.admin-tabs{display:flex;gap:0;padding:0 5%;background:#f8f0f2;overflow-x:auto;}
+.admin-tab{padding:0.9rem 1.6rem;border:none;border-radius:0;font-family:'DM Sans',sans-serif;font-weight:600;cursor:pointer;font-size:0.85rem;background:#e8d5d9;color:#666;transition:all 0.2s;white-space:nowrap;border-right:1px solid #d0b0b8;}
+.admin-tab.active{background:white;color:var(--rose);}
+.admin-content{background:white;margin:0 5% 3rem;border-radius:0 20px 20px 20px;padding:2rem;min-height:60vh;box-shadow:0 4px 20px rgba(26,10,15,0.08);}
+.admin-section{display:none;}
+.admin-section.active{display:block;}
+.admin-blog-list{display:grid;gap:1rem;}
+.admin-blog-item{background:var(--cream);border-radius:12px;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;}
+.admin-blog-item h4{font-weight:600;font-size:0.92rem;margin-bottom:0.2rem;}
+.admin-blog-item span{color:var(--muted);font-size:0.78rem;}
+.admin-actions{display:flex;gap:0.5rem;flex-shrink:0;}
+.btn-edit{background:var(--blush);color:var(--rose);border:none;padding:0.4rem 0.9rem;border-radius:8px;cursor:pointer;font-size:0.78rem;font-weight:700;}
+.btn-del{background:#fde8e8;color:#c0392b;border:none;padding:0.4rem 0.9rem;border-radius:8px;cursor:pointer;font-size:0.78rem;font-weight:700;}
+.code-editor{font-family:'Courier New',monospace;font-size:0.82rem;min-height:320px;background:#1A0A0F;color:#F7C5CC;border:none !important;border-radius:10px;padding:1rem;width:100%;}
+.preview-area{background:var(--cream);border:1.5px solid #EDD8DC;border-radius:10px;padding:1.5rem;min-height:150px;}
+
+/* FOOTER */
+footer{background:var(--dark);color:rgba(255,255,255,0.6);text-align:center;padding:3rem 5%;}
+footer .footer-logo{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--rose);font-weight:900;margin-bottom:1rem;}
+footer p{font-size:0.83rem;line-height:1.8;}
+footer a{color:var(--rose);text-decoration:none;}
+.footer-links{display:flex;justify-content:center;gap:2rem;margin:1rem 0;flex-wrap:wrap;}
+.footer-links a{font-size:0.85rem;color:rgba(255,255,255,0.5);}
+.footer-links a:hover{color:var(--rose);}
+
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--rose);color:white;padding:1rem 1.5rem;border-radius:12px;font-weight:600;z-index:9999;display:none;animation:slideIn 0.3s ease;}
+@keyframes slideIn{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+@media(max-width:768px){
+  .hero{grid-template-columns:1fr;text-align:center;padding:3rem 5%;}
+  .hero-visual{display:none;}
+  .about-hero,.contact-wrap{grid-template-columns:1fr;gap:2rem;}
+  .stats-bar{grid-template-columns:repeat(2,1fr);}
+  .nav-links{display:none;}
+  .blog-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo" onclick="showPage('home')">Her<span>World</span></div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')">Home</a></li>
+    <li><a onclick="showPage('blogs')">Blog</a></li>
+    <li><a onclick="showPage('about')">About</a></li>
+    <li><a onclick="showPage('contact')">Contact</a></li>
+  </ul>
+  <button class="nav-btn" onclick="showPage('admin-login')">✦ Admin</button>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div>
+      <div class="hero-badge">✦ New for 2026</div>
+      <div class="hero-year">Est. 2026 · Your Year to Rise</div>
+      <h1>Empowering Women to <em>Rise, Bloom</em> & Lead</h1>
+      <p>Your go-to space for wellness, career, mental health, and sisterhood — crafted for the modern woman of 2026. Written for women, by women, with heart.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('blogs')">Explore Stories →</button>
+        <button class="btn-secondary" onclick="showPage('about')">About Us</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-circle">🌸</div>
+    </div>
+  </section>
+  <div class="stats-bar">
+    <div class="stat"><h3>75K+</h3><p>Women in our community</p></div>
+    <div class="stat"><h3>20+</h3><p>Blog posts published 2026</p></div>
+    <div class="stat"><h3>9</h3><p>Topics covered</p></div>
+    <div class="stat"><h3>100%</h3><p>Written with heart</p></div>
+  </div>
+  <div class="section-header">
+    <h2>Latest from <em>HerWorld</em> 2026</h2>
+    <div class="divider"></div>
+    <p>Fresh perspectives and empowering stories for the modern woman — updated regularly throughout 2026.</p>
+  </div>
+  <div class="blog-grid" id="home-grid"></div>
+  <div style="text-align:center;padding:0 0 5rem">
+    <button class="btn-primary" onclick="showPage('blogs')">Read All Stories →</button>
+  </div>
+  <div class="newsletter">
+    <h3>Join the HerWorld Community 🌸</h3>
+    <p>Get weekly empowerment, wellness tips, and career advice delivered to your inbox every Monday morning in 2026.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Your email address...">
+      <button onclick="showToast('Welcome to HerWorld 2026! 🌸')">Subscribe Free</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BLOG PAGE ===== -->
+<div id="page-blogs" class="page">
+  <div class="section-header" style="padding-top:3rem">
+    <h2>The <em>HerWorld</em> Blog</h2>
+    <div class="divider"></div>
+    <p>Stories that inspire, empower, and connect women across the world in 2026 and beyond.</p>
+  </div>
+  <div class="cat-tabs" id="cat-tabs"></div>
+  <div class="blog-grid" id="blogs-grid"></div>
+</div>
+
+<!-- ===== ABOUT PAGE ===== -->
+<div id="page-about" class="page">
+  <div class="about-hero">
+    <div>
+      <div class="hero-badge" style="margin-bottom:1.5rem">✦ Our Story · 2026</div>
+      <h2>We Are <em>HerWorld</em> — A Home Built for Every Woman</h2>
+      <p id="about-p1">HerWorld was born from a simple, powerful belief: every woman deserves a space where her voice is heard, her stories matter, and her growth is celebrated without limits. We are a community-driven platform dedicated to empowering women in every walk of life.</p>
+      <p id="about-p2">Launched in 2026, we cover everything from mental health and wellness to career strategy, financial freedom, relationships, and motherhood — crafted with care, backed by research, and written with genuine love.</p>
+      <p id="about-p3">Our vision is a world where every woman has access to the knowledge, sisterhood, and inspiration she needs to thrive — unapologetically and authentically herself.</p>
+    </div>
+    <div class="about-visual">
+      <span class="big-emoji">🌺</span>
+      <h3>Her Voice. Her Story. Her World.</h3>
+      <p>A platform built on empathy, authenticity, and the power of shared women's experiences.</p>
+      <div style="margin-top:1.5rem;background:rgba(255,255,255,0.15);border-radius:12px;padding:1rem">
+        <p style="font-size:0.85rem;font-weight:700">Founded 2026 · By Women · For Women</p>
+      </div>
+    </div>
+  </div>
+  <div class="values">
+    <h2>What We Stand For in 2026</h2>
+    <div class="values-grid">
+      <div class="value-card"><div class="icon">💪</div><h4>Empowerment</h4><p>Every woman has untapped potential waiting to be unleashed. We provide the stories and tools to ignite it.</p></div>
+      <div class="value-card"><div class="icon">🧠</div><h4>Mental Wellness</h4><p>Your mind matters as much as your body. We prioritize emotional and psychological health in every piece we write.</p></div>
+      <div class="value-card"><div class="icon">🤝</div><h4>Sisterhood</h4><p>Together we rise higher than alone. Community and genuine connection are at the very core of HerWorld.</p></div>
+      <div class="value-card"><div class="icon">🌱</div><h4>Continuous Growth</h4><p>Learning, evolving, and becoming the best version of yourself — that's a lifelong journey we walk together.</p></div>
+      <div class="value-card"><div class="icon">🎯</div><h4>Authenticity</h4><p>Real stories from real women — no filters, no pretense. Just honest, lived truth shared with love.</p></div>
+      <div class="value-card"><div class="icon">✨</div><h4>Radical Inclusivity</h4><p>Every woman belongs here regardless of age, background, culture, or life stage. You are welcome exactly as you are.</p></div>
+    </div>
+  </div>
+  <div class="author-section">
+    <div class="author-avatar">🌺</div>
+    <h3>Maria Kanwal</h3>
+    <div class="email-tag">📧 medrankseo@gmail.com</div>
+    <p id="author-bio">Maria Kanwal is the founder and lead author of HerWorld — a platform she built in 2026 with one mission: to create a digital home where every woman's story is valued. A passionate advocate for women's empowerment, Maria blends personal experience with thoroughly researched content to deliver articles that feel both intimate and informative. With a background in digital media and a heart full of stories, she brings warmth, honesty, and depth to everything she creates. Maria believes that the right words at the right moment can change a woman's life — and she writes with that conviction every single day.</p>
+  </div>
+</div>
+
+<!-- ===== CONTACT PAGE ===== -->
+<div id="page-contact" class="page">
+  <div class="section-header" style="padding-top:3rem">
+    <h2>Get in <em>Touch</em></h2>
+    <div class="divider"></div>
+    <p>We'd love to hear from you — whether it's a story to share, a collaboration, or just a warm hello.</p>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h2>Let's <em>Connect</em></h2>
+      <p>Have a story to share? Want to collaborate or write for us? Reach out — Maria personally reads and responds to every message.</p>
+      <div class="contact-detail"><div class="contact-icon">📧</div><div><strong>Email Directly</strong><p>medrankseo@gmail.com</p></div></div>
+      <div class="contact-detail"><div class="contact-icon">✍️</div><div><strong>Submit a Guest Post</strong><p>Share your story with our 75K+ community</p></div></div>
+      <div class="contact-detail"><div class="contact-icon">🤝</div><div><strong>Brand Collaborations</strong><p>Women-aligned brands are welcome to partner</p></div></div>
+      <div class="contact-detail"><div class="contact-icon">👩‍💼</div><div><strong>Author</strong><p>Maria Kanwal · medrankseo@gmail.com</p></div></div>
+      <div class="contact-detail"><div class="contact-icon">📅</div><div><strong>Response Time</strong><p>Within 48 hours · Available 2026</p></div></div>
+    </div>
+    <div class="contact-form">
+      <h3>Send Maria a Message 💌</h3>
+      <div class="form-group"><label>Your Name</label><input type="text" placeholder="e.g. Sarah Ahmed" id="cf-name"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com" id="cf-email"></div>
+      <div class="form-group"><label>Subject</label>
+        <select id="cf-subject">
+          <option>Guest Post Submission</option>
+          <option>Collaboration Inquiry</option>
+          <option>General Question</option>
+          <option>Feedback</option>
+          <option>Say Hello 👋</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Your Message</label><textarea placeholder="Write your message..." id="cf-message"></textarea></div>
+      <button class="btn-primary" style="width:100%" onclick="submitContact()">Send Message 💌</button>
+      <div class="form-success" id="form-success">✅ Message sent! Maria will reply within 48 hours.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN LOGIN ===== -->
+<div id="page-admin-login" class="page">
+  <div class="admin-login">
+    <div class="login-box">
+      <div style="font-size:3rem;margin-bottom:1rem">🔐</div>
+      <h2>Admin Access</h2>
+      <p>Restricted to Maria Kanwal only.<br>HerWorld 2026 Admin Panel.</p>
+      <div class="form-group" style="text-align:left"><label>Username</label><input type="text" id="admin-user" placeholder="Enter username"></div>
+      <div class="form-group" style="text-align:left"><label>Password</label><input type="password" id="admin-pass" placeholder="Enter password" onkeydown="if(event.key==='Enter')adminLogin()"></div>
+      <button class="btn-primary" style="width:100%;margin-top:0.5rem" onclick="adminLogin()">Login to Admin Panel</button>
+      <div style="margin-top:1.5rem;background:#f9f0f2;border-radius:10px;padding:0.8rem;font-size:0.78rem;color:var(--muted)">
+        <strong>Login:</strong> maria / herworld2026
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div id="page-admin" class="page" style="display:none">
+  <div class="admin-header">
+    <div>
+      <h2>🌸 HerWorld Admin Panel · 2026</h2>
+      <p style="color:rgba(255,255,255,0.55);font-size:0.8rem;margin-top:0.3rem">Maria Kanwal · medrankseo@gmail.com</p>
+    </div>
+    <button class="btn-primary" onclick="adminLogout()">Logout</button>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="switchTab('manage')">📋 Manage Blogs</button>
+    <button class="admin-tab" onclick="switchTab('add')">➕ Add New Blog</button>
+    <button class="admin-tab" onclick="switchTab('pages')">📄 Edit Pages</button>
+    <button class="admin-tab" onclick="switchTab('settings')">⚙️ Settings</button>
+  </div>
+  <div class="admin-content">
+
+    <!-- MANAGE -->
+    <div id="tab-manage" class="admin-section active">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem">All Blog Posts <span id="blog-count" style="color:var(--muted);font-size:1rem"></span></h3>
+        <button class="btn-primary" onclick="switchTab('add');setActiveTab(1)" style="font-size:0.85rem;padding:0.6rem 1.2rem">+ Add New Post</button>
+      </div>
+      <div class="admin-blog-list" id="admin-list"></div>
+    </div>
+
+    <!-- ADD BLOG -->
+    <div id="tab-add" class="admin-section">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem" id="editor-title">Add New Blog Post</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
+        <div class="form-group" style="grid-column:1/-1"><label>Blog Title *</label><input type="text" id="new-title" placeholder="Enter compelling blog title..."></div>
+        <div class="form-group"><label>Category *</label>
+          <select id="new-cat" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-family:'DM Sans',sans-serif;">
+            <option>Wellness</option><option>Career</option><option>Mental Health</option><option>Relationships</option><option>Fitness</option><option>Finance</option><option>Motherhood</option><option>Empowerment</option><option>Lifestyle</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Emoji / Icon</label><input type="text" id="new-emoji" placeholder="e.g. 🌸 💪 🧠" value="📝"></div>
+        <div class="form-group" style="grid-column:1/-1"><label>Short Description (shown on card)</label><input type="text" id="new-desc" placeholder="Brief description visible on the blog card..."></div>
+      </div>
+      <div class="form-group" style="margin-top:0.8rem">
+        <label>📄 Full Blog Content — Paste HTML Code Below</label>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">Paste your complete HTML blog content here. Use &lt;p&gt;, &lt;h4&gt;, &lt;ul&gt;&lt;li&gt; tags for formatting. Add infographic divs for visual stats.</p>
+        <textarea class="code-editor" id="new-content" placeholder="<!-- Paste your blog HTML content here -->&#10;<p>Your introduction paragraph...</p>&#10;<h4>Section Heading</h4>&#10;<p>Section content...</p>"></textarea>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">Live Content Preview</label>
+        <div class="preview-area" id="preview-area"><em style="color:var(--muted);font-size:0.9rem">Click "Preview" to see your content rendered here...</em></div>
+      </div>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap">
+        <button class="btn-primary" onclick="previewContent()">👁 Preview</button>
+        <button class="btn-primary" onclick="publishBlog()" id="publish-btn">🚀 Publish Blog</button>
+        <button class="btn-edit" onclick="clearEditor()">🗑 Clear</button>
+      </div>
+    </div>
+
+    <!-- EDIT PAGES -->
+    <div id="tab-pages" class="admin-section">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Edit Page Content</h3>
+      <div style="display:grid;gap:1.5rem;max-width:700px">
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">🏠 Homepage — Hero Title</label><input id="ep-hero-title" type="text" value="Empowering Women to Rise, Bloom & Lead" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.95rem"></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">🏠 Homepage — Hero Subtitle</label><textarea id="ep-hero-sub" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:80px;font-family:'DM Sans',sans-serif">Your go-to space for wellness, career, mental health, and sisterhood — crafted for the modern woman of 2026.</textarea></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Mission Paragraph</label><textarea id="ep-mission" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:100px;font-family:'DM Sans',sans-serif">HerWorld was born from a simple, powerful belief: every woman deserves a space where her voice is heard, her stories matter, and her growth is celebrated without limits.</textarea></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Author Bio</label><textarea id="ep-bio" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:120px;font-family:'DM Sans',sans-serif">Maria Kanwal is the founder and lead author of HerWorld — a platform she built in 2026 with one mission...</textarea></div>
+        <button class="btn-primary" onclick="savePageEdits()" style="width:fit-content">💾 Save All Changes</button>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="tab-settings" class="admin-section">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Admin Settings</h3>
+      <div style="display:grid;gap:1.2rem;max-width:480px">
+        <div class="form-group"><label>Author Name</label><input type="text" id="set-name" value="Maria Kanwal"></div>
+        <div class="form-group"><label>Author Email</label><input type="email" id="set-email" value="medrankseo@gmail.com"></div>
+        <div class="form-group"><label>Website Year Tag</label><input type="text" value="2026" readonly style="background:#f0f0f0;cursor:not-allowed"></div>
+        <div class="form-group"><label>New Admin Password</label><input type="password" placeholder="Enter new password..." id="set-pass"></div>
+        <div style="background:var(--cream);border-radius:12px;padding:1rem;font-size:0.85rem;color:var(--muted)">
+          <strong>Current Login:</strong> maria / herworld2026<br>
+          <strong>Access Level:</strong> Full Admin (Maria Kanwal only)
+        </div>
+        <button class="btn-primary" onclick="showToast('Settings saved! ✨')" style="width:fit-content">💾 Save Settings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOG MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-img" id="modal-img">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      🌸
+    </div>
+    <div class="modal-body">
+      <span class="card-tag" id="modal-tag">Wellness</span>
+      <h2 id="modal-title"></h2>
+      <div class="modal-meta">
+        <div class="avatar">MK</div>
+        <span><strong>Maria Kanwal</strong></span>
+        <span>·</span>
+        <span id="modal-date"></span>
+        <span>·</span>
+        <span id="modal-read">8 min read</span>
+      </div>
+      <div class="blog-content" id="modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-logo">HerWorld</div>
+  <p>A space for women to rise, bloom, and lead — Est. 2026 ✦</p>
+  <div class="footer-links">
+    <a onclick="showPage('home')">Home</a>
+    <a onclick="showPage('blogs')">Blog</a>
+    <a onclick="showPage('about')">About</a>
+    <a onclick="showPage('contact')">Contact</a>
+    <a onclick="showPage('admin-login')">Admin</a>
+  </div>
+  <p>By <a href="mailto:medrankseo@gmail.com">Maria Kanwal</a> · medrankseo@gmail.com</p>
+  <p style="margin-top:0.5rem;opacity:0.4;font-size:0.78rem">© 2026 HerWorld. All rights reserved.</p>
+</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== BLOG DATA =====================
+let editingId = null;
+let activeCategory = 'All';
+
+const blogs = [
+  {
+    id:1, emoji:"💪", tag:"Empowerment",
+    title:"10 Daily Habits That Will Transform Your Life in 2026",
+    desc:"Small changes done consistently create massive shifts. Here are 10 habits every woman should adopt this year.",
+    date:"January 5, 2026", readTime:"9 min read",
+    content:`
+      <div class="infographic">
+        <h4>⚡ Power Habits at a Glance — 2026 Edition</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>21</h5><p>Days to form a new habit</p></div>
+          <div class="inf-stat"><h5>68%</h5><p>Women who journal report lower stress</p></div>
+          <div class="inf-stat"><h5>3×</h5><p>More productivity with a morning routine</p></div>
+        </div>
+      </div>
+      <p>Transformation doesn't happen overnight — it happens through the quiet, consistent choices you make every single day. As we step into 2026, the question isn't "what do I want to change?" It's "what small action will I take today?" Here are 10 habits that can completely shift the trajectory of your life this year.</p>
+      <h4>1. Begin Every Morning with Gratitude</h4>
+      <p>Before you pick up your phone, open your eyes and name three things you're genuinely grateful for. It doesn't have to be profound — it can be your warm bed, your morning coffee, or the fact that you're still breathing. This simple practice rewires your brain over time to default toward positivity, even in hard seasons.</p>
+      <h4>2. Move Your Body for at Least 30 Minutes</h4>
+      <p>Exercise isn't just about aesthetics — it's about energy, emotional regulation, and longevity. In 2026, let go of the idea that movement has to be intense to count. Walk. Stretch. Dance in your kitchen. Swim. The best movement is the one you'll actually do consistently, not the one that looks impressive on social media.</p>
+      <h4>3. Read 10 Pages Every Day</h4>
+      <p>That's roughly one book per month. Over the course of a year, that's 12 books. Over 10 years? 120 books. Knowledge compounds exactly like money — the earlier you invest, the greater the returns. Replace 10 minutes of scrolling with 10 pages of reading and watch your mind expand.</p>
+      <h4>4. Guard Your Mornings from Social Media</h4>
+      <p>Your first waking hour sets the emotional tone for your entire day. Reaching for your phone immediately floods your brain with comparison, news, and other people's priorities before you've even had a chance to define your own. Give yourself at least 30 minutes of screen-free morning time.</p>
+      <h4>5. Drink Water Before Anything Else</h4>
+      <p>Your body loses water overnight. Before coffee, before your phone, before breakfast — drink a full glass of water. It jumpstarts your metabolism, hydrates your brain, and is the simplest act of self-care imaginable. Make it a non-negotiable.</p>
+      <h4>6. Choose Your Three Daily Priorities</h4>
+      <p>Instead of a sprawling to-do list that leaves you feeling behind before you start, choose just three things that genuinely matter today. If you accomplish those three things, the day is a success. Focus is the new superpower in a distracted world.</p>
+      <h4>7. Make One Real Human Connection Daily</h4>
+      <p>Not a like on Instagram. A real conversation, a thoughtful text that shows you were thinking of someone, a phone call to your mother. Human connection is fuel for the soul — and in the age of curated digital lives, genuine connection is increasingly rare and therefore increasingly valuable.</p>
+      <h4>8. Learn Something New Every Week</h4>
+      <p>A podcast while you cook. A YouTube tutorial on something you've always been curious about. A free online course. Your brain thrives on novelty and challenge. Curiosity is a choice — choose it deliberately and often in 2026.</p>
+      <h4>9. Rest Without Guilt</h4>
+      <p>Hustle culture has convinced us that rest is laziness. It's not. Rest is productive. Rest is the foundation of creativity, emotional intelligence, and sustained energy. Your best work cannot come from a depleted person. Rest is not a reward — it's a requirement.</p>
+      <h4>10. End Each Day with Reflection</h4>
+      <p>Before you sleep, ask yourself three questions: What went well today? What would I do differently? What am I grateful for? This brief ritual builds self-awareness, emotional resilience, and intentional living. It's how you stop living on autopilot and start actually directing your own story.</p>
+      <div class="cta-box">
+        <h4>Ready to Start Your Transformation Journey? 🌸</h4>
+        <p>Join 75,000+ women in the HerWorld community and get weekly empowerment straight to your inbox every Monday in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button>
+      </div>`
+  },
+  {
+    id:2, emoji:"🧠", tag:"Mental Health",
+    title:"Breaking the Stigma: A Complete Guide to Women's Mental Health in 2026",
+    desc:"Mental health is health. Let's talk about it openly, honestly, and with the compassion it deserves.",
+    date:"January 12, 2026", readTime:"11 min read",
+    content:`
+      <div class="infographic">
+        <h4>🧠 Women's Mental Health — 2026 Reality Check</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>1 in 5</h5><p>Women experience a mental illness</p></div>
+          <div class="inf-stat"><h5>40%</h5><p>Don't seek help due to stigma</p></div>
+          <div class="inf-stat"><h5>60%</h5><p>Recovery rate with proper support</p></div>
+        </div>
+      </div>
+      <p>For far too long, mental health has been wrapped in silence, shame, and the exhausting expectation that women should simply push through. In 2026, we are done with that. Your mental health deserves the same care, attention, and investment as your physical health — and talking about it openly is not weakness. It is one of the bravest things you can do.</p>
+      <h4>Understanding What Mental Health Actually Means</h4>
+      <p>Mental health is not just the absence of illness. It's your emotional, psychological, and social wellbeing. It's how you process stress, relate to others, and make decisions. A woman can appear completely fine on the outside while carrying an enormous internal weight — and that's precisely why checking in with yourself matters so deeply.</p>
+      <h4>Why Women Are Disproportionately Affected</h4>
+      <p>Women experience anxiety and depression at twice the rate of men. This is not weakness — it's biology, sociology, and circumstance combined. Hormonal fluctuations throughout the menstrual cycle, pregnancy, postpartum recovery, perimenopause, and menopause all significantly impact brain chemistry. Add systemic inequality, caretaking burdens, and cultural pressure to "have it all" — and it's remarkable we function as well as we do.</p>
+      <h4>Common Signs That Deserve Attention</h4>
+      <p>Persistent sadness or emotional numbness. Withdrawal from people and activities you once loved. Changes in sleep — too much or not enough. Appetite shifts. Difficulty concentrating. Feeling like a burden. Persistent anxiety or racing thoughts. Physical symptoms with no medical explanation. These are not character flaws — they are symptoms, and symptoms deserve treatment.</p>
+      <h4>The Difference Between Sadness and Depression</h4>
+      <p>Sadness is a natural human emotion that comes and goes, typically in response to circumstances. Depression is a clinical condition characterized by persistent low mood, loss of interest in things that once brought joy, and physical symptoms lasting more than two weeks. Both are valid. Both deserve care. Only one requires professional intervention.</p>
+      <h4>Breaking the Silence — Starting with Yourself</h4>
+      <p>The first and often hardest step is admitting to yourself that you're not okay. Not to anyone else — just to you. You're allowed to struggle. You're allowed to need help. Acknowledging your reality is not failure — it's the beginning of healing.</p>
+      <h4>Finding the Right Support in 2026</h4>
+      <p>Therapy (including teletherapy, which has become increasingly accessible). Support groups — both local and online. Mental health apps for daily check-ins. Medication when appropriate and prescribed. Trusted friends and family. Crisis lines for urgent moments. There is a form of support that works for every woman — the key is taking the first step toward it.</p>
+      <h4>Self-Care Is Not Selfish — It Is Survival</h4>
+      <p>You cannot pour from an empty cup. Taking care of your mental health doesn't make you self-absorbed — it makes you able to show up fully for everyone and everything you love. Rest, therapy, boundaries, saying no — these are not luxuries. They are necessities.</p>
+      <div class="cta-box">
+        <h4>You're Not Alone in This 💙</h4>
+        <p>If you're struggling, reaching out is the bravest thing you can do. Connect with the HerWorld community — a safe, supportive space full of women who understand.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Reach Out to Us →</button>
+      </div>`
+  },
+  {
+    id:3, emoji:"💼", tag:"Career",
+    title:"How to Ask for the Raise You Deserve — and Actually Get It in 2026",
+    desc:"The gender pay gap is real. Here's how to advocate for your worth with research, confidence, and strategy.",
+    date:"January 19, 2026", readTime:"10 min read",
+    content:`
+      <div class="infographic">
+        <h4>💼 The Pay Gap Reality — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>82¢</h5><p>Women earn per $1 men make</p></div>
+          <div class="inf-stat"><h5>57%</h5><p>Women never negotiate their salary</p></div>
+          <div class="inf-stat"><h5>$1M+</h5><p>Lifetime earnings lost to the wage gap</p></div>
+        </div>
+      </div>
+      <p>Let's be direct: you are probably being underpaid. This is not an insult — it's a statistical reality that affects the vast majority of women in the workforce. The good news is that negotiation is a skill, and skills can be learned, practiced, and deployed with confidence. In 2026, let's make "asking for what you're worth" non-negotiable.</p>
+      <h4>Step 1: Do Your Research Before Anything Else</h4>
+      <p>You cannot negotiate effectively without data. Before you request a meeting with your manager, spend time researching market rates for your exact role, in your industry, in your geographic area. Use Glassdoor, LinkedIn Salary Insights, Payscale, Levels.fyi (for tech), and industry-specific salary surveys. Come with a specific range, not a single number — and anchor high within reason.</p>
+      <h4>Step 2: Build Your "Brag File"</h4>
+      <p>A brag file is a running document where you record every accomplishment, every positive piece of feedback, every project you've led or contributed to, every metric you've improved. Quantify everything you can. "I managed the quarterly report" becomes "I managed the quarterly report, reducing preparation time by 30% and eliminating three manual processes." Data beats feelings in every negotiation room.</p>
+      <h4>Step 3: Time It Right</h4>
+      <p>The best times to ask for a raise: after a major win, during a performance review cycle, when you've taken on significantly more responsibility, or when you've received a competing offer. The worst times: when your company just announced layoffs, when your manager is visibly stressed, or right after a project didn't go well. Read the room — and the calendar.</p>
+      <h4>Step 4: Practice Your Ask Out Loud</h4>
+      <p>Seriously. Say your number out loud. In the mirror. To a trusted friend. Record yourself. The discomfort you feel now — that hesitation, that flinch when you say a salary figure that feels "too high" — is the exact discomfort you need to move through before you sit in front of your manager. Practice until it feels normal.</p>
+      <h4>Step 5: The Conversation Script</h4>
+      <p>Open with your value: "Over the past year, I've [specific accomplishments]. Based on my research into market rates for this role and the contributions I'm making, I'd like to discuss adjusting my compensation to [specific figure]." Then: stop talking. Resist the urge to fill the silence. Let your ask land.</p>
+      <h4>Step 6: Handle "No" Like a Professional</h4>
+      <p>If the answer is no or not yet, ask clearly: "What would need to happen for this to be possible in the next 6 months?" Get specifics. Get it in writing if possible. Turn a no into a roadmap. And if the roadmap leads nowhere, it may be time to explore other opportunities — because your worth doesn't change just because one company won't recognize it.</p>
+      <div class="cta-box">
+        <h4>Know Your Worth — Own It in 2026 💪</h4>
+        <p>Join thousands of women in the HerWorld community who are building their careers with confidence, strategy, and sisterhood.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Career Community →</button>
+      </div>`
+  },
+  {
+    id:4, emoji:"🌿", tag:"Wellness",
+    title:"The Art of Slow Living: Why Rest Is Radical in 2026",
+    desc:"In a world that glorifies hustle, choosing slow, intentional living is a revolutionary act of self-love.",
+    date:"January 26, 2026", readTime:"8 min read",
+    content:`
+      <div class="infographic">
+        <h4>🌿 The Real Cost of Burnout</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>77%</h5><p>Workers experience burnout</p></div>
+          <div class="inf-stat"><h5>63%</h5><p>Cite burnout as reason to quit</p></div>
+          <div class="inf-stat"><h5>23%</h5><p>More productive after genuine rest</p></div>
+        </div>
+      </div>
+      <p>We live in a culture obsessed with productivity. Being busy has become a badge of honor. "I'll sleep when I'm dead" is worn proudly, like exhaustion is evidence of worthiness. But somewhere in the relentless pursuit of doing more, many women have lost the ability to simply be. In 2026, slow living isn't a retreat from ambition — it's the foundation of sustainable excellence.</p>
+      <h4>What Slow Living Actually Means</h4>
+      <p>Slow living is not about doing nothing. It's about doing things with full presence and intention. It's cooking a meal and actually tasting it. It's walking without a podcast playing. It's reading a book without guilt that you should be "doing something productive." It's choosing depth over speed, quality over quantity, and presence over perpetual performance.</p>
+      <h4>How to Recognize Burnout Before It Breaks You</h4>
+      <p>Burnout doesn't arrive suddenly — it accumulates quietly. Warning signs include: dreading Monday by Saturday afternoon, feeling emotionally numb rather than passionate about your work, constant fatigue that sleep doesn't fix, increased cynicism and detachment, physical symptoms like headaches and frequent illness, and losing joy in things that once delighted you. If several of these sound familiar, your body is sending an urgent message. Listen.</p>
+      <h4>Practical Slow Living Practices for Busy Women</h4>
+      <p>You don't have to quit your job or move to the countryside. Slow living fits inside a modern life. Try: one tech-free evening per week. Eating at least one meal per day without screens. Adding "white space" to your calendar — time with literally no agenda. Letting yourself be bored sometimes. Boredom is not a problem to solve; it's where creativity and clarity live.</p>
+      <h4>Rest as a Form of Resistance</h4>
+      <p>Author Tricia Hersey, known as the "Nap Bishop," argues that rest is a form of resistance against a culture that has historically exploited women's labor — both paid and unpaid. When you choose to rest, you are refusing to define your worth by your output. That is a radical, necessary, beautiful act in 2026.</p>
+      <h4>The Science of Rest and Peak Performance</h4>
+      <p>Research from Harvard, Stanford, and sleep scientists worldwide consistently shows that rest — actual rest, not passive screen consumption — is essential for cognitive function, creativity, emotional regulation, and physical health. The most productive people in history weren't those who worked the most hours. They were those who worked with the most focused, rested intention.</p>
+      <div class="cta-box">
+        <h4>Give Yourself Permission to Rest 🌿</h4>
+        <p>HerWorld's community celebrates wholeness — not hustle. Join women who are redefining success on their own terms in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join the Conversation →</button>
+      </div>`
+  },
+  {
+    id:5, emoji:"💰", tag:"Finance",
+    title:"Financial Freedom for Women: Your Complete 2026 Money Guide",
+    desc:"Money management is not a man's game. Here's how to build lasting financial freedom starting right now.",
+    date:"February 2, 2026", readTime:"12 min read",
+    content:`
+      <div class="infographic">
+        <h4>💰 Women & Wealth — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>30%</h5><p>Less retirement savings than men</p></div>
+          <div class="inf-stat"><h5>70%</h5><p>Women manage household finances</p></div>
+          <div class="inf-stat"><h5>40yr</h5><p>Average investing horizon for women</p></div>
+        </div>
+      </div>
+      <p>Financial independence is one of the most powerful, liberating forms of freedom a woman can hold. It is the freedom to leave an unhealthy situation. The freedom to choose meaningful work over just a paycheck. The freedom to weather life's unexpected storms without falling apart. And in 2026, more tools, resources, and communities exist to help women build it than ever before.</p>
+      <h4>Step 1: Understand Exactly Where You Are</h4>
+      <p>Track every dollar coming in and going out for 30 days. Not to judge yourself — just to see clearly. Most people are genuinely shocked by what they discover. Awareness is the non-negotiable first step to change. Use a simple spreadsheet, a budgeting app like YNAB or Mint, or even pen and paper. The tool matters less than the habit.</p>
+      <h4>Step 2: Build Your Emergency Fund First</h4>
+      <p>Before investing, before aggressive debt paydown, before anything else — build a buffer. Start with $1,000. Then work toward 3-6 months of essential living expenses. This fund is your freedom buffer. It transforms a financial crisis into a manageable inconvenience. Without it, one unexpected expense can unravel everything else.</p>
+      <h4>Step 3: Tackle High-Interest Debt Aggressively</h4>
+      <p>Credit card debt at 20-30% interest is the single biggest obstacle to building wealth. Use either the avalanche method (pay highest interest rate first — mathematically optimal) or the snowball method (pay smallest balance first — psychologically motivating). Either works. Consistency is what matters. Stop using the cards while you pay them down.</p>
+      <h4>Step 4: Start Investing — Even If It's $50 a Month</h4>
+      <p>Investing feels intimidating, but it doesn't have to be complicated. Start with your employer's 401(k) — especially if there's a match (that's free money, take all of it). Then open a Roth IRA. Invest in low-cost index funds that track the S&P 500. You don't need to pick stocks. You don't need a financial advisor at first. You need consistency, time, and compound interest on your side.</p>
+      <h4>Step 5: Close the Knowledge Gap</h4>
+      <p>Women have historically been excluded from financial conversations. This was deliberate — and it has cost us dearly. In 2026, that ends with you. Read "I Will Teach You to Be Rich" by Ramit Sethi. "The Psychology of Money" by Morgan Housel. "Broke Millennial" by Erin Lowry. Listen to personal finance podcasts. Join money-focused communities of women. Financial literacy is not innate — it's learned.</p>
+      <h4>Investing in Yourself Is Also Financial Planning</h4>
+      <p>Your skills, your health, your network — these are assets. A certification that earns you a promotion is a better return on investment than almost anything else. Taking care of your health reduces catastrophic medical costs. Building your professional network creates opportunities that no stock market can generate. Invest in yourself as aggressively as you invest in your portfolio.</p>
+      <div class="cta-box">
+        <h4>Start Building Wealth in 2026 💰</h4>
+        <p>Join the HerWorld community where women talk openly about money, share resources, and build financial futures together — without shame.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Connect With Our Community →</button>
+      </div>`
+  },
+  {
+    id:6, emoji:"🤱", tag:"Motherhood",
+    title:"The Unspoken Truth About Postpartum Mental Health in 2026",
+    desc:"Postpartum depression is not a sign of weakness. It's a medical condition that deserves real recognition and real care.",
+    date:"February 9, 2026", readTime:"10 min read",
+    content:`
+      <div class="infographic">
+        <h4>🤱 Postpartum Mental Health — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>1 in 5</h5><p>New mothers experience PPD</p></div>
+          <div class="inf-stat"><h5>50%</h5><p>Of cases go undiagnosed</p></div>
+          <div class="inf-stat"><h5>95%</h5><p>Recovery rate with proper treatment</p></div>
+        </div>
+      </div>
+      <p>Society places a beautiful newborn in your arms and expects you to feel nothing but pure, overwhelming joy. And sometimes you do — and that's real. But sometimes you feel terror, sadness, numbness, rage, or a profound sense of loss for who you were before. That's also real. And it's far more common than anyone tells you before the baby arrives.</p>
+      <h4>Understanding the Spectrum of Postpartum Experience</h4>
+      <p>The postpartum period covers the fourth trimester — the first 12 weeks after birth — and beyond. During this time, your body is undergoing the most dramatic hormonal shift in human experience. Estrogen and progesterone levels that were sky-high during pregnancy plummet within 24 hours of delivery. This alone would affect anyone.</p>
+      <h4>Baby Blues vs. Postpartum Depression — Knowing the Difference</h4>
+      <p>Baby blues are common and temporary: mood swings, tearfulness, anxiety, and irritability in the first two weeks after birth. They typically resolve on their own. Postpartum depression is more intense, lasts longer (beyond two weeks), and significantly impairs your ability to function. Both are valid. Both deserve support. Only one requires clinical intervention.</p>
+      <h4>Signs of Postpartum Depression to Watch For</h4>
+      <p>Persistent sadness or emotional emptiness. Inability to bond with your baby despite wanting to. Intrusive thoughts that frighten you. Extreme anxiety or panic attacks. Withdrawing from everyone. Feeling like your baby would be better off without you. Thoughts of harming yourself. If any of these feel familiar, please reach out to a healthcare provider today. You deserve help, and your baby deserves a mother who receives it.</p>
+      <h4>Postpartum Anxiety — The Often-Missed Sister Condition</h4>
+      <p>While postpartum depression gets more attention, postpartum anxiety affects just as many women. It looks like constant worry about your baby's safety, inability to sleep even when baby sleeps, racing thoughts, heart palpitations, and a pervasive sense that something terrible is about to happen. It is equally real, equally treatable, and equally deserving of care.</p>
+      <h4>You Are Not a Bad Mother</h4>
+      <p>This cannot be said enough: postpartum mental health struggles have nothing to do with how much you love your baby or how good a mother you are. They are a medical condition. Asking for help is not weakness — it is the most responsible, loving thing you can do for both yourself and your child. A mother who receives support becomes a better, more present mother.</p>
+      <h4>Finding Help and Support in 2026</h4>
+      <p>Tell your OB, midwife, or GP — be explicit about what you're experiencing. Ask for a referral to a perinatal mental health specialist. Connect with Postpartum Support International at 1-800-944-4773 or postpartum.net. Online support communities for postpartum mothers can also provide profound comfort. You are not alone — not even slightly.</p>
+      <div class="cta-box">
+        <h4>You Are Not Alone in This Journey 🤱</h4>
+        <p>HerWorld is a safe space for mothers to share, support, and be seen. Join our community and find your village in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Village →</button>
+      </div>`
+  },
+  {
+    id:7, emoji:"🏃‍♀️", tag:"Fitness",
+    title:"Movement for Every Body: Reclaiming Exercise Without Guilt in 2026",
+    desc:"Fitness was never meant to be punishment. Here's how to find joyful movement that lasts.",
+    date:"February 16, 2026", readTime:"8 min read",
+    content:`
+      <div class="infographic">
+        <h4>🏃‍♀️ Movement & Wellbeing — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>30min</h5><p>Daily movement for health benefits</p></div>
+          <div class="inf-stat"><h5>48%</h5><p>Mood improvement post-exercise</p></div>
+          <div class="inf-stat"><h5>60%</h5><p>Lower depression risk with movement</p></div>
+        </div>
+      </div>
+      <p>Somewhere along the way, fitness became intertwined with punishment, compensation, and shame. We exercise to "earn" our food. We punish ourselves with grueling workouts after "indulging." We feel guilty for rest days. In 2026, we are reclaiming movement as what it was always meant to be: a celebration of what our bodies can do, not a correction for what they look like.</p>
+      <h4>Finding Your Joyful Movement</h4>
+      <p>The most sustainable exercise routine is the one you actually look forward to — or at least don't dread. Hate running? Don't run. Love dancing? Dance. Enjoy the outdoors? Hike. Find swimming meditative? Swim. Roller skating, martial arts, climbing, rowing, pickleball, yoga, barre — in 2026, the options are endless and accessible. Your fitness journey starts when you stop forcing yourself into someone else's idea of exercise.</p>
+      <h4>The Science of Exercise and Mental Health</h4>
+      <p>Exercise is one of the most well-researched interventions for depression and anxiety. It increases serotonin, dopamine, and endorphins. It reduces cortisol. It improves sleep quality. It builds self-efficacy — the belief that you can set goals and achieve them. These benefits occur regardless of how the exercise looks from the outside.</p>
+      <h4>Strength Training: A Game-Changer for Women</h4>
+      <p>One of the most persistent myths in women's fitness is that strength training will make you "bulky." It won't. Women's hormonal profiles make it extremely difficult to build the type of mass that fear implies. What strength training does do: increase muscle mass (which raises your resting metabolism), improve bone density (critical for preventing osteoporosis), boost confidence, and make daily life physically easier. If you're not strength training, 2026 is the year to start.</p>
+      <h4>The Power of Cycle Syncing</h4>
+      <p>Women's bodies have a 28-day hormonal cycle that significantly influences energy, strength, and recovery. Working with this cycle — rather than ignoring it — can dramatically improve your relationship with exercise. High-intensity work often feels best in the follicular phase (days 1-13). Strength training peaks around ovulation. More moderate movement suits the luteal phase. Rest and gentle movement honor the menstrual phase. Listen to your body — it's incredibly wise.</p>
+      <div class="cta-box">
+        <h4>Move in a Way That Celebrates YOU 🏃‍♀️</h4>
+        <p>Join the HerWorld community where we talk about fitness, health, and bodies with kindness, not judgment — all through 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button>
+      </div>`
+  },
+  {
+    id:8, emoji:"💑", tag:"Relationships",
+    title:"Setting Healthy Boundaries Without Guilt: A Woman's Complete Guide",
+    desc:"No is a complete sentence. Here's how to set boundaries with love, clarity, and zero apology.",
+    date:"February 23, 2026", readTime:"9 min read",
+    content:`
+      <div class="infographic">
+        <h4>💑 Boundaries & Relationship Health</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>78%</h5><p>Women over-apologize daily</p></div>
+          <div class="inf-stat"><h5>3×</h5><p>Better relationships with clear limits</p></div>
+          <div class="inf-stat"><h5>67%</h5><p>Less resentment with honest boundaries</p></div>
+        </div>
+      </div>
+      <p>Women are socialized from childhood to be agreeable, accommodating, endlessly giving, and above all, pleasant. We learn early that our value is tied to how well we serve others' needs. But here's the quiet truth that takes most women years to discover: saying yes when you mean no doesn't make you kind. It makes you resentful. And resentment quietly poisons the relationships you're trying to protect.</p>
+      <h4>What Boundaries Actually Are — And Aren't</h4>
+      <p>Boundaries are not walls. They are not cold or unfriendly. They are not punishments for people who've hurt you, though they can follow hurt. Boundaries are honest, compassionate expressions of what you need to feel safe, respected, and whole in any relationship — romantic, platonic, professional, or familial. Setting them is an act of self-respect. And self-respect teaches others how to treat you.</p>
+      <h4>The Psychology of Why We Struggle to Set Them</h4>
+      <p>Fear of rejection. Fear of conflict. Deep-seated people-pleasing tendencies. The belief (often subconscious) that our needs matter less than others'. Sometimes, a history of being punished for asserting needs in childhood. Understanding your personal barrier isn't just intellectually interesting — it's the key to beginning to move through it rather than around it.</p>
+      <h4>How to Set Boundaries with Compassion and Clarity</h4>
+      <p>The formula is simple, even if the execution takes practice: State what you can and cannot do, and be honest about why. "I care about our friendship, and I need to tell you honestly: I'm not able to lend money to people I'm close to. It changes the dynamic for me in ways I don't handle well." Clear. Kind. No apology for having a limit. No lengthy justification that invites negotiation.</p>
+      <h4>The Hardest Boundaries — Family and Long-Term Relationships</h4>
+      <p>Boundaries with family are the hardest because the stakes feel highest and the patterns run deepest. You may have decades of established dynamics to rewrite. Expect pushback. Expect guilt. Expect the people who benefited most from your lack of boundaries to be the most resistant to your having them. Hold anyway. Your peace is worth the discomfort of the transition.</p>
+      <h4>Boundaries at Work in 2026</h4>
+      <p>Professional boundaries include: your working hours (and sticking to them), not being the default person for tasks outside your role, not accepting credit-taking or disrespect, and advocating for your needs around flexibility, workload, and communication. In 2026, remote and hybrid work has blurred the lines between personal and professional life more than ever — which makes intentional work boundaries more important than ever.</p>
+      <div class="cta-box">
+        <h4>You Deserve Relationships That Respect You 💑</h4>
+        <p>HerWorld is a safe space to discuss the nuances of relationships, boundaries, and self-worth. Join our sisterhood in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Sisterhood →</button>
+      </div>`
+  },
+  {
+    id:9, emoji:"🌸", tag:"Wellness",
+    title:"Hormone Health 101: Understanding Your Body's Signals in 2026",
+    desc:"Your hormones are always communicating with you. Here's how to finally learn to listen.",
+    date:"March 2, 2026", readTime:"11 min read",
+    content:`
+      <div class="infographic">
+        <h4>🌸 Hormonal Health Statistics</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>1 in 10</h5><p>Women have PCOS</p></div>
+          <div class="inf-stat"><h5>60%</h5><p>Of thyroid issues affect women</p></div>
+          <div class="inf-stat"><h5>80%</h5><p>PMS treatable with lifestyle changes</p></div>
+        </div>
+      </div>
+      <p>Your hormones are not just about your menstrual cycle. They orchestrate virtually everything about how you feel, function, and experience your body and mind: your energy levels, your mood, your sleep quality, your skin, your metabolism, your libido, your ability to concentrate. When they are in balance, you feel like yourself. When they're off, everything feels off — and often you can't even articulate why.</p>
+      <h4>The Major Hormones Women Need to Know</h4>
+      <p>Estrogen governs reproduction, bone density, cardiovascular health, and mood regulation. Progesterone is the calming, stabilizing hormone that supports sleep and counterbalances estrogen. Testosterone (yes, women have it too) supports libido, muscle mass, energy, and confidence. Cortisol, the stress hormone, should spike and fall rhythmically — chronic elevation disrupts everything else. Insulin regulates blood sugar and fat storage — imbalance here affects weight, energy, and hormonal cascade throughout.</p>
+      <h4>Signs Your Hormones May Be Out of Balance</h4>
+      <p>Irregular, painful, or absent periods. PMS so severe it disrupts your daily life. Unexplained weight gain or loss, particularly around the midsection. Persistent acne especially around the chin and jaw. Hair thinning or loss. Debilitating fatigue that sleep doesn't resolve. Brain fog. Anxiety or depression with no obvious external cause. A libido that's disappeared. These are all signals worth investigating — not symptoms to push through.</p>
+      <h4>PCOS: The Most Underdiagnosed Condition Affecting Women</h4>
+      <p>Polycystic ovary syndrome affects 1 in 10 women of reproductive age and takes an average of two years to diagnose. It involves hormonal imbalance, irregular ovulation, insulin resistance, and often — though not always — ovarian cysts. Symptoms include irregular periods, excess androgen (leading to acne, hair growth, hair loss), and difficulty managing weight. It is manageable with the right support — but you have to know you have it first.</p>
+      <h4>Supporting Your Hormones Through Lifestyle</h4>
+      <p>Prioritize 7-9 hours of quality sleep — cortisol regulation and growth hormone release happen primarily at night. Reduce sugar and refined carbohydrates — they spike insulin and disrupt the hormonal cascade. Manage stress actively, not passively — exercise, meditation, therapy, boundaries. Eat enough — chronic undereating disrupts the hypothalamic-pituitary-adrenal axis and can cause hormonal chaos. Limit alcohol and environmental toxins where possible.</p>
+      <div class="cta-box">
+        <h4>Take Your Health Seriously in 2026 🌸</h4>
+        <p>Join the HerWorld wellness community where we share evidence-based health information and real women's experiences every week.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Space →</button>
+      </div>`
+  },
+  {
+    id:10, emoji:"🎓", tag:"Career",
+    title:"Overcoming Imposter Syndrome: Why High-Achieving Women Feel Like Frauds",
+    desc:"70% of people experience imposter syndrome. Here's why it hits women harder — and exactly how to overcome it.",
+    date:"March 9, 2026", readTime:"9 min read",
+    content:`
+      <div class="infographic">
+        <h4>🎓 Imposter Syndrome & Women</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>70%</h5><p>People experience it at some point</p></div>
+          <div class="inf-stat"><h5>75%</h5><p>Executive women report feeling it</p></div>
+          <div class="inf-stat"><h5>2×</h5><p>More common in women than men</p></div>
+        </div>
+      </div>
+      <p>You've worked hard. You've earned every qualification on your resume and every achievement in your career. And yet — there's a quiet voice in the back of your mind waiting for someone to figure out that you don't really belong here. That you've somehow fooled everyone. That your success is a fluke that luck and circumstance could just as easily take away. Does this sound familiar?</p>
+      <h4>The Origin of Imposter Syndrome</h4>
+      <p>Psychologists Pauline Clance and Suzanne Imes first identified and named this phenomenon in 1978 — and they originally studied it exclusively in high-achieving women. They found that despite impressive accomplishments, these women consistently attributed their success to luck, timing, and charm rather than to their own intelligence and capability. The pattern has only been studied more widely since then.</p>
+      <h4>Why It Hits Women — Especially Women of Color — Harder</h4>
+      <p>Girls are socialized to be humble, to minimize their achievements, and to attribute success to external factors. Boys are more often socialized to take credit and project confidence. Add to this the structural reality that women — particularly women of color — often are in spaces where they have fewer predecessors, fewer mentors who look like them, and are held to different and higher standards. The internal experience of imposter syndrome is reinforced by external reality.</p>
+      <h4>What Imposter Syndrome Actually Looks Like</h4>
+      <p>Overworking to compensate for feared "exposure." Downplaying accomplishments in conversation. Attributing praise to luck rather than skill. Feeling like you need to know everything before you're "ready" to apply for a job or take on a project. Intense fear of failure disproportionate to the stakes. Difficulty internalizing positive feedback while readily absorbing criticism.</p>
+      <h4>Evidence-Based Strategies to Overcome It</h4>
+      <p>First: name it. "This is imposter syndrome talking — it's not fact." Externalizing the experience reduces its power. Second: keep a wins journal. Every compliment, every achievement, every successful project. When the doubt hits, go to evidence. Third: share your experience with trusted colleagues. You will almost universally discover that accomplished people you admire feel the same way. Community normalizes the experience and dissolves shame.</p>
+      <h4>Reframing: From "I Don't Belong" to "I'm Still Learning"</h4>
+      <p>The most powerful reframe is this: feeling uncertain doesn't mean you don't belong. It means you're in a growth zone — which is exactly where you should be. The most competent, skilled people in any field are often the most aware of how much they don't know. This awareness is not evidence of inadequacy. It's evidence of sophistication.</p>
+      <div class="cta-box">
+        <h4>You Belong Here — Fully and Completely 🎓</h4>
+        <p>Connect with women who are building careers with confidence and strategy. HerWorld's career community is here for you in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Connect with Career Women →</button>
+      </div>`
+  },
+  {
+    id:11, emoji:"🍽️", tag:"Wellness",
+    title:"Intuitive Eating: Making Complete Peace with Food in 2026",
+    desc:"Ditch the diet culture for good. Here's how to rebuild a healthy, joyful, sustainable relationship with food.",
+    date:"March 16, 2026", readTime:"10 min read",
+    content:`
+      <div class="infographic">
+        <h4>🍽️ Diet Culture's Devastating Reality</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>95%</h5><p>Diets fail within 1-5 years</p></div>
+          <div class="inf-stat"><h5>$70B</h5><p>Diet industry annual revenue</p></div>
+          <div class="inf-stat"><h5>84%</h5><p>Dieters regain all weight in 5 years</p></div>
+        </div>
+      </div>
+      <p>We have been taught, explicitly and implicitly, that our bodies are problems to be solved. That eating is something to be controlled, restricted, earned, and compensated for. That some foods are "good" and some foods are "bad" — and that our moral worth as women is somehow tied to which ones we choose. This is diet culture. And it has caused immeasurable harm to women's bodies, minds, and relationships with food for generations.</p>
+      <h4>What Is Intuitive Eating, Really?</h4>
+      <p>Intuitive eating is a framework developed by registered dietitians Evelyn Tribole and Elyse Resch, built on 10 core principles that help you reconnect with your body's natural hunger and fullness signals. It is not "eat whatever you want whenever you want" — it's learning to hear and trust your body's wisdom after years, sometimes decades, of diet culture overriding it.</p>
+      <h4>Principle 1: Reject the Diet Mentality</h4>
+      <p>This is the foundation — and for many women, the hardest step. It means recognizing that diets are not failed personal endeavors. They are products designed to be sold repeatedly because they don't produce lasting results. The problem has never been your willpower or your discipline. The problem is the diet itself.</p>
+      <h4>Principle 2: Honor Your Hunger</h4>
+      <p>Hunger is not the enemy. It is a biological signal, as natural and important as thirst. When you restrict food chronically, your body responds by intensifying hunger signals, slowing metabolism, and increasing preoccupation with food. This is not weakness — it is survival biology. Eating when you're hungry is the most basic act of self-care.</p>
+      <h4>Principle 3: Make Peace with All Foods</h4>
+      <p>When every food is allowed, food loses its power. The cookies stop being dangerous when you know you can have them anytime. The ice cream stops being a "binge trigger" when it's no longer forbidden. Permission is paradoxically the path to moderation — not restriction.</p>
+      <h4>The Research on Intuitive Eating</h4>
+      <p>Over 125 peer-reviewed studies have examined intuitive eating, finding consistent links to improved body image, lower rates of disordered eating, better psychological wellbeing, and — notably — similar or better physical health outcomes compared to dieting. It is not the "easy way out." It is the sustainable way through.</p>
+      <div class="cta-box">
+        <h4>Your Body Is Not the Problem 🍽️</h4>
+        <p>Join the HerWorld wellness community where we talk about food, bodies, and health with radical kindness and zero judgment throughout 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Community →</button>
+      </div>`
+  },
+  {
+    id:12, emoji:"👩‍👧", tag:"Motherhood",
+    title:"Raising Daughters Who Know Their Unshakeable Worth in 2026",
+    desc:"The most powerful gift you can give your daughter is a confidence that no one can take from her.",
+    date:"March 23, 2026", readTime:"9 min read",
+    content:`
+      <div class="infographic">
+        <h4>👩‍👧 Girls' Self-Esteem & Confidence</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>Age 7</h5><p>When girls' confidence begins declining</p></div>
+          <div class="inf-stat"><h5>30%</h5><p>Drop in self-esteem during adolescence</p></div>
+          <div class="inf-stat"><h5>3×</h5><p>Girls with mentors stay in school longer</p></div>
+        </div>
+      </div>
+      <p>Your daughter is watching everything. How you talk about your own body in the mirror. How you handle disagreement and conflict. Whether you ask for help or pretend you don't need it. How you respond to failure. How you treat yourself on hard days. You are her first and most influential teacher of what it means to be a woman — and that is the most extraordinary responsibility and opportunity imaginable.</p>
+      <h4>Watch Your Language Around Your Own Body</h4>
+      <p>Children absorb everything, especially from the people they love most. When you say "I look fat" or "I can't eat that" or "I hate my [body part]," your daughter hears: this is how women are supposed to feel about their bodies. Instead, try "I feel strong today" or "I'm grateful my body can do this." The language she grows up hearing becomes the voice in her head for decades.</p>
+      <h4>Praise Effort and Process, Not Outcome and Appearance</h4>
+      <p>Research by Carol Dweck on growth mindset shows that children praised for effort ("You worked really hard on that") develop more resilience and capability than those praised for fixed traits ("You're so smart/pretty"). Separate her worth from her appearance and her performance. Her value is inherent — not earned.</p>
+      <h4>Teach Body Autonomy from the Beginning</h4>
+      <p>Allow her to decide who touches her body. Don't force hugs or kisses, even with family members. Let her say no to physical affection — and validate that right. This isn't about being antisocial; it's about teaching her from the earliest age that her body belongs to her and her "no" has power. These lessons become the foundation of consent, safety, and self-advocacy.</p>
+      <h4>Expose Her to Women Who Look Like Possibility</h4>
+      <p>Women scientists, engineers, athletes, politicians, artists, entrepreneurs, activists, doctors. Let her see what women can be and do — across all fields, all backgrounds, all body types and appearances. The more representations of womanhood she encounters, the more expansive her self-concept becomes.</p>
+      <h4>Model Emotional Intelligence Openly</h4>
+      <p>Show her how to name emotions. "I'm feeling frustrated right now because..." Let her see you struggle and recover. Let her see you apologize when you're wrong. Let her see you get back up after disappointment. Emotional intelligence is the skill that will serve her more than almost any other throughout her entire life.</p>
+      <div class="cta-box">
+        <h4>Raise Her With a Village Behind Her 👩‍👧</h4>
+        <p>HerWorld's motherhood community is full of women navigating parenthood with honesty, love, and imperfection — and supporting each other through it all in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Mom Village →</button>
+      </div>`
+  },
+  {
+    id:13, emoji:"✈️", tag:"Lifestyle",
+    title:"Solo Travel for Women in 2026: Everything You Need to Know",
+    desc:"Traveling alone is one of the most transformative things a woman can do for herself. Here's how to do it well.",
+    date:"April 5, 2026", readTime:"10 min read",
+    content:`
+      <div class="infographic">
+        <h4>✈️ Women Solo Travel — 2026 Trends</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>74%</h5><p>Women book their own travel</p></div>
+          <div class="inf-stat"><h5>3×</h5><p>Increase in female solo travelers</p></div>
+          <div class="inf-stat"><h5>85%</h5><p>Say it boosted their confidence</p></div>
+        </div>
+      </div>
+      <p>There is something uniquely, irreplacably powerful about navigating a foreign city alone. About ordering food in a language you barely speak and figuring it out. About making decisions entirely for yourself — where to go, how long to stay, when to rest, what to try. Solo travel strips away the performance of who you are for others and shows you, with stunning clarity, who you actually are. It's one of the greatest gifts you can give yourself.</p>
+      <h4>Why Solo Travel Transforms Women Differently</h4>
+      <p>Women who travel solo consistently report profound shifts in confidence, self-reliance, and sense of personal capability. When you handle a missed train in a foreign country, navigate a language barrier, or simply spend an entire day moving at your own pace without accommodating anyone else — you come home knowing you can handle things. That knowledge changes how you move through all of life, not just travel.</p>
+      <h4>Starting Smart: Your First Solo Trip</h4>
+      <p>Your first solo adventure doesn't have to be a six-month backpacking expedition. Start with a weekend trip to a city you've always wanted to explore — ideally somewhere with easy transport, English widely spoken, and infrastructure you feel comfortable in. Build your confidence with smaller trips before going bigger and more remote. Every solo trip you complete expands your sense of what's possible.</p>
+      <h4>Safety Without Fear in 2026</h4>
+      <p>Research your destination thoroughly from women's perspectives specifically — travel forums and Instagram communities for female travelers are invaluable. Share your itinerary with someone who loves you. Stay in reputable, well-reviewed accommodation. Trust your instincts — they are your most sophisticated safety tool. Don't let fear be the boss, but do respect it as useful data worth considering.</p>
+      <h4>Top Destinations for Solo Female Travelers in 2026</h4>
+      <p>Japan continues to lead global rankings for safety and ease. Portugal and Iceland offer stunning landscapes with welcoming, safe environments. New Zealand combines adventure and accessibility beautifully. Colombia's major cities have transformed dramatically and offer incredible culture. Japan, Portugal, Iceland, New Zealand, Canada, and Japan again — the world is more open to solo women travelers than ever before in 2026.</p>
+      <h4>The Most Important Thing You'll Discover</h4>
+      <p>You are braver than you think. More capable than you've been told. Better at adapting, problem-solving, and enjoying your own company than you imagined. You don't need a partner or a group to experience the world fully. You are, in fact, excellent company. Solo travel will show you this in a way nothing else quite can.</p>
+      <div class="cta-box">
+        <h4>Your Adventure Awaits in 2026 ✈️</h4>
+        <p>Connect with HerWorld women who travel solo, share tips, and build the confidence to explore the world on their own beautiful terms.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Connect with Fellow Travelers →</button>
+      </div>`
+  },
+  {
+    id:14, emoji:"🔮", tag:"Empowerment",
+    title:"Reclaiming Your Power After a Toxic Relationship",
+    desc:"Healing is not linear — but it is absolutely possible. Here's your roadmap back to yourself.",
+    date:"April 12, 2026", readTime:"11 min read",
+    content:`
+      <div class="infographic">
+        <h4>🔮 Recovery & Healing — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>1 in 3</h5><p>Women experience relationship trauma</p></div>
+          <div class="inf-stat"><h5>18mo</h5><p>Average healing time after toxic relationship</p></div>
+          <div class="inf-stat"><h5>91%</h5><p>Report stronger self-worth after healing</p></div>
+        </div>
+      </div>
+      <p>Toxic relationships don't always announce themselves with red flags you can see clearly from the outside. Sometimes they're the slow erosion — the constant subtle criticism that makes you doubt your own perceptions. The gaslighting that makes you question your reality. The control that feels like love until you realize you've made yourself smaller to accommodate someone else's needs for years. Whatever your experience: your healing is valid, your pain is real, and you deserve to come back to yourself fully.</p>
+      <h4>Naming What Happened</h4>
+      <p>The first act of reclaiming your power is naming your experience accurately. Toxic behavior is not love, even when it's wrapped in declarations of love. Manipulation is not care, even when it's rationalized as concern. Control is not protection, even when it's presented that way. Naming the reality clearly is not an act of anger — it's an act of sanity. You cannot heal from something you haven't acknowledged.</p>
+      <h4>Understanding Trauma Bonding</h4>
+      <p>If you've ever wondered why leaving was so hard, or why you find yourself still missing someone who hurt you, trauma bonding explains it. The cycle of tension, incident, reconciliation, and calm in toxic relationships creates powerful neurological bonds — similar to addiction in brain chemistry. Your difficulty leaving or letting go was not weakness. It was the predictable neurological response to intermittent reinforcement. Understanding this is the beginning of self-compassion.</p>
+      <h4>Rebuilding Your Identity</h4>
+      <p>Long-term toxic relationships often erode your sense of self — who you are, what you like, what you believe, what you value. Begin by reconnecting with who you were before. What did you love doing? Who were your people? What dreams had you quietly set aside? Return to those things. Start small. Curiosity is the gentlest form of healing.</p>
+      <h4>Rewriting the Internal Narrative</h4>
+      <p>The voice in your head that says you deserved it, that you're too much or never enough, that no one else will want you — that is not your authentic voice. That is the internalized echo of someone who could not handle your fullness and projected their limitations onto you. Healing includes slowly, persistently replacing those messages with truth. It takes time. It takes therapy for many women. It is absolutely worth it.</p>
+      <h4>The Timeline of Healing</h4>
+      <p>There is no universal timeline, and anyone who tells you there is hasn't done the work. Some days you'll feel completely free and like yourself again. Others will knock you backward unexpectedly. Both are part of healing. Grief is not linear. Progress is not linear. But overall, with support and time, healing moves forward — even when it doesn't feel that way in the moment.</p>
+      <div class="cta-box">
+        <h4>You Are Whole — Even Now 🔮</h4>
+        <p>The HerWorld community includes women at every stage of healing. You don't have to navigate this alone. We're here in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Support & Sisterhood →</button>
+      </div>`
+  },
+  {
+    id:15, emoji:"🌙", tag:"Wellness",
+    title:"The Science of Sleep: Why Women Desperately Need More Rest in 2026",
+    desc:"Research shows women need more sleep than men — yet we're getting significantly less. Here's why that matters deeply.",
+    date:"April 19, 2026", readTime:"9 min read",
+    content:`
+      <div class="infographic">
+        <h4>🌙 Sleep & Women's Health — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>20min</h5><p>More sleep women need than men</p></div>
+          <div class="inf-stat"><h5>67%</h5><p>Women report poor sleep quality</p></div>
+          <div class="inf-stat"><h5>40%</h5><p>Hormones regulate during sleep</p></div>
+        </div>
+      </div>
+      <p>We celebrate hustle. We brag about functioning on five hours. We wear exhaustion like a badge of seriousness and commitment. And in doing so, we are quietly, chronically undermining our health, our mental clarity, our emotional regulation, and our longevity. The science is unambiguous: sleep is not optional, and women — biologically, physiologically — need more of it than we're getting.</p>
+      <h4>Why Women Biologically Need More Sleep</h4>
+      <p>Research from Duke University found that poor sleep was significantly more harmful to women than to men, leading to increased inflammation, higher psychological distress, and greater risk of cardiovascular disease. Women's brains complete more multitasking and complex processing than men's brains on average — and therefore require more recovery time. This is not weakness; it is neurological reality.</p>
+      <h4>The Hormonal-Sleep Connection</h4>
+      <p>Estrogen supports REM sleep and helps regulate the sleep-wake cycle. Progesterone has sedative properties and supports deep sleep. As these hormones fluctuate throughout the menstrual cycle, pregnancy, postpartum, and menopause, sleep quality changes significantly. The week before your period, when both estrogen and progesterone drop, many women experience significantly disrupted sleep — which compounds PMS symptoms. Understanding this connection allows you to plan accordingly rather than fighting your body.</p>
+      <h4>What Actually Destroys Sleep Quality</h4>
+      <p>Screens before bed (blue light suppresses melatonin). Alcohol (disrupts REM sleep despite making you feel drowsy). Irregular sleep and wake times (destroys your circadian rhythm). A bedroom that's too warm (optimal temperature is 65-68°F). Caffeine consumed after 2pm. Doom-scrolling. Stress with no outlet before sleep. Knowing your sleep saboteurs is the first step to eliminating them.</p>
+      <h4>Building a Sleep Sanctuary in 2026</h4>
+      <p>Invest in your sleep environment as seriously as you would invest in any other aspect of your health. Blackout curtains. A cooling mattress pad if you sleep hot. White noise if external sounds disrupt you. A non-screen pre-sleep ritual — a bath, light reading, journaling, gentle stretching, a conversation. These aren't luxuries; they're infrastructure for your health.</p>
+      <h4>When to Seek Medical Help</h4>
+      <p>If you're doing everything right and still sleeping poorly, speak with your doctor. Women are significantly underdiagnosed with sleep apnea (often assumed to be a condition affecting overweight men). Insomnia that lasts more than a month is worth treating — cognitive behavioral therapy for insomnia (CBT-I) is more effective than medication and has no side effects.</p>
+      <div class="cta-box">
+        <h4>Rest is Your Most Powerful Tool 🌙</h4>
+        <p>In 2026, HerWorld champions rest, recovery, and the radical act of taking your health seriously. Join our community.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Space →</button>
+      </div>`
+  },
+  {
+    id:16, emoji:"🎨", tag:"Lifestyle",
+    title:"The Healing Power of Creative Expression for Women in 2026",
+    desc:"Art, writing, music, dance — creativity is not a hobby. For women, it's essential medicine for the soul.",
+    date:"April 26, 2026", readTime:"8 min read",
+    content:`
+      <div class="infographic">
+        <h4>🎨 Creativity & Healing Science</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>45min</h5><p>Of art reduces cortisol measurably</p></div>
+          <div class="inf-stat"><h5>75%</h5><p>Feel significantly better after creating</p></div>
+          <div class="inf-stat"><h5>2×</h5><p>Faster trauma processing with creativity</p></div>
+        </div>
+      </div>
+      <p>Somewhere between childhood and adulthood, most of us stop creating. We decide — or someone decides for us — that we're not talented enough, not serious enough, that creativity is frivolous or indulgent or reserved for artists. This loss is quiet and enormous. Because creativity is not just expression — it's processing, it's healing, it's how we make sense of being human. And women, who carry so much, need this outlet profoundly.</p>
+      <h4>The Science of Creativity and Emotional Healing</h4>
+      <p>A landmark study at Drexel University found that just 45 minutes of art-making significantly reduced cortisol levels regardless of artistic experience or skill. Art therapy is used in trauma centers, cancer wards, psychiatric units, and palliative care worldwide — because creating something with your hands engages the prefrontal cortex, quiets the amygdala, and allows emotional processing that linear, verbal communication often cannot reach.</p>
+      <h4>You Don't Have to Be "Good"</h4>
+      <p>The healing power of creative expression has absolutely nothing to do with talent and everything to do with process. You don't journal to become a writer. You journal to understand yourself. You don't paint to create a masterpiece. You paint to give form to something you couldn't otherwise say. Release the outcome. Inhabit the process.</p>
+      <h4>Finding Your Medium</h4>
+      <p>Writing and journaling. Painting or drawing. Collaging. Dancing — alone, in your kitchen, counts completely. Cooking and baking as creative acts. Gardening. Knitting or crocheting. Photography. Pottery. Singing in your car. Playing an instrument even badly. Storytelling. There is no hierarchy among creative mediums. The one that makes you feel most alive and most yourself is the right one.</p>
+      <h4>Making It a Consistent Practice in 2026</h4>
+      <p>Schedule it. Put 30-60 minutes of creative time on your calendar weekly and treat it with the same non-negotiable seriousness as a doctor's appointment or a work meeting. Creative practice requires protection from the demands that constantly pull at women's time. Give yourself permission to take this seriously, and watch what unfolds in your life over months of consistent creative expression.</p>
+      <div class="cta-box">
+        <h4>Create Something Today 🎨</h4>
+        <p>HerWorld celebrates women who create, express, and heal through art in all its beautiful forms. Share your creative journey with our community in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Share Your Creative Journey →</button>
+      </div>`
+  },
+  {
+    id:17, emoji:"🤝", tag:"Empowerment",
+    title:"Building Your Sisterhood: The Life-Changing Power of Female Friendships",
+    desc:"Research shows that strong female friendships literally extend your lifespan. Here's how to build and nurture them.",
+    date:"May 3, 2026", readTime:"9 min read",
+    content:`
+      <div class="infographic">
+        <h4>🤝 The Power of Sisterhood — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>2-3×</h5><p>Longer lifespan with strong friendships</p></div>
+          <div class="inf-stat"><h5>50%</h5><p>Stress reduction response with friends</p></div>
+          <div class="inf-stat"><h5>1 in 4</h5><p>Women have no close confidante</p></div>
+        </div>
+      </div>
+      <p>UCLA researchers coined the term "tend and befriend" to describe the female stress response — the biologically wired drive women have to seek connection and community under pressure. While men's fight-or-flight response often drives them toward isolation or aggression in stress, women's neurological response is to reach toward other women. Female friendship is not a luxury or a social nicety. It is a biological necessity that literally keeps women alive longer and healthier.</p>
+      <h4>What Makes Female Friendships Unique and Powerful</h4>
+      <p>Women's friendships are characterized by emotional intimacy, mutual vulnerability, and reciprocal support in ways that are biologically and neurologically distinct. The sharing of personal experience, the validation of emotional reality, the comfort of being truly known — these interactions release oxytocin and serotonin more powerfully than almost any other social bond. They are, quite literally, medicine.</p>
+      <h4>The Modern Epidemic of Female Loneliness</h4>
+      <p>Despite living in the most connected era in human history, a profound loneliness epidemic runs beneath the surface of women's lives. We're busy. We're guarded. We've moved away from hometown networks. We're navigating comparison culture. We've bought into the myth that we should be enough for ourselves. And the cost is significant — not just emotional, but physical. Chronic loneliness is as harmful to health as smoking 15 cigarettes a day.</p>
+      <h4>Why Adult Friendships Are Hard — and Worth the Effort</h4>
+      <p>Adult friendships require more intentionality than childhood friendships, which formed through proximity and shared circumstance. As adults, we have to choose to invest. We have to be the one who reaches out first, sometimes many times. We have to be willing to be vulnerable with people we don't know well yet. This takes courage. It is worth every bit of it.</p>
+      <h4>How to Build Real Friendships in 2026</h4>
+      <p>Start by showing up consistently in spaces you care about — a class, a community, a volunteer role, a professional group. Take the initiative to suggest plans. Reach out after a good conversation. Be genuinely curious about other people's lives and actually remember what they tell you. Be honest and appropriately vulnerable. Show up in difficulty — the friends who appear in hard moments are the ones who last.</p>
+      <div class="cta-box">
+        <h4>Find Your Sisterhood Here 🤝</h4>
+        <p>HerWorld exists to connect women who want real, meaningful community. Join us and find your people in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Sisterhood →</button>
+      </div>`
+  },
+  {
+    id:18, emoji:"🧘", tag:"Mental Health",
+    title:"Mindfulness for Busy Women: 5-Minute Practices That Actually Work in 2026",
+    desc:"You don't need an hour on a meditation cushion. Start with 5 minutes and watch your life change.",
+    date:"May 10, 2026", readTime:"8 min read",
+    content:`
+      <div class="infographic">
+        <h4>🧘 Mindfulness & Wellbeing — 2026</h4>
+        <div class="inf-stats">
+          <div class="inf-stat"><h5>5min</h5><p>Daily mindfulness reduces anxiety measurably</p></div>
+          <div class="inf-stat"><h5>43%</h5><p>Stress reduction after 8 weeks of practice</p></div>
+          <div class="inf-stat"><h5>37%</h5><p>Better emotional regulation reported</p></div>
+        </div>
+      </div>
+      <p>Mindfulness has been marketized, commodified, and over-spiritualized to the point where many women feel it's something they don't have time for, can't do correctly, or can only access through expensive apps and retreats. But the core of mindfulness is radically simple: it is the practice of paying deliberate, non-judgmental attention to the present moment. You can do this anywhere. For five minutes. Right now.</p>
+      <h4>The Neuroscience of Why It Works</h4>
+      <p>Consistent mindfulness practice literally reshapes the brain. Studies using MRI imaging show that regular practitioners have measurably increased gray matter density in the prefrontal cortex (responsible for decision-making and self-regulation) and reduced amygdala reactivity (the brain's alarm system). You're not just feeling calmer — you're building a structurally more regulated brain over time.</p>
+      <h4>Practice 1: The 4-7-8 Breath (90 seconds)</h4>
+      <p>Inhale through your nose for 4 counts. Hold for 7. Exhale slowly through your mouth for 8. This specific rhythm activates the parasympathetic nervous system — your "rest and digest" mode — almost immediately. Do this before a stressful meeting, when anxiety spikes, before a difficult conversation, or any time you need to regulate quickly.</p>
+      <h4>Practice 2: The Morning Body Scan (3 minutes)</h4>
+      <p>Before picking up your phone in the morning, spend 3 minutes lying still and scanning your body from the crown of your head to the soles of your feet. Notice sensations — tension, warmth, heaviness — without trying to change anything. This simple practice brings you into your body and out of your racing mind before the day begins. It sets an intentional, present tone for everything that follows.</p>
+      <h4>Practice 3: The 5-4-3-2-1 Grounding Technique (2 minutes)</h4>
+      <p>When anxiety spikes or you feel disconnected from the present moment, use your senses to ground yourself: Name 5 things you can see. 4 things you can physically feel (feet on floor, shirt on skin). 3 things you can hear. 2 things you can smell. 1 thing you can taste. This technique is clinically used for anxiety and panic attacks because it rapidly anchors you in sensory reality and away from spiral thinking.</p>
+      <h4>Practice 4: Mindful Meal (15 minutes, once daily)</h4>
+      <p>Eat one meal per day without screens — no phone, no television, no laptop. Notice the colors of your food. The smell before the first bite. The texture. The flavors and how they change. Eating mindfully improves digestion, satisfaction, relationship with food, and genuine presence in daily life. It transforms an automatic habit into an act of full aliveness.</p>
+      <div class="cta-box">
+        <h4>5 Minutes Can Change Everything 🧘</h4>
+        <p>Join HerWorld's mindfulness and wellness community where women share practices, support each other, and cultivate presence together in 2026.</p>
+        <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Mindfulness Community →</button>
+      </div>`
+  }
+];
+
+// ===================== NAVIGATION =====================
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(x => { x.style.display='none'; x.classList.remove('active'); });
+  const t = document.getElementById('page-' + p);
+  if(t){ t.style.display='block'; t.classList.add('active'); window.scrollTo(0,0); }
+  if(p==='home') renderHomeGrid();
+  if(p==='blogs') renderBlogsPage();
+}
+
+// ===================== RENDER =====================
+function renderHomeGrid() {
+  const g = document.getElementById('home-grid');
+  if(!g) return;
+  g.innerHTML = blogs.slice(0,6).map(blogCard).join('');
+}
+
+function renderBlogsPage() {
+  const cats = ['All', ...new Set(blogs.map(b=>b.tag))];
+  document.getElementById('cat-tabs').innerHTML = cats.map(c =>
+    `<button class="cat-tab${c===activeCategory?' active':''}" onclick="filterCat('${c}')">${c}</button>`
+  ).join('');
+  const list = activeCategory==='All' ? blogs : blogs.filter(b=>b.tag===activeCategory);
+  document.getElementById('blogs-grid').innerHTML = list.map(blogCard).join('');
+}
+
+function filterCat(cat) { activeCategory=cat; renderBlogsPage(); }
+
+function blogCard(b) {
+  return `<div class="blog-card" onclick="openBlog(${b.id})">
+    <div class="card-img">${b.emoji}</div>
+    <div class="card-body">
+      <span class="card-tag">${b.tag}</span>
+      <h3>${b.title}</h3>
+      <p>${b.desc}</p>
+      <div class="card-meta">
+        <div class="avatar">MK</div>
+        <span><strong>Maria Kanwal</strong> · ${b.date}</span>
+      </div>
+      <span class="card-read">Read Article → ${b.readTime}</span>
+    </div>
+  </div>`;
+}
+
+// ===================== MODAL =====================
+function openBlog(id) {
+  const b = blogs.find(x=>x.id===id); if(!b) return;
+  document.getElementById('modal-img').innerHTML = `<button class="modal-close" onclick="closeModal()">×</button>${b.emoji}`;
+  document.getElementById('modal-tag').textContent = b.tag;
+  document.getElementById('modal-title').textContent = b.title;
+  document.getElementById('modal-date').textContent = b.date;
+  document.getElementById('modal-read').textContent = b.readTime;
+  document.getElementById('modal-content').innerHTML = b.content;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+
+// ===================== CONTACT =====================
+function submitContact() {
+  if(!document.getElementById('cf-name').value || !document.getElementById('cf-email').value) {
+    showToast('Please fill in all required fields.'); return;
+  }
+  document.getElementById('form-success').style.display='block';
+  showToast('Message sent to Maria! She\'ll reply within 48 hours 💌');
+}
+
+// ===================== ADMIN =====================
+let adminPass = 'herworld2026';
+function adminLogin() {
+  const u=document.getElementById('admin-user').value;
+  const p=document.getElementById('admin-pass').value;
+  if(u==='maria' && p===adminPass) {
+    showPage('admin'); renderAdminList();
+    showToast('Welcome back, Maria! 🌸 — 2026 Admin Panel');
+  } else {
+    showToast('❌ Wrong credentials. Try: maria / herworld2026');
+  }
+}
+function adminLogout() { showPage('home'); }
+
+function switchTab(tab) {
+  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  event.target.classList.add('active');
+  if(tab==='manage') renderAdminList();
+}
+function setActiveTab(i){
+  document.querySelectorAll('.admin-tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+}
+
+function renderAdminList() {
+  document.getElementById('blog-count').textContent = `(${blogs.length} posts)`;
+  document.getElementById('admin-list').innerHTML = blogs.map(b=>`
+    <div class="admin-blog-item">
+      <div>
+        <h4>${b.emoji} ${b.title}</h4>
+        <span>${b.tag} · ${b.date} · ${b.readTime}</span>
+      </div>
+      <div class="admin-actions">
+        <button class="btn-edit" onclick="editBlog(${b.id})">✏️ Edit</button>
+        <button class="btn-del" onclick="deleteBlog(${b.id})">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteBlog(id) {
+  if(!confirm('Delete this blog post permanently?')) return;
+  const idx = blogs.findIndex(b=>b.id===id);
+  if(idx>-1){ blogs.splice(idx,1); renderAdminList(); showToast('Blog deleted.'); }
+}
+
+function editBlog(id) {
+  const b = blogs.find(x=>x.id===id); if(!b) return;
+  editingId=id;
+  document.getElementById('new-title').value=b.title;
+  document.getElementById('new-cat').value=b.tag;
+  document.getElementById('new-desc').value=b.desc;
+  document.getElementById('new-emoji').value=b.emoji;
+  document.getElementById('new-content').value=b.content;
+  document.getElementById('editor-title').textContent='Edit Blog Post';
+  document.getElementById('publish-btn').textContent='💾 Save Changes';
+  switchTab('add'); setActiveTab(1);
+}
+
+function previewContent() {
+  document.getElementById('preview-area').innerHTML = document.getElementById('new-content').value;
+}
+
+function publishBlog() {
+  const title=document.getElementById('new-title').value;
+  const tag=document.getElementById('new-cat').value;
+  const desc=document.getElementById('new-desc').value;
+  const emoji=document.getElementById('new-emoji').value||'📝';
+  const content=document.getElementById('new-content').value;
+  if(!title||!content){ showToast('Please fill in title and content!'); return; }
+
+  if(editingId) {
+    const idx=blogs.findIndex(b=>b.id===editingId);
+    if(idx>-1) { blogs[idx]={...blogs[idx],title,tag,desc,emoji,content}; }
+    editingId=null;
+    document.getElementById('editor-title').textContent='Add New Blog Post';
+    document.getElementById('publish-btn').textContent='🚀 Publish Blog';
+    showToast('✅ Blog updated successfully!');
+  } else {
+    blogs.unshift({id:Date.now(),emoji,tag,title,desc,
+      date:new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
+      readTime:'8 min read',content});
+    showToast('🚀 Blog published: '+title);
+  }
+  clearEditor();
+  switchTab('manage'); setActiveTab(0);
+}
+
+function clearEditor() {
+  editingId=null;
+  ['new-title','new-desc','new-content'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('new-emoji').value='📝';
+  document.getElementById('preview-area').innerHTML='<em style="color:var(--muted);font-size:0.9rem">Click "Preview" to see your content rendered here...</em>';
+  document.getElementById('editor-title').textContent='Add New Blog Post';
+  document.getElementById('publish-btn').textContent='🚀 Publish Blog';
+}
+
+function savePageEdits() {
+  const heroTitle=document.getElementById('ep-hero-title').value;
+  const heroSub=document.getElementById('ep-hero-sub').value;
+  const mission=document.getElementById('ep-mission').value;
+  if(heroTitle){ const el=document.querySelector('.hero h1'); if(el) el.innerHTML=heroTitle; }
+  if(heroSub){ const el=document.querySelector('.hero > div > p'); if(el) el.textContent=heroSub; }
+  if(mission){ const el=document.getElementById('about-p1'); if(el) el.textContent=mission; }
+  showToast('✅ Page content saved successfully!');
+}
+
+// ===================== TOAST =====================
+function showToast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none', 3500);
+}
+
+// INIT
+renderHomeGrid();
+</script>
+</body>
+</html>

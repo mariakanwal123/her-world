@@ -67,7 +67,6 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .blog-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(26,10,15,0.07);transition:all 0.4s;cursor:pointer;}
 .blog-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(232,85,109,0.18);}
 
-/* ── CARD IMAGE: real photo replacing emoji ── */
 .card-img{width:100%;height:210px;overflow:hidden;position:relative;background:var(--blush);}
 .card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
 .blog-card:hover .card-img img{transform:scale(1.06);}
@@ -86,7 +85,6 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .modal-overlay.open{display:flex;}
 .modal{background:white;border-radius:24px;max-width:820px;width:100%;margin:auto;}
 
-/* ── MODAL IMAGE: real photo ── */
 .modal-img{width:100%;height:280px;overflow:hidden;border-radius:24px 24px 0 0;position:relative;background:var(--blush);}
 .modal-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.25);backdrop-filter:blur(5px);color:white;border:none;width:38px;height:38px;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:10;}
@@ -108,7 +106,7 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .inf-stat h5{font-size:1.9rem;font-weight:900;}
 .inf-stat p{font-size:0.72rem;opacity:0.88;margin-top:0.2rem;}
 
-/* ── CTA BOX: high-visibility redesign ── */
+/* CTA BOX */
 .cta-box{
   background: linear-gradient(135deg, #E8556D 0%, #C9396F 100%);
   border-radius:16px;padding:2.2rem;color:white;text-align:center;margin:2rem 0 0;
@@ -126,6 +124,31 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
   box-shadow:0 4px 16px rgba(0,0,0,0.15);
 }
 .cta-box .btn-primary:hover{background:var(--dark);color:#fff;}
+
+/* KEY TAKEAWAYS */
+.key-takeaways{background:#FFF8F9;border-left:4px solid var(--rose);border-radius:0 16px 16px 0;padding:1.8rem 2rem;margin:2rem 0;}
+.key-takeaways h4{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--rose);margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+.key-takeaways ul{list-style:none;padding:0;}
+.key-takeaways ul li{padding:0.45rem 0;color:#333;font-size:0.93rem;line-height:1.6;display:flex;align-items:flex-start;gap:0.6rem;}
+.key-takeaways ul li::before{content:'✦';color:var(--rose);font-size:0.7rem;margin-top:0.35rem;flex-shrink:0;}
+
+/* FAQ */
+.faq-section{margin:2rem 0;}
+.faq-section h4{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--dark);margin-bottom:1.2rem;display:flex;align-items:center;gap:0.5rem;}
+.faq-item{border:1.5px solid #EDD8DC;border-radius:12px;margin-bottom:0.8rem;overflow:hidden;}
+.faq-question{width:100%;background:white;border:none;padding:1rem 1.2rem;text-align:left;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.92rem;color:var(--dark);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background 0.2s;}
+.faq-question:hover{background:var(--cream);}
+.faq-question.open{background:var(--blush);color:var(--rose);}
+.faq-question .faq-icon{font-size:1.1rem;transition:transform 0.3s;flex-shrink:0;}
+.faq-question.open .faq-icon{transform:rotate(45deg);}
+.faq-answer{max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.2s;}
+.faq-answer.open{max-height:300px;padding:0.9rem 1.2rem 1.1rem;}
+.faq-answer p{color:#555;font-size:0.9rem;line-height:1.75;margin:0;}
+
+/* CONCLUSION */
+.conclusion-box{background:linear-gradient(135deg,#FDF6F0,#FCE8EC);border-radius:16px;padding:1.8rem 2rem;margin:2rem 0;border:1px solid var(--blush);}
+.conclusion-box h4{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--dark);margin-bottom:0.8rem;display:flex;align-items:center;gap:0.5rem;}
+.conclusion-box p{color:#444;font-size:0.95rem;line-height:1.8;margin:0;}
 
 /* ABOUT */
 .about-hero{background:linear-gradient(135deg,var(--dark),#3D1520);color:white;padding:6rem 8%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
@@ -496,10 +519,51 @@ footer a{color:var(--rose);text-decoration:none;}
 <div class="toast" id="toast"></div>
 
 <script>
+// ===================== FAQ TOGGLE =====================
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const isOpen = el.classList.contains('open');
+  // Close all in same blog
+  const parent = el.closest('.faq-section');
+  parent.querySelectorAll('.faq-question').forEach(q => {
+    q.classList.remove('open');
+    q.nextElementSibling.classList.remove('open');
+  });
+  if (!isOpen) {
+    el.classList.add('open');
+    answer.classList.add('open');
+  }
+}
+
 // ===================== BLOG DATA =====================
-// img: curated Unsplash photos, topic-specific for each blog
 let editingId = null;
 let activeCategory = 'All';
+
+// Helper to build conclusion + key takeaways + faq HTML
+function extras(conclusion, takeaways, faqs) {
+  const ktItems = takeaways.map(t => `<li>${t}</li>`).join('');
+  const faqItems = faqs.map((f,i) => `
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        ${f.q}
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-answer"><p>${f.a}</p></div>
+    </div>`).join('');
+  return `
+    <div class="conclusion-box">
+      <h4>🌸 Conclusion</h4>
+      <p>${conclusion}</p>
+    </div>
+    <div class="key-takeaways">
+      <h4>✦ Key Takeaways</h4>
+      <ul>${ktItems}</ul>
+    </div>
+    <div class="faq-section">
+      <h4>❓ Frequently Asked Questions</h4>
+      ${faqItems}
+    </div>`;
+}
 
 const blogs = [
   {
@@ -543,7 +607,23 @@ const blogs = [
         <h4>Ready to Start Your Transformation Journey? 🌸</h4>
         <p>Join 75,000+ women in the HerWorld community and get weekly empowerment straight to your inbox every Monday in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button>
-      </div>`
+      </div>` + extras(
+      "Real transformation is built on small, intentional daily actions — not dramatic overnight overhauls. By weaving even a handful of these 10 habits into your routine, you create a compounding effect that reshapes your mindset, energy, and life over time. In 2026, let consistency be your superpower. Start with one habit today, and build from there.",
+      [
+        "Habits take an average of 21 days to form — consistency matters more than perfection.",
+        "Morning routines set the emotional tone for your entire day; guard them fiercely.",
+        "Reading just 10 pages daily adds up to 12+ books a year — knowledge is cumulative.",
+        "Real human connection, not digital likes, is what genuinely nourishes the soul.",
+        "Rest is productive — sustainable high performance requires deliberate recovery."
+      ],
+      [
+        {q:"How long does it take for a new habit to stick?", a:"Research suggests it takes anywhere from 21 to 66 days for a new behavior to become automatic, depending on complexity and individual differences. The key is consistency over duration — showing up daily, even imperfectly, is what matters most."},
+        {q:"Should I try to adopt all 10 habits at once?", a:"Absolutely not — that's a recipe for overwhelm and burnout. Start with one or two habits that feel most accessible or exciting, build them in for a few weeks until they feel natural, and then layer in the next. Slow stacking is far more effective than all-at-once overhaul."},
+        {q:"What if I miss a day? Does that reset my habit?", a:"Missing one day does not break a habit — it's the pattern that matters, not perfection. Research by habit scientist James Clear shows that missing once has no measurable impact on long-term habit formation. The key is to never miss twice in a row."},
+        {q:"How do I stay motivated when the results aren't visible yet?", a:"Focus on the process rather than the outcome. Keep a habit tracker so you can see your consistency visually — this provides immediate reward. Also, remember that habits work like compound interest: the most significant results come after the plateau, not before it."},
+        {q:"Which habit should I start with first?", a:"Start with the habit that has the highest leverage for your specific life right now. For many women, starting the day without social media creates the biggest downstream shift. For others, it's movement or gratitude. Choose the one that excites you slightly and feels almost achievable — that's your entry point."}
+      ]
+    )
   },
   {
     id:2,
@@ -578,7 +658,23 @@ const blogs = [
         <h4>You're Not Alone in This 💙</h4>
         <p>If you're struggling, reaching out is the bravest thing you can do. Connect with the HerWorld community — a safe, supportive space full of women who understand.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Reach Out to Us →</button>
-      </div>`
+      </div>` + extras(
+      "Women's mental health is not a personal failing — it is a public health priority that deserves open conversation, professional support, and deep community care. In 2026, breaking the stigma starts with you: with the willingness to say 'I'm not okay' and to believe that help is available and you deserve it. Your healing matters — to you, to the women around you, and to every generation that follows.",
+      [
+        "Mental health is your emotional, psychological, and social wellbeing — not just the absence of illness.",
+        "Women experience anxiety and depression at twice the rate of men due to biological and social factors.",
+        "40% of women don't seek help due to stigma — talking openly is the most powerful antidote.",
+        "Teletherapy and online support have made mental health care more accessible than ever in 2026.",
+        "Self-care is survival, not selfishness — you cannot give what you don't have."
+      ],
+      [
+        {q:"How do I know if what I'm experiencing is 'serious enough' for therapy?", a:"If your mental state is affecting your daily functioning, relationships, sleep, or joy — it is serious enough. You don't need to be in crisis to benefit from therapy. Just as you wouldn't wait for a minor injury to become severe before treating it, don't wait for mental health struggles to escalate before seeking support."},
+        {q:"What if I can't afford traditional therapy?", a:"There are many accessible options in 2026: community mental health centers with sliding-scale fees, university training clinics, apps like Headspace, Woebot, and BetterHelp, free support groups (both in-person and online), and crisis text lines that are available 24/7 at no cost. Cost should never be the reason you go without support."},
+        {q:"Is it normal to feel ashamed about struggling mentally?", a:"Feeling ashamed is common, but it is never deserved. Shame around mental health is a cultural construct — not a reflection of your character or strength. The women who seek help are the brave ones. Recognizing that you need support and pursuing it is one of the most courageous things a person can do."},
+        {q:"Can lifestyle changes really improve mental health, or do I need medication?", a:"Both can be true simultaneously. Lifestyle factors — sleep, movement, nutrition, connection, stress management — have significant, evidence-based impacts on mental health. For some women, lifestyle changes are sufficient. For others, they are powerful complements to therapy and/or medication. This is a personal decision best made with a qualified professional."},
+        {q:"How do I support a friend or family member who is struggling?", a:"Listen without trying to fix. Validate her experience rather than minimizing it ('that sounds really hard' rather than 'just think positive'). Check in consistently — one text matters. Gently encourage professional support without pressuring. Offer specific practical help rather than vague offers. Your consistent, non-judgmental presence is often the most powerful support you can give."}
+      ]
+    )
   },
   {
     id:3,
@@ -613,7 +709,23 @@ const blogs = [
         <h4>Know Your Worth — Own It in 2026 💪</h4>
         <p>Join thousands of women in the HerWorld community who are building their careers with confidence, strategy, and sisterhood.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Career Community →</button>
-      </div>`
+      </div>` + extras(
+      "Advocating for your salary is not arrogance — it's financial survival in a system that has historically underpaid women. With the right research, documentation, timing, and practice, you can walk into that conversation with confidence and walk out closer to the pay you deserve. In 2026, make negotiation a non-negotiable part of your career toolkit.",
+      [
+        "Women earn 82¢ for every dollar men make — negotiation is essential, not optional.",
+        "A 'brag file' of quantified accomplishments is your most powerful negotiation weapon.",
+        "Timing matters: negotiate after wins, during review cycles, or with a competing offer in hand.",
+        "Practice saying your number out loud before the real conversation — it reduces the flinch.",
+        "A 'no' today should become a clearly defined roadmap to 'yes' in 6 months."
+      ],
+      [
+        {q:"Isn't it risky to ask for a raise? Could it backfire?", a:"When done professionally and with solid preparation, asking for a raise carries very little actual risk. The worst realistic outcome is a polite 'not right now' — and even that gives you valuable information about your organization's values. Women who advocate for themselves are more likely to be seen as leaders, not nuisances. The real risk is staying silent and remaining underpaid."},
+        {q:"How much of a raise should I ask for?", a:"Industry standard for annual raises is typically 3-5%, but if you're significantly underpaid relative to market rates, you may need to ask for more. Research your market range first, then anchor your ask at the higher end of a reasonable range. It's easier to negotiate down than to negotiate up from an initial number that's too low."},
+        {q:"What if my manager says the budget doesn't allow it?", a:"Ask when the budget will be reviewed, and request a specific date to revisit the conversation. Also explore non-monetary compensation: additional PTO, remote work flexibility, a development budget, or a title change. And if the answer is consistently 'never' despite strong performance, that tells you something important about whether this organization values you."},
+        {q:"Should I mention a competing offer?", a:"A legitimate competing offer is your strongest negotiation leverage — but only use it if you're genuinely willing to leave. Bluffing with a fake offer is a career-damaging move if discovered. If you do have a real offer, present it professionally: 'I've received an offer for X. I genuinely prefer to stay here, which is why I wanted to have this conversation first.'"},
+        {q:"How do I negotiate salary for a new job offer?", a:"Always negotiate — studies show the majority of employers expect it and very few rescind offers because of it. Express enthusiasm for the role first, then make your ask: 'I'm really excited about this opportunity. Based on my research and experience, I was hoping we could get to [figure]. Is there flexibility there?' Be prepared to explain your reasoning with market data and your specific value."}
+      ]
+    )
   },
   {
     id:4,
@@ -646,7 +758,23 @@ const blogs = [
         <h4>Give Yourself Permission to Rest 🌿</h4>
         <p>HerWorld's community celebrates wholeness — not hustle. Join women who are redefining success on their own terms in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join the Conversation →</button>
-      </div>`
+      </div>` + extras(
+      "Slow living is not a lifestyle reserved for the retired or the privileged — it is a deliberate choice available to every woman, in every season of life. By choosing presence over perpetual performance, you don't become less ambitious. You become more sustainable, more creative, and more genuinely alive. In 2026, let rest be your revolution.",
+      [
+        "Slow living means doing things with intention and presence — not doing less, but being more fully there.",
+        "77% of workers experience burnout — recognizing early warning signs is essential for prevention.",
+        "White space on your calendar is not wasted time; it's where creativity and clarity are born.",
+        "Rest is a form of resistance against a culture that measures women's worth by their output.",
+        "Research consistently links genuine rest to improved cognitive function, creativity, and emotional regulation."
+      ],
+      [
+        {q:"Doesn't slow living conflict with ambition and career success?", a:"Not at all — in fact, rest and recovery are what make sustained high performance possible. Neuroscience shows that the brain's default mode network (which is active during rest and daydreaming) is essential for creativity, problem-solving, and strategic thinking. The most effective women in history weren't those who rested least — they were those who rested wisely."},
+        {q:"How do I practice slow living when I have a demanding job and family?", a:"Slow living doesn't require hours of free time — it's a quality of attention, not a quantity of time. It might look like eating one meal without your phone, taking a 10-minute walk without listening to anything, or having a real conversation without half-watching TV. Start with moments, not lifestyle overhauls."},
+        {q:"How is slow living different from being lazy?", a:"Laziness is avoidance — doing less than you're capable of because of fear, apathy, or lack of motivation. Slow living is intentional — choosing where and how to invest your energy with full awareness. Lazy is unconscious; slow living is deeply conscious. One drains; the other restores."},
+        {q:"What's the first step to start living more slowly?", a:"Identify one area where you're running on empty or moving too fast to actually experience your own life. Is it mealtimes? Evenings? Weekends? Start there. Build in 20-30 minutes of genuine unstructured time — no agenda, no productivity requirement. Notice what happens in your mind and body when you let yourself simply be."},
+        {q:"Can slow living help with anxiety?", a:"Yes — significantly. Anxiety thrives in fast-paced, overstimulated environments where the nervous system never fully downregulates. Slow living practices like screen-free time, time in nature, mindful meals, and boredom tolerance give the nervous system the recovery it needs to return to baseline. Many women report meaningful reductions in anxiety after adopting even a few slow living practices."}
+      ]
+    )
   },
   {
     id:5,
@@ -679,7 +807,23 @@ const blogs = [
         <h4>Start Building Wealth in 2026 💰</h4>
         <p>Join the HerWorld community where women talk openly about money, share resources, and build financial futures together — without shame.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Connect With Our Community →</button>
-      </div>`
+      </div>` + extras(
+      "Financial freedom is not a destination for a lucky few — it is a journey available to every woman willing to learn, start small, and stay consistent. The gender wealth gap is real, but it is not immovable. With awareness, an emergency fund, a plan for debt, and the courage to start investing, you are building a foundation that can withstand anything. Your financial future starts with the choices you make today.",
+      [
+        "Financial independence gives women the freedom to leave unhealthy situations and choose meaningful work.",
+        "Tracking every dollar for 30 days is the non-negotiable first step to financial clarity.",
+        "An emergency fund of 3-6 months of expenses transforms crises into manageable setbacks.",
+        "You don't need to pick stocks — low-cost index funds and time are the most powerful wealth tools.",
+        "Financial literacy is not innate; it's learned, and communities of women make the learning faster."
+      ],
+      [
+        {q:"I'm living paycheck to paycheck. Where do I even start?", a:"Start with awareness before action. Track every dollar for one month without judgment — just observe. Then identify the single biggest spending leak and redirect even a small amount ($25–50) toward a starter emergency fund. The goal at this stage is to break the paycheck-to-paycheck cycle with a small buffer, not to optimize a perfect budget. Progress over perfection, always."},
+        {q:"Is it too late to start investing if I'm in my 40s or 50s?", a:"It is never too late to start investing, and your timeline is longer than you think. A woman who starts investing at 45 still has 20+ years of compound growth ahead of her — and likely longer, given women's longer average lifespans. The second best time to start is today. Don't let the regret of not starting sooner stop you from starting now."},
+        {q:"Should I pay off debt or invest first?", a:"The standard guidance: if your employer offers a 401(k) match, capture the full match first (it's an instant 50-100% return). Then aggressively pay off high-interest debt (above 7%). Once high-interest debt is clear, prioritize investing while making minimum payments on low-interest debt. Low-interest debt (below 4-5%) can coexist with investing."},
+        {q:"How do I talk to my partner about money without it turning into a fight?", a:"Schedule a regular 'money date' — a calm, scheduled time to discuss finances together, rather than reacting in the moment to a surprise expense. Come with data, not emotions. Establish shared goals you both genuinely care about. Consider working with a financial counselor who can facilitate more productive conversations if you're stuck in recurring conflict."},
+        {q:"What's the biggest financial mistake women make?", a:"The most costly mistake is waiting — waiting to start investing, waiting to educate themselves, waiting for a partner to handle it, waiting until they earn 'enough.' Time is the most powerful asset in building wealth, and every year of delay is genuinely costly. The second biggest mistake is keeping all money in a savings account and not investing, meaning inflation quietly erodes its purchasing power year by year."}
+      ]
+    )
   },
   {
     id:6,
@@ -710,7 +854,23 @@ const blogs = [
         <h4>You Are Not Alone in This Journey 🤱</h4>
         <p>HerWorld is a safe space for mothers to share, support, and be seen. Join our community and find your village in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Village →</button>
-      </div>`
+      </div>` + extras(
+      "Postpartum mental health is not a topic to whisper about — it is a medical reality that affects 1 in 5 new mothers, and it is treatable. If you are struggling after birth, please know: you are not broken, you are not a bad mother, and you are absolutely not alone. With proper care, 95% of women fully recover. Reaching out is the most loving thing you can do — for yourself and for your baby.",
+      [
+        "1 in 5 new mothers experience postpartum depression — it is far more common than society acknowledges.",
+        "Baby blues (first 2 weeks) and postpartum depression are distinct experiences requiring different levels of care.",
+        "50% of PPD cases go undiagnosed because women feel shame or don't recognize the symptoms.",
+        "PPD has nothing to do with how much you love your baby — it is a medical condition, not a character flaw.",
+        "With proper treatment, 95% of women recover fully from postpartum depression."
+      ],
+      [
+        {q:"How long after birth can postpartum depression develop?", a:"PPD can develop anytime in the first year after birth — not just in the first few weeks. Some women don't experience symptoms until 3-6 months postpartum. If you're struggling at any point in your baby's first year, it's worth speaking with your healthcare provider. Early intervention leads to faster recovery."},
+        {q:"Can postpartum depression happen after a second or third child?", a:"Yes — experiencing PPD after one pregnancy does not protect you from it in future ones, and some women experience it for the first time with a second or third child. If you've had PPD before, inform your care team during pregnancy so you can have a monitoring and support plan in place before birth."},
+        {q:"What's the difference between postpartum depression and postpartum anxiety?", a:"Postpartum depression typically presents as sadness, numbness, withdrawal, and difficulty bonding. Postpartum anxiety is characterized by excessive worry, racing thoughts, physical tension, and a pervasive sense that something bad will happen to the baby. Both are common, both are treatable, and both deserve clinical attention — not just a 'push through it' approach."},
+        {q:"How can partners and family members best support a new mother struggling with PPD?", a:"Believe her. Don't minimize or tell her she 'should be happy.' Take over practical tasks without being asked. Encourage (not pressure) professional help. Make sure she gets uninterrupted sleep whenever possible. Be physically present — not just helpful in theory. The most powerful support is consistent, non-judgmental presence and practical action."},
+        {q:"Is it safe to breastfeed while taking medication for PPD?", a:"Many medications for postpartum depression are considered compatible with breastfeeding, but this is a highly individual decision that should be made in collaboration with your prescribing doctor and possibly a lactation consultant. Untreated PPD also has documented impacts on infant development — so the risks and benefits of treatment must be weighed carefully against the risks of leaving it untreated."}
+      ]
+    )
   },
   {
     id:7,
@@ -741,7 +901,23 @@ const blogs = [
         <h4>Move in a Way That Celebrates YOU 🏃‍♀️</h4>
         <p>Join the HerWorld community where we talk about fitness, health, and bodies with kindness, not judgment — all through 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button>
-      </div>`
+      </div>` + extras(
+      "Movement is one of the most profound gifts you can give your body and mind — but only when it comes from a place of joy and self-care rather than punishment and shame. In 2026, reclaim exercise as a celebration of your body's capability. Find what you love, move in ways that energize rather than deplete you, and watch your relationship with your body transform in ways that no diet or grueling workout ever could.",
+      [
+        "The best exercise routine is the one you'll actually maintain — joy and consistency beat intensity.",
+        "Exercise increases serotonin, dopamine, and endorphins while reducing cortisol, improving mental health significantly.",
+        "Strength training does not make women bulky — it builds bone density, confidence, and daily physical ease.",
+        "Cycle syncing — aligning workouts with your hormonal cycle — improves results and reduces injury.",
+        "Movement is a celebration of what your body can do, not a punishment for how it looks."
+      ],
+      [
+        {q:"How much exercise do I actually need for health benefits?", a:"The WHO recommends 150-300 minutes of moderate-intensity movement per week (like brisk walking or cycling) or 75-150 minutes of vigorous intensity (running, HIIT). Crucially, this doesn't need to happen in gym sessions — it accumulates throughout your day. Taking the stairs, walking to destinations, dancing in your kitchen — it all counts."},
+        {q:"Is it okay to exercise during my period?", a:"Absolutely — and for many women, gentle movement during their period actually reduces cramps and improves mood through endorphin release. Listen to your body: if you're experiencing heavy flow or pain, lighter movement like walking or yoga may feel better than high-intensity training. There are no rules — only what your body tells you it needs."},
+        {q:"I've been sedentary for years. How do I start without hurting myself?", a:"Start with walking — it is underrated, highly effective, and carries almost no injury risk. Begin with 10-15 minutes per day and increase gradually. Avoid the common mistake of going too hard too fast after a sedentary period, which leads to injury and discouragement. Consistency over two weeks matters far more than intensity in the first session."},
+        {q:"What's the best time of day to exercise?", a:"The best time is whatever time you'll actually do it consistently. That said, morning exercise has the advantage of getting it done before the day's demands disrupt your plans. Evening exercise can be a powerful stress reliever after work. If you're cycle syncing, your energy naturally peaks in the follicular and ovulatory phases — leverage those windows for your most demanding workouts."},
+        {q:"How do I stay motivated when I don't feel like exercising?", a:"Motivation follows action — you don't wait to feel like it; you start, and the feeling often comes. Commit to just 5 minutes: put on your shoes, start moving, and see how you feel. Having a specific time and place for exercise removes the daily decision-making that leads to skipping. Also, working out with a friend or community adds social accountability that outlasts motivation alone."}
+      ]
+    )
   },
   {
     id:8,
@@ -772,7 +948,23 @@ const blogs = [
         <h4>You Deserve Relationships That Respect You 💑</h4>
         <p>HerWorld is a safe space to discuss the nuances of relationships, boundaries, and self-worth. Join our sisterhood in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Sisterhood →</button>
-      </div>`
+      </div>` + extras(
+      "Boundaries are not the walls that keep love out — they are the architecture that makes real love possible. When you set boundaries clearly and compassionately, you don't push people away. You invite in the kind of relationships that can actually hold you. In 2026, say yes to boundaries, say yes to your peace, and trust that the relationships worth keeping will still be there on the other side.",
+      [
+        "Saying yes when you mean no doesn't make you kind — it builds resentment that damages relationships.",
+        "Boundaries are compassionate expressions of your needs, not cold rejections of others.",
+        "Family boundaries are the hardest — expect pushback, hold anyway, your peace is worth it.",
+        "78% of women over-apologize daily; owning your limits without apology is a radical act.",
+        "Clear boundaries create 3x better relationships and 67% less resentment over time."
+      ],
+      [
+        {q:"Why do I feel so guilty after setting a boundary?", a:"Guilt after boundary-setting is almost universal for women because we've been socialized to prioritize others' comfort over our own. This guilt is a conditioned response — not an accurate signal that you've done something wrong. Notice it, name it, and then act from your values rather than from the guilt. The guilt typically diminishes with practice and with experiencing the positive outcomes of maintaining your limits."},
+        {q:"What's the difference between a boundary and an ultimatum?", a:"A boundary is about your own behavior: 'I'm not able to continue this conversation when voices are raised — I'll come back when things are calmer.' An ultimatum is a threat about someone else's behavior: 'If you do X again, I'll do Y to you.' Boundaries are self-referential and enforceable by you. Ultimatums put the control outside yourself and can damage trust if not followed through on."},
+        {q:"What if someone gets angry when I set a boundary?", a:"Someone's anger at your boundary is information about them, not evidence that your boundary is wrong. People who are used to unlimited access to your time, energy, or compliance may react with anger, guilt-tripping, or withdrawal when limits are set. Hold your boundary anyway. The relationships that survive your boundaries were the real ones. Those that don't were built on your compliance, not your genuine connection."},
+        {q:"How do I set boundaries without damaging my relationships?", a:"Frame boundaries in terms of what you need rather than what you're denying: 'I need...' rather than 'You can't...' Be consistent — inconsistent enforcement is more confusing and damaging than a clearly held limit. Set boundaries early in relationships before expectations calcify. And remember: the goal isn't to control the relationship, it's to take responsibility for your own experience within it."},
+        {q:"Can you have boundaries with yourself?", a:"Yes — and these are among the most important kind. Self-imposed boundaries might look like: not checking email after 8pm, not speaking negatively about yourself, maintaining a consistent sleep schedule, or limiting alcohol intake. These internal boundaries are acts of self-respect and self-care that shape how you show up in every relationship. They are the foundation on which external boundaries rest."}
+      ]
+    )
   },
   {
     id:9,
@@ -803,7 +995,23 @@ const blogs = [
         <h4>Take Your Health Seriously in 2026 🌸</h4>
         <p>Join the HerWorld wellness community where we share evidence-based health information and real women's experiences every week.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Space →</button>
-      </div>`
+      </div>` + extras(
+      "Your hormones are not your enemy — they are sophisticated messengers your body uses to communicate what it needs. Learning to listen to those signals, rather than pushing through them, is one of the most powerful investments you can make in your long-term health and vitality. In 2026, commit to understanding your body on a deeper level. You deserve healthcare that sees and addresses the full picture of who you are.",
+      [
+        "Hormones regulate energy, mood, sleep, metabolism, libido, and cognitive function — they affect everything.",
+        "Estrogen, progesterone, testosterone, and cortisol are the four hormones women most need to understand.",
+        "Chin/jaw acne, hair thinning, and severe PMS are hormonal signals worth investigating, not ignoring.",
+        "PCOS affects 1 in 10 women and takes an average of 2 years to diagnose — be your own advocate.",
+        "80% of PMS symptoms are treatable with lifestyle changes — sleep, nutrition, and stress management."
+      ],
+      [
+        {q:"How do I know if my symptoms are hormonal or something else?", a:"Symptoms that consistently follow a cyclical pattern — worsening at the same phase of your menstrual cycle each month — are strong indicators of hormonal involvement. Tracking your symptoms alongside your cycle for 2-3 months provides invaluable data to bring to your healthcare provider. Apps like Clue or Flo can help you identify patterns you might otherwise miss."},
+        {q:"What blood tests should I ask for to check my hormones?", a:"A comprehensive hormonal panel typically includes: estradiol, progesterone, FSH, LH, testosterone (total and free), DHEA-S, prolactin, and thyroid markers (TSH, T3, T4, anti-TPO antibodies). Timing matters — many hormones should be tested on specific days of your cycle for accurate results. Ask your doctor to test comprehensively, not just TSH in isolation."},
+        {q:"Can diet really impact hormonal balance that significantly?", a:"Yes — significantly. The liver metabolizes hormones, and liver health is directly influenced by diet. High sugar intake disrupts insulin, which cascades into other hormonal imbalances. Cruciferous vegetables support estrogen metabolism. Healthy fats are the building blocks of steroid hormones. Chronic undereating — especially of carbohydrates — can suppress ovulation and disrupt the entire hormonal axis."},
+        {q:"Is hormonal birth control the only option for managing hormonal symptoms?", a:"No — and it's important to know that hormonal birth control masks hormonal imbalances rather than treating their root cause. Many women find significant improvement through targeted lifestyle changes, supplements (with guidance), and addressing underlying conditions like PCOS or thyroid dysfunction. That said, for some women, hormonal birth control is the right and appropriate choice — it's a personal decision made ideally with a knowledgeable provider."},
+        {q:"How does perimenopause affect hormones, and when does it start?", a:"Perimenopause — the transition period before menopause — can begin as early as the mid-30s for some women, though most commonly starts in the 40s. During this time, estrogen and progesterone fluctuate erratically before declining. Symptoms include irregular periods, sleep disruption, mood changes, brain fog, hot flashes, and changes in libido. Many women are surprised by how early these changes begin — tracking symptoms and working with a menopause-literate practitioner makes this transition significantly more manageable."}
+      ]
+    )
   },
   {
     id:10,
@@ -834,7 +1042,23 @@ const blogs = [
         <h4>You Belong Here — Fully and Completely 🎓</h4>
         <p>Connect with women who are building careers with confidence and strategy. HerWorld's career community is here for you in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Connect with Career Women →</button>
-      </div>`
+      </div>` + extras(
+      "Imposter syndrome is not evidence that you don't belong — it is evidence that you care deeply about doing good work. Every high-achieving woman reading this has earned her place, and the doubt she feels is a widely shared human experience, not a personal truth. In 2026, let the evidence of your accomplishments speak louder than the noise of self-doubt. You have always belonged here.",
+      [
+        "Imposter syndrome was first identified exclusively in high-achieving women — it's a phenomenon of success, not failure.",
+        "70% of people experience it; 75% of executive women report it — you are in extraordinary company.",
+        "Naming it ('this is imposter syndrome') immediately reduces its psychological power over you.",
+        "A wins journal creates an evidence base you can return to when self-doubt is loudest.",
+        "Feeling uncertain in a growth zone is sophistication, not inadequacy — it means you're exactly where you should be."
+      ],
+      [
+        {q:"Can imposter syndrome ever be useful?", a:"In small doses, yes — the anxiety that drives you to prepare thoroughly, double-check your work, or approach new challenges with humility can improve performance. The problem is when it becomes pervasive and prevents you from taking opportunities, speaking up, or claiming credit for your genuine accomplishments. The goal isn't to eliminate all self-doubt, but to keep it proportionate and to act despite it."},
+        {q:"Is imposter syndrome different for women of color?", a:"Yes — significantly. Women of color often navigate imposter syndrome in spaces where they are genuinely underrepresented, where they have fewer visible role models, and where they may face both gender and racial bias simultaneously. This creates a compounded experience that is not purely psychological — it is also a rational response to real environmental conditions. This distinction matters for how it's addressed."},
+        {q:"How do I stop attributing my success to luck?", a:"Start by deliberately tracking the specific actions you took that led to good outcomes. When you receive praise, practice receiving it: 'Thank you, I worked hard on that.' Journal regularly about decisions you made, skills you applied, and efforts you invested. Over time, this builds an accurate internal narrative that connects your actions to your outcomes — making luck a smaller and smaller part of the story."},
+        {q:"What should I do when imposter syndrome strikes in a meeting or presentation?", a:"Ground yourself in preparation and evidence before the moment: review your qualifications, reread positive feedback, remember past successes. In the moment, focus on contribution rather than evaluation — shift from 'are they judging me?' to 'what can I add here?' Physical grounding (feet flat on the floor, slow breath) also helps regulate the nervous system response in real time."},
+        {q:"Does imposter syndrome ever fully go away?", a:"For most people, it doesn't fully disappear — but it does become more manageable and less controlling over time. With practice, you learn to recognize it quickly, name it accurately, and take action despite it. Many high-achieving women describe reaching a point where imposter syndrome still shows up occasionally, but no longer has the power to stop them. That, rather than total elimination, is the realistic and achievable goal."}
+      ]
+    )
   },
   {
     id:11,
@@ -865,7 +1089,23 @@ const blogs = [
         <h4>Your Body Is Not the Problem 🍽️</h4>
         <p>Join the HerWorld wellness community where we talk about food, bodies, and health with radical kindness and zero judgment throughout 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Community →</button>
-      </div>`
+      </div>` + extras(
+      "Making peace with food is not a surrender — it is a reclamation. It is reclaiming your body's wisdom, your relationship with pleasure, and your sense of self from a diet culture that has profited from your insecurity. The evidence is clear: 95% of diets fail long-term, but intuitive eating creates lasting change. In 2026, you deserve to eat without fear, to nourish yourself with joy, and to experience food as the pleasure and fuel it was always meant to be.",
+      [
+        "95% of diets fail within 5 years — the problem is never your willpower, it's the diet itself.",
+        "Intuitive eating is built on 10 evidence-based principles that reconnect you with your body's signals.",
+        "Hunger is a biological signal as important as thirst — honoring it is the most basic act of self-care.",
+        "Over 125 peer-reviewed studies link intuitive eating to improved body image and psychological wellbeing.",
+        "Food has no moral value — you are not good for eating salad or bad for eating cake."
+      ],
+      [
+        {q:"Doesn't intuitive eating just mean eating junk food all day?", a:"This is the most common misconception. Intuitive eating includes a principle called 'gentle nutrition' — nourishing your body with foods that both taste good and support your health, without rigidity or punishment. When you remove forbidden foods from your 'off-limits' list, they often lose their hypnotic pull and you naturally gravitate toward a varied, balanced way of eating — without counting a single calorie."},
+        {q:"What if I have a medical condition that requires dietary restrictions?", a:"Intuitive eating can be adapted for medical conditions — but this nuance requires working with a registered dietitian who specializes in both the condition and intuitive eating. The principles of respecting your body, eating without guilt, and honoring hunger and fullness can still apply within medically necessary parameters. It looks different from person to person, and that's exactly as it should be."},
+        {q:"How long does it take to become an intuitive eater?", a:"It varies widely — for women who have been dieting for decades, rebuilding trust with their bodies can take 1-3 years of consistent practice. For others with a shorter dieting history, the process moves faster. It is not linear: some days feel like enormous freedom, others like a step backward. Patience and self-compassion are not optional in this process — they are the process."},
+        {q:"I'm scared I'll gain weight if I eat intuitively. Is this a valid concern?", a:"This fear is valid and extremely common. The research shows that some women do experience initial weight changes when they stop restricting, particularly if they've been in chronic caloric deficit. However, studies consistently show that intuitive eaters tend to stabilize at a weight their body can maintain comfortably without ongoing restriction. Weight is also not the primary health outcome that matters — behaviors, lab markers, and quality of life are far better indicators of wellbeing."},
+        {q:"Can intuitive eating help with binge eating?", a:"Yes — and this is one of its most powerful applications. Binge eating is almost always a response to restriction, either physical (not eating enough) or psychological (labeling foods as forbidden). By removing restriction and the morality around food, the drive to binge typically diminishes significantly over time. For women with clinical binge eating disorder, working with a therapist specializing in eating disorders alongside a dietitian is recommended for the most comprehensive support."}
+      ]
+    )
   },
   {
     id:12,
@@ -896,7 +1136,23 @@ const blogs = [
         <h4>Raise Her With a Village Behind Her 👩‍👧</h4>
         <p>HerWorld's motherhood community is full of women navigating parenthood with honesty, love, and imperfection — and supporting each other through it all in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Mom Village →</button>
-      </div>`
+      </div>` + extras(
+      "The greatest inheritance you can leave your daughter is not a trust fund or a perfect childhood — it is an unshakeable belief in her own worth, voice, and capability. This is built in the daily moments: the way you speak about your own body, the way you handle difficulty, the space you give her to feel and fail and rise. In 2026, let your mothering be an act of deliberate, generational healing.",
+      [
+        "Girls' confidence begins declining as early as age 7 — the window for shaping self-worth is early and critical.",
+        "How you speak about your own body becomes the voice inside your daughter's head for decades.",
+        "Praising effort over outcome builds resilience; praising appearance alone links worth to how she looks.",
+        "Teaching body autonomy early — including the right to refuse hugs — is the foundation of safety and consent.",
+        "Modeling emotional intelligence openly is one of the highest-value skills you can pass to your daughter."
+      ],
+      [
+        {q:"My daughter is already a teenager and struggling with confidence. Is it too late to help?", a:"It is absolutely not too late. The teenage brain is remarkably plastic and responsive to connection, modeling, and consistent positive input. Start by listening more than advising. Create safety for honest conversations. Share your own struggles age-appropriately. Help her find mentors, communities, and activities where she experiences genuine competence. Every positive interaction is meaningful, even when it doesn't feel that way in the moment."},
+        {q:"How do I help my daughter handle mean girls and social cruelty?", a:"First, validate her pain fully before moving to solutions — 'that sounds really hurtful, I'm so sorry that happened.' Then help her distinguish between what others do (outside her control) and how she responds (inside her control). Role-play scenarios together. Help her identify and stay close to friendships that feel mutual and safe. And remind her consistently that other girls' cruelty is almost always about their own pain — not her worth."},
+        {q:"My daughter says she hates her body. How do I respond?", a:"Don't immediately counter with 'but you're beautiful!' — this inadvertently reinforces that her value lies in how she looks. Instead, reflect her feelings: 'It sounds like you're feeling really uncomfortable in your body right now.' Then gently shift the conversation toward what her body can do rather than how it looks. If body hatred is persistent or intense, consider working with a therapist who specializes in adolescent body image."},
+        {q:"How do I raise a confident daughter when I struggle with confidence myself?", a:"You don't need to have it figured out — you need to be honest about the journey. Children who see their parents working through difficulty, naming struggles, and continuing to grow learn that these are normal, navigable parts of life. Your imperfect, honest modeling is more instructive than a polished performance of confidence you don't feel. Do the work for yourself too — your healing is her inheritance."},
+        {q:"At what age should I start talking to my daughter about feminism and gender equality?", a:"From birth, through the choices you make about toys, colors, activities, and language. Explicitly age-appropriate conversations about fairness, respect, and equal treatment can begin as early as 3-4 years old. As she grows, conversations can deepen around systemic inequality, history, and the structures that have shaped women's lives. Books, media with strong female characters, and access to diverse role models are powerful supplements to your conversations."}
+      ]
+    )
   },
   {
     id:13,
@@ -927,7 +1183,23 @@ const blogs = [
         <h4>Your Adventure Awaits in 2026 ✈️</h4>
         <p>Connect with HerWorld women who travel solo, share tips, and build the confidence to explore the world on their own beautiful terms.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Connect with Fellow Travelers →</button>
-      </div>`
+      </div>` + extras(
+      "Solo travel is one of the most transformative investments a woman can make in herself — not despite the fear, but through it. Every trip you take alone teaches you something irreplaceable about your own capability, resilience, and the sheer joy of your own company. In 2026, give yourself the gift of at least one solo adventure. The world is extraordinary. So are you.",
+      [
+        "85% of solo female travelers report significant boosts in confidence after their first solo trip.",
+        "Start with a domestic weekend trip — solo travel confidence is built incrementally, not all at once.",
+        "Your instincts are your most sophisticated safety tool — trust and respect them while traveling.",
+        "Solo travel reveals who you are without performance or compromise — this is its irreplaceable value.",
+        "You don't need a partner or group to experience the world fully — you are excellent company."
+      ],
+      [
+        {q:"Is solo travel actually safe for women?", a:"Yes — with thoughtful preparation. Research your specific destination from women's perspectives (blogs, Reddit, travel communities), understand local customs around dress and behavior, stay in well-reviewed accommodation, share your itinerary with someone at home, and trust your instincts. Millions of women travel solo safely every year. The risks are real but manageable — and significantly less than fear and cultural messaging suggest."},
+        {q:"What are the best destinations for first-time solo female travelers?", a:"For first-time solo travelers, cities with strong tourism infrastructure, low language barriers, and well-documented safety for women are ideal: Lisbon, Tokyo, Amsterdam, Melbourne, Montreal, Copenhagen, and New Zealand's major cities consistently top solo female travel lists. These destinations combine ease of navigation with safety, vibrant culture, and excellent solo traveler communities."},
+        {q:"How do I handle loneliness while traveling solo?", a:"Loneliness is part of solo travel — and so is the profound pleasure of solitude. To combat the former: stay in social accommodations like boutique hostels with common areas, take group day tours, join local experiences on platforms like Airbnb Experiences, or connect with solo traveler communities online before departure. Also: embrace some of the loneliness as the teacher it is — it passes, and what it reveals about your relationship with yourself is genuinely valuable."},
+        {q:"How do I afford solo travel on a modest budget?", a:"Solo travel can be expensive because you're not splitting costs — but there are significant savings strategies: travel in shoulder season (spring and fall) for 30-50% savings, use flight deal alerts, stay in boutique hostels or home shares, cook some meals, and prioritize free or low-cost experiences (walking tours, markets, nature, museums on free days). Setting aside even $25-50 per week in a dedicated travel fund can fund a meaningful trip within a year."},
+        {q:"What do I do if something goes wrong while traveling alone?", a:"Stay calm — most problems are solvable with time and resourcefulness. Always have digital and physical copies of your passport and travel documents. Know the address of your country's nearest embassy. Keep a local SIM card or international plan active. Have a small amount of cash in local currency as a backup. Trust that you are more capable than you feel in the moment of crisis — and that almost every travel mishap becomes the best story later."}
+      ]
+    )
   },
   {
     id:14,
@@ -958,7 +1230,23 @@ const blogs = [
         <h4>You Are Whole — Even Now 🔮</h4>
         <p>The HerWorld community includes women at every stage of healing. You don't have to navigate this alone. We're here in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Support & Sisterhood →</button>
-      </div>`
+      </div>` + extras(
+      "Healing from a toxic relationship is not a straight line — it is a spiral, circling the same wounds at gradually greater distances until one day you realize the center no longer has a hold on you. Your healing is real, even on the days it doesn't feel like it. 91% of women report stronger self-worth after full recovery — and that includes you. In 2026, reclaiming your power starts with the decision to prioritize your own wholeness, one small step at a time.",
+      [
+        "Naming what happened accurately — without minimizing it — is the first and most essential step to healing.",
+        "Trauma bonding explains why leaving was hard; it's a neurological response, not a personal weakness.",
+        "Healing is non-linear — backward days are not failures, they are a normal part of the recovery spiral.",
+        "Reconnecting with who you were before the relationship — your interests, people, and dreams — is the path back to yourself.",
+        "91% of women report stronger self-worth after healing from a toxic relationship — the other side is real."
+      ],
+      [
+        {q:"How do I know if my relationship was actually toxic, or if I'm being dramatic?", a:"Trust what you experienced in your body: chronic anxiety around your partner, walking on eggshells, feeling smaller and less confident over time, doubting your own perceptions, and feeling relieved rather than sad after distance — these are reliable indicators of toxicity. Gaslighting specifically targets your ability to trust your own reality. If you're asking this question at all, your experience is almost certainly worth taking seriously with a trusted professional."},
+        {q:"Why do I still miss someone who treated me badly?", a:"Trauma bonding is a neurological reality — the cycle of cruelty and reconciliation in toxic relationships creates intermittent reinforcement, which is the most powerful form of behavioral conditioning known. Your nervous system bonded to the relief and warmth of the reconciliation phases, not the person's overall character. Missing them does not mean you made the wrong choice. It means your nervous system is healing from something genuinely addictive."},
+        {q:"How long will it take to feel like myself again?", a:"The average healing timeline after a toxic relationship is 18 months — but this varies enormously depending on the duration and severity of the relationship, your support system, whether you're working with a therapist, and countless individual factors. What matters more than timeline is direction: are you generally moving toward more clarity, more peace, and more yourself? Even slow progress in that direction is real healing."},
+        {q:"Is therapy necessary, or can I heal on my own?", a:"While some women heal primarily through time, community, and self-work, professional support — particularly trauma-informed therapy — significantly accelerates and deepens the healing process. Toxic relationships often involve complex trauma, attachment disruption, and deeply conditioned beliefs that are genuinely difficult to identify and shift without skilled external support. If therapy is accessible to you, it is highly worth pursuing."},
+        {q:"How do I know when I'm ready to date again?", a:"You're likely ready when: you can think about your ex without significant emotional flooding (though you may still feel something), you have a clear-eyed understanding of what patterns to watch for, you're dating from a place of genuine curiosity rather than loneliness or the need to fill a void, and you feel fundamentally stable and whole on your own. There is no fixed timeline — readiness is internal, not calendar-based."}
+      ]
+    )
   },
   {
     id:15,
@@ -989,7 +1277,23 @@ const blogs = [
         <h4>Rest is Your Most Powerful Tool 🌙</h4>
         <p>In 2026, HerWorld champions rest, recovery, and the radical act of taking your health seriously. Join our community.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Space →</button>
-      </div>`
+      </div>` + extras(
+      "Sleep is not a luxury — it is a biological necessity as fundamental as food and water, and for women, it is particularly critical. Every system in your body depends on adequate, quality sleep to function optimally. In 2026, reclaim sleep as the non-negotiable health priority it is. Invest in your sleep environment, protect your sleep schedule, and watch how profoundly rest transforms every other area of your life.",
+      [
+        "Women need approximately 20 more minutes of sleep per night than men due to more complex brain processing.",
+        "Poor sleep is significantly more harmful to women than men — raising inflammation and cardiovascular risk.",
+        "Hormonal fluctuations throughout the menstrual cycle, pregnancy, and menopause directly disrupt sleep quality.",
+        "Screens before bed, alcohol, and irregular wake times are the three biggest sleep disruptors.",
+        "Investing in your sleep environment is not a luxury — it is essential infrastructure for your health."
+      ],
+      [
+        {q:"How many hours of sleep do women actually need?", a:"Most adults need 7-9 hours per night, but research suggests women may need closer to the higher end of this range — and potentially 20+ additional minutes compared to men — due to more complex cognitive processing. Individual needs also vary: age, activity level, health status, menstrual cycle phase, and stress all influence how much sleep your body requires on any given night."},
+        {q:"Why do I sleep so badly before and during my period?", a:"In the luteal phase (the two weeks before your period), progesterone rises and then drops sharply — and this drop triggers the onset of menstruation and can significantly disrupt sleep. Body temperature also rises by about 0.5°C in the luteal phase, which further affects sleep architecture. Understanding this cycle allows you to plan extra rest during these phases rather than wondering why you feel exhausted."},
+        {q:"I can't fall asleep even when I'm tired. What helps?", a:"This is often a sign of a dysregulated nervous system — your body is too activated to downshift into sleep. Proven approaches: a consistent sleep and wake time (even on weekends), keeping the bedroom cool (between 60-67°F), a wind-down routine that begins 60-90 minutes before bed, avoiding screens (or using blue light glasses), and techniques like the 4-7-8 breath or progressive muscle relaxation to activate the parasympathetic nervous system."},
+        {q:"Does alcohol before bed actually help with sleep?", a:"No — this is one of the most persistent sleep myths. Alcohol does make you fall asleep faster, but it significantly disrupts sleep architecture, particularly REM sleep (your most restorative phase). It causes more nighttime awakenings, increases snoring and sleep apnea risk, and leaves you feeling less rested even after the same number of hours. The sedative effect comes at a steep cost to sleep quality."},
+        {q:"How does menopause affect sleep, and what can help?", a:"Menopausal sleep disruption is driven by declining estrogen and progesterone, hot flashes that disrupt temperature regulation, and increased rates of sleep apnea. It is extremely common — affecting up to 61% of menopausal women. Helpful strategies: keeping the bedroom cool, moisture-wicking bedding, a consistent sleep schedule, limiting alcohol and spicy food, and for some women, discussing hormone therapy with a menopause-literate provider. You don't have to accept poor sleep as inevitable."}
+      ]
+    )
   },
   {
     id:16,
@@ -1020,7 +1324,23 @@ const blogs = [
         <h4>Create Something Today 🎨</h4>
         <p>HerWorld celebrates women who create, express, and heal through art in all its beautiful forms. Share your creative journey with our community in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Share Your Creative Journey →</button>
-      </div>`
+      </div>` + extras(
+      "Creativity is not a luxury reserved for the talented or the leisured — it is a fundamental human need, and for women navigating demanding lives, it is medicine. Forty-five minutes of creative expression can measurably lower cortisol, and 75% of women report feeling significantly better after creating. In 2026, reclaim your creative life with the conviction it deserves. You don't create to become an artist. You create to become more fully yourself.",
+      [
+        "45 minutes of art-making measurably reduces cortisol regardless of artistic skill or experience.",
+        "Creativity processes emotions that verbal communication often can't reach — it's a unique healing tool.",
+        "The healing power of creativity has everything to do with process and nothing to do with talent.",
+        "There is no hierarchy of creative mediums — the one that makes you feel most alive is the right one.",
+        "Schedule creative time as a non-negotiable — it requires protection from the demands that fill women's lives."
+      ],
+      [
+        {q:"I'm not creative. How can creative expression help me?", a:"The premise needs challenging: creativity is not a fixed trait you either have or don't. It's a capacity every human has, that is expressed differently and that can be developed with practice. You may not be a trained artist — but you can journal, doodle, cook a new recipe, tend a garden, or rearrange your living space. These are all creative acts. Start where you are, with what feels possible, and notice what happens."},
+        {q:"Can journaling really help with emotional healing?", a:"Yes — extensively researched. Expressive writing (writing freely about difficult experiences and emotions) has been shown to reduce symptoms of anxiety and depression, lower blood pressure, improve immune function, and accelerate processing of difficult experiences. Even 15-20 minutes of free writing three times a week can produce measurable changes. The key is writing expressively — not just listing events, but exploring feelings, meaning, and perspective."},
+        {q:"What if creating makes me feel worse because I'm not good at it?", a:"This is the inner critic at work — and it is the primary obstacle to creative healing. Try establishing a rule for yourself: the first draft, the first painting, the first attempt at anything is only for you, and it cannot be 'bad' because its purpose is process, not product. Commit to creating without sharing for a period of time, so there's no external evaluation involved. Over time, the critic quiets when it has nothing to report to."},
+        {q:"How is art therapy different from just doing art for fun?", a:"Art therapy is facilitated by a trained therapist who guides the creative process with therapeutic intention — using the artwork as a window into the client's inner world, exploring what emerges symbolically or emotionally. Doing art for fun or healing outside of therapy is valuable and beneficial, but lacks the clinical structure and skilled interpretation of formal art therapy. Both have their place; the choice depends on the depth of healing needed."},
+        {q:"I have very little free time. Is there a way to build creativity into a busy life?", a:"Yes — micro-creativity is real and effective. Keep a journal in your bag for 5-minute writing sessions. Doodle during calls. Cook a new recipe once a week. Take 10 photographs on your daily walk. Listen to music with full attention rather than as background noise. Creativity doesn't require a studio or a block of free time — it requires a slight shift in attention and intention during time you already have."}
+      ]
+    )
   },
   {
     id:17,
@@ -1051,7 +1371,23 @@ const blogs = [
         <h4>Find Your Sisterhood Here 🤝</h4>
         <p>HerWorld exists to connect women who want real, meaningful community. Join us and find your people in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Sisterhood →</button>
-      </div>`
+      </div>` + extras(
+      "Female friendship is not a social extra — it is a biological imperative and a proven life-extender. In a culture that is simultaneously more connected and more lonely than at any previous point in history, the deliberate investment in real female friendship is one of the most radical and life-affirming choices you can make. In 2026, reach out first. Be the friend you want to have. Your sisterhood is waiting.",
+      [
+        "Strong female friendships are associated with a 2-3x longer lifespan — they are literally life-saving.",
+        "The 'tend and befriend' response is biologically wired in women — connection is a survival mechanism.",
+        "Chronic loneliness is as harmful as smoking 15 cigarettes a day — it is a genuine health crisis.",
+        "Adult friendships require intentional investment — reach out first, show up in hard moments, be vulnerable.",
+        "1 in 4 women has no close confidante — the loneliness epidemic is real, and building sisterhood is the antidote."
+      ],
+      [
+        {q:"How do I make new friends as an adult woman?", a:"Proximity and repetition are the foundations of adult friendship. Find communities built around things you genuinely care about — a running group, a book club, a creative class, a volunteer organization, a faith community. Show up consistently, not just once. Initiate plans specifically rather than vaguely ('Would you want to get coffee this Saturday?' vs. 'We should hang out sometime'). Vulnerability — sharing something real about yourself — is what transforms acquaintances into friends."},
+        {q:"My friendships feel one-sided. What do I do?", a:"First, check whether this is a pattern or a season — sometimes people go through periods of needing more support than they give, and reciprocity naturally rebalances over time. If the imbalance is persistent, have a gentle and honest conversation: 'I've noticed I'm usually the one reaching out — I'd love to feel like this goes both ways.' If things don't shift after that, it may be time to redirect your energy toward friendships that genuinely nourish you."},
+        {q:"How do I deepen a surface-level friendship?", a:"Depth requires vulnerability. The most effective way to deepen a friendship is to share something real — a struggle, a fear, a hope — and invite the other person into your actual life rather than your highlight reel. Ask deeper questions: 'What's something you're working through right now?' or 'What's been the hardest part of this season for you?' When you receive honesty with genuine care and non-judgment, trust deepens and the friendship follows."},
+        {q:"Is it normal to feel lonely even when I'm surrounded by people?", a:"Absolutely — and extremely common. Social loneliness (not having people around) and emotional loneliness (not feeling truly known or seen) are different experiences. You can be in a crowd, a marriage, or a group of friends and feel profoundly emotionally lonely. The solution to emotional loneliness is not more people — it's deeper connection with fewer people who see and accept you fully."},
+        {q:"How do I maintain close friendships across distance?", a:"Consistency and intentionality replace physical proximity in long-distance friendships. Schedule regular video calls (monthly at minimum for close friends). Send voice messages rather than texts — they convey warmth and tone in ways text cannot. Mark each other's important dates and show up for them remotely. Prioritize in-person visits at least once a year if possible. Distance genuinely tests friendship, but friendships built on real emotional intimacy can sustain it beautifully."}
+      ]
+    )
   },
   {
     id:18,
@@ -1082,7 +1418,23 @@ const blogs = [
         <h4>5 Minutes Can Change Everything 🧘</h4>
         <p>Join HerWorld's mindfulness and wellness community where women share practices, support each other, and cultivate presence together in 2026.</p>
         <button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Mindfulness Community →</button>
-      </div>`
+      </div>` + extras(
+      "Mindfulness is not a mystical practice reserved for those with hours of free time — it is a practical, science-backed skill available to every woman in the in-between moments of her already full life. Five consistent minutes per day is enough to begin reshaping your brain, reducing anxiety, and improving emotional regulation. In 2026, you don't need more time. You need to use the moments you have with more deliberate presence.",
+      [
+        "Mindfulness is simply deliberate, non-judgmental attention to the present moment — it requires no special equipment or setting.",
+        "Consistent practice measurably increases prefrontal cortex density and reduces amygdala reactivity in the brain.",
+        "The 4-7-8 breath activates the parasympathetic nervous system almost immediately — a 90-second tool for any moment.",
+        "The 5-4-3-2-1 grounding technique is clinically used for anxiety and panic — it anchors you in sensory reality.",
+        "43% stress reduction after 8 weeks of daily practice — consistency matters far more than duration."
+      ],
+      [
+        {q:"I can't stop my thoughts when I try to meditate. Am I doing it wrong?", a:"No — and this is the most common misconception about mindfulness. The goal is not to stop thoughts. The goal is to notice thoughts without being pulled into them, and gently return your attention to the present moment (usually the breath). Every time you notice you've drifted and bring yourself back, that is the practice. The wandering and returning is mindfulness — not evidence of failure."},
+        {q:"Is there a best time of day to practice mindfulness?", a:"The best time is whichever time you'll actually do it consistently. Many women find morning practice — even 5 minutes before picking up their phone — most impactful because it sets the tone for the entire day. Others find midday practice a useful reset, or evening practice a way to decompress before sleep. Experiment and let your life tell you when the fit is best."},
+        {q:"Can mindfulness help with anxiety, or does it make it worse?", a:"For most people with anxiety, mindfulness is significantly helpful — particularly for reducing anticipatory anxiety and breaking rumination cycles. For a small subset of people (particularly those with trauma histories), closed-eye breathing exercises can occasionally increase distress. If this happens, open-eye practices (like the 5-4-3-2-1 technique) or movement-based mindfulness (like a mindful walk) are equally effective and often more accessible."},
+        {q:"What's the difference between mindfulness and meditation?", a:"Meditation is a formal practice — a dedicated time you set aside to deliberately train attention and awareness, usually seated and still. Mindfulness is the quality of awareness that practice cultivates — which can then be brought into any moment of daily life: eating, walking, washing dishes, having a conversation. Meditation trains the capacity; mindfulness is how that capacity lives in your everyday experience."},
+        {q:"Are mindfulness apps actually effective?", a:"Yes — several have solid research backing. Apps like Headspace, Calm, and Insight Timer have been studied in controlled trials and shown to produce measurable reductions in anxiety, stress, and symptoms of depression. They are particularly effective for beginners who benefit from guided structure. They are a legitimate starting point, not a watered-down substitute for 'real' mindfulness — though eventually, the goal is to internalize the skills enough that you no longer need the app to access them."}
+      ]
+    )
   }
 ];
 
@@ -1132,7 +1484,6 @@ function blogCard(b) {
 // ===================== MODAL =====================
 function openBlog(id) {
   const b = blogs.find(x=>x.id===id); if(!b) return;
-  // Set modal image
   document.getElementById('modal-img-tag').src = b.img;
   document.getElementById('modal-img-tag').alt = b.title;
   document.getElementById('modal-tag').textContent = b.tag;

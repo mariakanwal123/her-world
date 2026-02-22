@@ -66,7 +66,13 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:2rem;padding:0 5% 5rem;}
 .blog-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(26,10,15,0.07);transition:all 0.4s;cursor:pointer;}
 .blog-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(232,85,109,0.18);}
-.card-img{width:100%;height:210px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;background:linear-gradient(135deg,var(--rose),#C9396F);}
+
+/* ── CARD IMAGE: real photo replacing emoji ── */
+.card-img{width:100%;height:210px;overflow:hidden;position:relative;background:var(--blush);}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
+.blog-card:hover .card-img img{transform:scale(1.06);}
+.card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(26,10,15,0.18),transparent 60%);pointer-events:none;}
+
 .card-body{padding:1.5rem;}
 .card-tag{background:var(--blush);color:var(--rose);font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:50px;display:inline-block;margin-bottom:0.8rem;}
 .card-body h3{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:0.6rem;line-height:1.4;}
@@ -79,8 +85,12 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,10,15,0.75);z-index:2000;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
 .modal-overlay.open{display:flex;}
 .modal{background:white;border-radius:24px;max-width:820px;width:100%;margin:auto;}
-.modal-img{width:100%;height:280px;display:flex;align-items:center;justify-content:center;font-size:6rem;background:linear-gradient(135deg,var(--rose),#C9396F);border-radius:24px 24px 0 0;position:relative;}
-.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.25);backdrop-filter:blur(5px);color:white;border:none;width:38px;height:38px;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;}
+
+/* ── MODAL IMAGE: real photo ── */
+.modal-img{width:100%;height:280px;overflow:hidden;border-radius:24px 24px 0 0;position:relative;background:var(--blush);}
+.modal-img img{width:100%;height:100%;object-fit:cover;display:block;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,0.25);backdrop-filter:blur(5px);color:white;border:none;width:38px;height:38px;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:10;}
+
 .modal-body{padding:2.5rem;}
 .modal-body .card-tag{margin-bottom:1rem;}
 .modal-body h2{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;margin-bottom:1rem;line-height:1.3;}
@@ -98,11 +108,24 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .inf-stat h5{font-size:1.9rem;font-weight:900;}
 .inf-stat p{font-size:0.72rem;opacity:0.88;margin-top:0.2rem;}
 
-/* CTA BOX */
-.cta-box{background:linear-gradient(135deg,var(--dark),#3D1520);border-radius:16px;padding:2rem;color:white;text-align:center;margin:2rem 0 0;}
-.cta-box h4{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:0.6rem;}
-.cta-box p{font-size:0.88rem;opacity:0.8;margin-bottom:1.2rem;line-height:1.6;}
-.cta-box .btn-primary{font-size:0.88rem;padding:0.7rem 1.5rem;}
+/* ── CTA BOX: high-visibility redesign ── */
+.cta-box{
+  background: linear-gradient(135deg, #E8556D 0%, #C9396F 100%);
+  border-radius:16px;padding:2.2rem;color:white;text-align:center;margin:2rem 0 0;
+  box-shadow: 0 8px 32px rgba(232,85,109,0.35);
+  border: none;
+}
+.cta-box h4{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:0.7rem;color:#fff;font-weight:700;}
+.cta-box p{font-size:0.9rem;color:rgba(255,255,255,0.92);margin-bottom:1.4rem;line-height:1.7;}
+.cta-box .btn-primary{
+  background:#fff;
+  color:var(--rose);
+  font-size:0.9rem;
+  padding:0.75rem 1.8rem;
+  font-weight:700;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
+.cta-box .btn-primary:hover{background:var(--dark);color:#fff;}
 
 /* ABOUT */
 .about-hero{background:linear-gradient(135deg,var(--dark),#3D1520);color:white;padding:6rem 8%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
@@ -373,8 +396,6 @@ footer a{color:var(--rose);text-decoration:none;}
     <button class="admin-tab" onclick="switchTab('settings')">⚙️ Settings</button>
   </div>
   <div class="admin-content">
-
-    <!-- MANAGE -->
     <div id="tab-manage" class="admin-section active">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
         <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem">All Blog Posts <span id="blog-count" style="color:var(--muted);font-size:1rem"></span></h3>
@@ -382,8 +403,6 @@ footer a{color:var(--rose);text-decoration:none;}
       </div>
       <div class="admin-blog-list" id="admin-list"></div>
     </div>
-
-    <!-- ADD BLOG -->
     <div id="tab-add" class="admin-section">
       <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem" id="editor-title">Add New Blog Post</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem">
@@ -398,8 +417,8 @@ footer a{color:var(--rose);text-decoration:none;}
       </div>
       <div class="form-group" style="margin-top:0.8rem">
         <label>📄 Full Blog Content — Paste HTML Code Below</label>
-        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">Paste your complete HTML blog content here. Use &lt;p&gt;, &lt;h4&gt;, &lt;ul&gt;&lt;li&gt; tags for formatting. Add infographic divs for visual stats.</p>
-        <textarea class="code-editor" id="new-content" placeholder="<!-- Paste your blog HTML content here -->&#10;<p>Your introduction paragraph...</p>&#10;<h4>Section Heading</h4>&#10;<p>Section content...</p>"></textarea>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">Paste your complete HTML blog content here.</p>
+        <textarea class="code-editor" id="new-content" placeholder="<!-- Paste your blog HTML content here -->&#10;<p>Your introduction paragraph...</p>"></textarea>
       </div>
       <div style="margin-bottom:1rem">
         <label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">Live Content Preview</label>
@@ -411,8 +430,6 @@ footer a{color:var(--rose);text-decoration:none;}
         <button class="btn-edit" onclick="clearEditor()">🗑 Clear</button>
       </div>
     </div>
-
-    <!-- EDIT PAGES -->
     <div id="tab-pages" class="admin-section">
       <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Edit Page Content</h3>
       <div style="display:grid;gap:1.5rem;max-width:700px">
@@ -423,8 +440,6 @@ footer a{color:var(--rose);text-decoration:none;}
         <button class="btn-primary" onclick="savePageEdits()" style="width:fit-content">💾 Save All Changes</button>
       </div>
     </div>
-
-    <!-- SETTINGS -->
     <div id="tab-settings" class="admin-section">
       <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Admin Settings</h3>
       <div style="display:grid;gap:1.2rem;max-width:480px">
@@ -447,7 +462,7 @@ footer a{color:var(--rose);text-decoration:none;}
   <div class="modal">
     <div class="modal-img" id="modal-img">
       <button class="modal-close" onclick="closeModal()">×</button>
-      🌸
+      <img src="" alt="" id="modal-img-tag" style="width:100%;height:100%;object-fit:cover;">
     </div>
     <div class="modal-body">
       <span class="card-tag" id="modal-tag">Wellness</span>
@@ -482,12 +497,15 @@ footer a{color:var(--rose);text-decoration:none;}
 
 <script>
 // ===================== BLOG DATA =====================
+// img: curated Unsplash photos, topic-specific for each blog
 let editingId = null;
 let activeCategory = 'All';
 
 const blogs = [
   {
-    id:1, emoji:"💪", tag:"Empowerment",
+    id:1,
+    img:"https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
+    tag:"Empowerment",
     title:"10 Daily Habits That Will Transform Your Life in 2026",
     desc:"Small changes done consistently create massive shifts. Here are 10 habits every woman should adopt this year.",
     date:"January 5, 2026", readTime:"9 min read",
@@ -528,7 +546,9 @@ const blogs = [
       </div>`
   },
   {
-    id:2, emoji:"🧠", tag:"Mental Health",
+    id:2,
+    img:"https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&q=80",
+    tag:"Mental Health",
     title:"Breaking the Stigma: A Complete Guide to Women's Mental Health in 2026",
     desc:"Mental health is health. Let's talk about it openly, honestly, and with the compassion it deserves.",
     date:"January 12, 2026", readTime:"11 min read",
@@ -548,8 +568,6 @@ const blogs = [
       <p>Women experience anxiety and depression at twice the rate of men. This is not weakness — it's biology, sociology, and circumstance combined. Hormonal fluctuations throughout the menstrual cycle, pregnancy, postpartum recovery, perimenopause, and menopause all significantly impact brain chemistry. Add systemic inequality, caretaking burdens, and cultural pressure to "have it all" — and it's remarkable we function as well as we do.</p>
       <h4>Common Signs That Deserve Attention</h4>
       <p>Persistent sadness or emotional numbness. Withdrawal from people and activities you once loved. Changes in sleep — too much or not enough. Appetite shifts. Difficulty concentrating. Feeling like a burden. Persistent anxiety or racing thoughts. Physical symptoms with no medical explanation. These are not character flaws — they are symptoms, and symptoms deserve treatment.</p>
-      <h4>The Difference Between Sadness and Depression</h4>
-      <p>Sadness is a natural human emotion that comes and goes, typically in response to circumstances. Depression is a clinical condition characterized by persistent low mood, loss of interest in things that once brought joy, and physical symptoms lasting more than two weeks. Both are valid. Both deserve care. Only one requires professional intervention.</p>
       <h4>Breaking the Silence — Starting with Yourself</h4>
       <p>The first and often hardest step is admitting to yourself that you're not okay. Not to anyone else — just to you. You're allowed to struggle. You're allowed to need help. Acknowledging your reality is not failure — it's the beginning of healing.</p>
       <h4>Finding the Right Support in 2026</h4>
@@ -563,7 +581,9 @@ const blogs = [
       </div>`
   },
   {
-    id:3, emoji:"💼", tag:"Career",
+    id:3,
+    img:"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+    tag:"Career",
     title:"How to Ask for the Raise You Deserve — and Actually Get It in 2026",
     desc:"The gender pay gap is real. Here's how to advocate for your worth with research, confidence, and strategy.",
     date:"January 19, 2026", readTime:"10 min read",
@@ -578,13 +598,13 @@ const blogs = [
       </div>
       <p>Let's be direct: you are probably being underpaid. This is not an insult — it's a statistical reality that affects the vast majority of women in the workforce. The good news is that negotiation is a skill, and skills can be learned, practiced, and deployed with confidence. In 2026, let's make "asking for what you're worth" non-negotiable.</p>
       <h4>Step 1: Do Your Research Before Anything Else</h4>
-      <p>You cannot negotiate effectively without data. Before you request a meeting with your manager, spend time researching market rates for your exact role, in your industry, in your geographic area. Use Glassdoor, LinkedIn Salary Insights, Payscale, Levels.fyi (for tech), and industry-specific salary surveys. Come with a specific range, not a single number — and anchor high within reason.</p>
+      <p>You cannot negotiate effectively without data. Before you request a meeting with your manager, spend time researching market rates for your exact role, in your industry, in your geographic area. Use Glassdoor, LinkedIn Salary Insights, Payscale, and industry-specific salary surveys. Come with a specific range, not a single number — and anchor high within reason.</p>
       <h4>Step 2: Build Your "Brag File"</h4>
       <p>A brag file is a running document where you record every accomplishment, every positive piece of feedback, every project you've led or contributed to, every metric you've improved. Quantify everything you can. "I managed the quarterly report" becomes "I managed the quarterly report, reducing preparation time by 30% and eliminating three manual processes." Data beats feelings in every negotiation room.</p>
       <h4>Step 3: Time It Right</h4>
-      <p>The best times to ask for a raise: after a major win, during a performance review cycle, when you've taken on significantly more responsibility, or when you've received a competing offer. The worst times: when your company just announced layoffs, when your manager is visibly stressed, or right after a project didn't go well. Read the room — and the calendar.</p>
+      <p>The best times to ask for a raise: after a major win, during a performance review cycle, when you've taken on significantly more responsibility, or when you've received a competing offer. The worst times: when your company just announced layoffs, when your manager is visibly stressed, or right after a project didn't go well.</p>
       <h4>Step 4: Practice Your Ask Out Loud</h4>
-      <p>Seriously. Say your number out loud. In the mirror. To a trusted friend. Record yourself. The discomfort you feel now — that hesitation, that flinch when you say a salary figure that feels "too high" — is the exact discomfort you need to move through before you sit in front of your manager. Practice until it feels normal.</p>
+      <p>Seriously. Say your number out loud. In the mirror. To a trusted friend. Record yourself. The discomfort you feel now — that hesitation, that flinch when you say a salary figure that feels "too high" — is the exact discomfort you need to move through before you sit in front of your manager.</p>
       <h4>Step 5: The Conversation Script</h4>
       <p>Open with your value: "Over the past year, I've [specific accomplishments]. Based on my research into market rates for this role and the contributions I'm making, I'd like to discuss adjusting my compensation to [specific figure]." Then: stop talking. Resist the urge to fill the silence. Let your ask land.</p>
       <h4>Step 6: Handle "No" Like a Professional</h4>
@@ -596,7 +616,9 @@ const blogs = [
       </div>`
   },
   {
-    id:4, emoji:"🌿", tag:"Wellness",
+    id:4,
+    img:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+    tag:"Wellness",
     title:"The Art of Slow Living: Why Rest Is Radical in 2026",
     desc:"In a world that glorifies hustle, choosing slow, intentional living is a revolutionary act of self-love.",
     date:"January 26, 2026", readTime:"8 min read",
@@ -613,11 +635,11 @@ const blogs = [
       <h4>What Slow Living Actually Means</h4>
       <p>Slow living is not about doing nothing. It's about doing things with full presence and intention. It's cooking a meal and actually tasting it. It's walking without a podcast playing. It's reading a book without guilt that you should be "doing something productive." It's choosing depth over speed, quality over quantity, and presence over perpetual performance.</p>
       <h4>How to Recognize Burnout Before It Breaks You</h4>
-      <p>Burnout doesn't arrive suddenly — it accumulates quietly. Warning signs include: dreading Monday by Saturday afternoon, feeling emotionally numb rather than passionate about your work, constant fatigue that sleep doesn't fix, increased cynicism and detachment, physical symptoms like headaches and frequent illness, and losing joy in things that once delighted you. If several of these sound familiar, your body is sending an urgent message. Listen.</p>
+      <p>Burnout doesn't arrive suddenly — it accumulates quietly. Warning signs include: dreading Monday by Saturday afternoon, feeling emotionally numb rather than passionate about your work, constant fatigue that sleep doesn't fix, increased cynicism and detachment, physical symptoms like headaches and frequent illness, and losing joy in things that once delighted you.</p>
       <h4>Practical Slow Living Practices for Busy Women</h4>
       <p>You don't have to quit your job or move to the countryside. Slow living fits inside a modern life. Try: one tech-free evening per week. Eating at least one meal per day without screens. Adding "white space" to your calendar — time with literally no agenda. Letting yourself be bored sometimes. Boredom is not a problem to solve; it's where creativity and clarity live.</p>
       <h4>Rest as a Form of Resistance</h4>
-      <p>Author Tricia Hersey, known as the "Nap Bishop," argues that rest is a form of resistance against a culture that has historically exploited women's labor — both paid and unpaid. When you choose to rest, you are refusing to define your worth by your output. That is a radical, necessary, beautiful act in 2026.</p>
+      <p>Author Tricia Hersey argues that rest is a form of resistance against a culture that has historically exploited women's labor — both paid and unpaid. When you choose to rest, you are refusing to define your worth by your output. That is a radical, necessary, beautiful act in 2026.</p>
       <h4>The Science of Rest and Peak Performance</h4>
       <p>Research from Harvard, Stanford, and sleep scientists worldwide consistently shows that rest — actual rest, not passive screen consumption — is essential for cognitive function, creativity, emotional regulation, and physical health. The most productive people in history weren't those who worked the most hours. They were those who worked with the most focused, rested intention.</p>
       <div class="cta-box">
@@ -627,7 +649,9 @@ const blogs = [
       </div>`
   },
   {
-    id:5, emoji:"💰", tag:"Finance",
+    id:5,
+    img:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
+    tag:"Finance",
     title:"Financial Freedom for Women: Your Complete 2026 Money Guide",
     desc:"Money management is not a man's game. Here's how to build lasting financial freedom starting right now.",
     date:"February 2, 2026", readTime:"12 min read",
@@ -642,17 +666,15 @@ const blogs = [
       </div>
       <p>Financial independence is one of the most powerful, liberating forms of freedom a woman can hold. It is the freedom to leave an unhealthy situation. The freedom to choose meaningful work over just a paycheck. The freedom to weather life's unexpected storms without falling apart. And in 2026, more tools, resources, and communities exist to help women build it than ever before.</p>
       <h4>Step 1: Understand Exactly Where You Are</h4>
-      <p>Track every dollar coming in and going out for 30 days. Not to judge yourself — just to see clearly. Most people are genuinely shocked by what they discover. Awareness is the non-negotiable first step to change. Use a simple spreadsheet, a budgeting app like YNAB or Mint, or even pen and paper. The tool matters less than the habit.</p>
+      <p>Track every dollar coming in and going out for 30 days. Not to judge yourself — just to see clearly. Most people are genuinely shocked by what they discover. Awareness is the non-negotiable first step to change. Use a simple spreadsheet, a budgeting app like YNAB or Mint, or even pen and paper.</p>
       <h4>Step 2: Build Your Emergency Fund First</h4>
-      <p>Before investing, before aggressive debt paydown, before anything else — build a buffer. Start with $1,000. Then work toward 3-6 months of essential living expenses. This fund is your freedom buffer. It transforms a financial crisis into a manageable inconvenience. Without it, one unexpected expense can unravel everything else.</p>
+      <p>Before investing, before aggressive debt paydown, before anything else — build a buffer. Start with $1,000. Then work toward 3-6 months of essential living expenses. This fund is your freedom buffer. It transforms a financial crisis into a manageable inconvenience.</p>
       <h4>Step 3: Tackle High-Interest Debt Aggressively</h4>
-      <p>Credit card debt at 20-30% interest is the single biggest obstacle to building wealth. Use either the avalanche method (pay highest interest rate first — mathematically optimal) or the snowball method (pay smallest balance first — psychologically motivating). Either works. Consistency is what matters. Stop using the cards while you pay them down.</p>
+      <p>Credit card debt at 20-30% interest is the single biggest obstacle to building wealth. Use either the avalanche method (pay highest interest rate first) or the snowball method (pay smallest balance first). Either works. Consistency is what matters.</p>
       <h4>Step 4: Start Investing — Even If It's $50 a Month</h4>
-      <p>Investing feels intimidating, but it doesn't have to be complicated. Start with your employer's 401(k) — especially if there's a match (that's free money, take all of it). Then open a Roth IRA. Invest in low-cost index funds that track the S&P 500. You don't need to pick stocks. You don't need a financial advisor at first. You need consistency, time, and compound interest on your side.</p>
+      <p>Investing feels intimidating, but it doesn't have to be complicated. Start with your employer's 401(k) — especially if there's a match. Then open a Roth IRA. Invest in low-cost index funds that track the S&P 500. You don't need to pick stocks. You need consistency, time, and compound interest on your side.</p>
       <h4>Step 5: Close the Knowledge Gap</h4>
-      <p>Women have historically been excluded from financial conversations. This was deliberate — and it has cost us dearly. In 2026, that ends with you. Read "I Will Teach You to Be Rich" by Ramit Sethi. "The Psychology of Money" by Morgan Housel. "Broke Millennial" by Erin Lowry. Listen to personal finance podcasts. Join money-focused communities of women. Financial literacy is not innate — it's learned.</p>
-      <h4>Investing in Yourself Is Also Financial Planning</h4>
-      <p>Your skills, your health, your network — these are assets. A certification that earns you a promotion is a better return on investment than almost anything else. Taking care of your health reduces catastrophic medical costs. Building your professional network creates opportunities that no stock market can generate. Invest in yourself as aggressively as you invest in your portfolio.</p>
+      <p>Women have historically been excluded from financial conversations. In 2026, that ends with you. Read widely, listen to personal finance podcasts, and join money-focused communities of women. Financial literacy is not innate — it's learned, and it's available to you right now.</p>
       <div class="cta-box">
         <h4>Start Building Wealth in 2026 💰</h4>
         <p>Join the HerWorld community where women talk openly about money, share resources, and build financial futures together — without shame.</p>
@@ -660,7 +682,9 @@ const blogs = [
       </div>`
   },
   {
-    id:6, emoji:"🤱", tag:"Motherhood",
+    id:6,
+    img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=800&q=80",
+    tag:"Motherhood",
     title:"The Unspoken Truth About Postpartum Mental Health in 2026",
     desc:"Postpartum depression is not a sign of weakness. It's a medical condition that deserves real recognition and real care.",
     date:"February 9, 2026", readTime:"10 min read",
@@ -675,17 +699,13 @@ const blogs = [
       </div>
       <p>Society places a beautiful newborn in your arms and expects you to feel nothing but pure, overwhelming joy. And sometimes you do — and that's real. But sometimes you feel terror, sadness, numbness, rage, or a profound sense of loss for who you were before. That's also real. And it's far more common than anyone tells you before the baby arrives.</p>
       <h4>Understanding the Spectrum of Postpartum Experience</h4>
-      <p>The postpartum period covers the fourth trimester — the first 12 weeks after birth — and beyond. During this time, your body is undergoing the most dramatic hormonal shift in human experience. Estrogen and progesterone levels that were sky-high during pregnancy plummet within 24 hours of delivery. This alone would affect anyone.</p>
-      <h4>Baby Blues vs. Postpartum Depression — Knowing the Difference</h4>
-      <p>Baby blues are common and temporary: mood swings, tearfulness, anxiety, and irritability in the first two weeks after birth. They typically resolve on their own. Postpartum depression is more intense, lasts longer (beyond two weeks), and significantly impairs your ability to function. Both are valid. Both deserve support. Only one requires clinical intervention.</p>
+      <p>The postpartum period covers the fourth trimester — the first 12 weeks after birth — and beyond. During this time, your body is undergoing the most dramatic hormonal shift in human experience. Estrogen and progesterone levels that were sky-high during pregnancy plummet within 24 hours of delivery.</p>
+      <h4>Baby Blues vs. Postpartum Depression</h4>
+      <p>Baby blues are common and temporary: mood swings, tearfulness, anxiety, and irritability in the first two weeks after birth. They typically resolve on their own. Postpartum depression is more intense, lasts longer, and significantly impairs your ability to function. Both are valid. Both deserve care. Only one requires clinical intervention.</p>
       <h4>Signs of Postpartum Depression to Watch For</h4>
-      <p>Persistent sadness or emotional emptiness. Inability to bond with your baby despite wanting to. Intrusive thoughts that frighten you. Extreme anxiety or panic attacks. Withdrawing from everyone. Feeling like your baby would be better off without you. Thoughts of harming yourself. If any of these feel familiar, please reach out to a healthcare provider today. You deserve help, and your baby deserves a mother who receives it.</p>
-      <h4>Postpartum Anxiety — The Often-Missed Sister Condition</h4>
-      <p>While postpartum depression gets more attention, postpartum anxiety affects just as many women. It looks like constant worry about your baby's safety, inability to sleep even when baby sleeps, racing thoughts, heart palpitations, and a pervasive sense that something terrible is about to happen. It is equally real, equally treatable, and equally deserving of care.</p>
+      <p>Persistent sadness or emotional emptiness. Inability to bond with your baby despite wanting to. Intrusive thoughts that frighten you. Extreme anxiety or panic attacks. Withdrawing from everyone. Feeling like your baby would be better off without you. If any of these feel familiar, please reach out to a healthcare provider today.</p>
       <h4>You Are Not a Bad Mother</h4>
-      <p>This cannot be said enough: postpartum mental health struggles have nothing to do with how much you love your baby or how good a mother you are. They are a medical condition. Asking for help is not weakness — it is the most responsible, loving thing you can do for both yourself and your child. A mother who receives support becomes a better, more present mother.</p>
-      <h4>Finding Help and Support in 2026</h4>
-      <p>Tell your OB, midwife, or GP — be explicit about what you're experiencing. Ask for a referral to a perinatal mental health specialist. Connect with Postpartum Support International at 1-800-944-4773 or postpartum.net. Online support communities for postpartum mothers can also provide profound comfort. You are not alone — not even slightly.</p>
+      <p>This cannot be said enough: postpartum mental health struggles have nothing to do with how much you love your baby or how good a mother you are. They are a medical condition. Asking for help is not weakness — it is the most responsible, loving thing you can do for both yourself and your child.</p>
       <div class="cta-box">
         <h4>You Are Not Alone in This Journey 🤱</h4>
         <p>HerWorld is a safe space for mothers to share, support, and be seen. Join our community and find your village in 2026.</p>
@@ -693,7 +713,9 @@ const blogs = [
       </div>`
   },
   {
-    id:7, emoji:"🏃‍♀️", tag:"Fitness",
+    id:7,
+    img:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
+    tag:"Fitness",
     title:"Movement for Every Body: Reclaiming Exercise Without Guilt in 2026",
     desc:"Fitness was never meant to be punishment. Here's how to find joyful movement that lasts.",
     date:"February 16, 2026", readTime:"8 min read",
@@ -706,15 +728,15 @@ const blogs = [
           <div class="inf-stat"><h5>60%</h5><p>Lower depression risk with movement</p></div>
         </div>
       </div>
-      <p>Somewhere along the way, fitness became intertwined with punishment, compensation, and shame. We exercise to "earn" our food. We punish ourselves with grueling workouts after "indulging." We feel guilty for rest days. In 2026, we are reclaiming movement as what it was always meant to be: a celebration of what our bodies can do, not a correction for what they look like.</p>
+      <p>Somewhere along the way, fitness became intertwined with punishment, compensation, and shame. We exercise to "earn" our food. We punish ourselves with grueling workouts after "indulging." In 2026, we are reclaiming movement as what it was always meant to be: a celebration of what our bodies can do, not a correction for what they look like.</p>
       <h4>Finding Your Joyful Movement</h4>
-      <p>The most sustainable exercise routine is the one you actually look forward to — or at least don't dread. Hate running? Don't run. Love dancing? Dance. Enjoy the outdoors? Hike. Find swimming meditative? Swim. Roller skating, martial arts, climbing, rowing, pickleball, yoga, barre — in 2026, the options are endless and accessible. Your fitness journey starts when you stop forcing yourself into someone else's idea of exercise.</p>
+      <p>The most sustainable exercise routine is the one you actually look forward to — or at least don't dread. Hate running? Don't run. Love dancing? Dance. Enjoy the outdoors? Hike. Find swimming meditative? Swim. Roller skating, martial arts, climbing, rowing, yoga, barre — in 2026, the options are endless and accessible.</p>
       <h4>The Science of Exercise and Mental Health</h4>
       <p>Exercise is one of the most well-researched interventions for depression and anxiety. It increases serotonin, dopamine, and endorphins. It reduces cortisol. It improves sleep quality. It builds self-efficacy — the belief that you can set goals and achieve them. These benefits occur regardless of how the exercise looks from the outside.</p>
       <h4>Strength Training: A Game-Changer for Women</h4>
-      <p>One of the most persistent myths in women's fitness is that strength training will make you "bulky." It won't. Women's hormonal profiles make it extremely difficult to build the type of mass that fear implies. What strength training does do: increase muscle mass (which raises your resting metabolism), improve bone density (critical for preventing osteoporosis), boost confidence, and make daily life physically easier. If you're not strength training, 2026 is the year to start.</p>
+      <p>One of the most persistent myths in women's fitness is that strength training will make you "bulky." It won't. What strength training does do: increase muscle mass, improve bone density (critical for preventing osteoporosis), boost confidence, and make daily life physically easier. If you're not strength training, 2026 is the year to start.</p>
       <h4>The Power of Cycle Syncing</h4>
-      <p>Women's bodies have a 28-day hormonal cycle that significantly influences energy, strength, and recovery. Working with this cycle — rather than ignoring it — can dramatically improve your relationship with exercise. High-intensity work often feels best in the follicular phase (days 1-13). Strength training peaks around ovulation. More moderate movement suits the luteal phase. Rest and gentle movement honor the menstrual phase. Listen to your body — it's incredibly wise.</p>
+      <p>Women's bodies have a 28-day hormonal cycle that significantly influences energy, strength, and recovery. Working with this cycle — rather than ignoring it — can dramatically improve your relationship with exercise. High-intensity work often feels best in the follicular phase. Strength training peaks around ovulation. Listen to your body — it's incredibly wise.</p>
       <div class="cta-box">
         <h4>Move in a Way That Celebrates YOU 🏃‍♀️</h4>
         <p>Join the HerWorld community where we talk about fitness, health, and bodies with kindness, not judgment — all through 2026.</p>
@@ -722,7 +744,9 @@ const blogs = [
       </div>`
   },
   {
-    id:8, emoji:"💑", tag:"Relationships",
+    id:8,
+    img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
+    tag:"Relationships",
     title:"Setting Healthy Boundaries Without Guilt: A Woman's Complete Guide",
     desc:"No is a complete sentence. Here's how to set boundaries with love, clarity, and zero apology.",
     date:"February 23, 2026", readTime:"9 min read",
@@ -735,17 +759,15 @@ const blogs = [
           <div class="inf-stat"><h5>67%</h5><p>Less resentment with honest boundaries</p></div>
         </div>
       </div>
-      <p>Women are socialized from childhood to be agreeable, accommodating, endlessly giving, and above all, pleasant. We learn early that our value is tied to how well we serve others' needs. But here's the quiet truth that takes most women years to discover: saying yes when you mean no doesn't make you kind. It makes you resentful. And resentment quietly poisons the relationships you're trying to protect.</p>
+      <p>Women are socialized from childhood to be agreeable, accommodating, endlessly giving, and above all, pleasant. We learn early that our value is tied to how well we serve others' needs. But here's the quiet truth that takes most women years to discover: saying yes when you mean no doesn't make you kind. It makes you resentful.</p>
       <h4>What Boundaries Actually Are — And Aren't</h4>
-      <p>Boundaries are not walls. They are not cold or unfriendly. They are not punishments for people who've hurt you, though they can follow hurt. Boundaries are honest, compassionate expressions of what you need to feel safe, respected, and whole in any relationship — romantic, platonic, professional, or familial. Setting them is an act of self-respect. And self-respect teaches others how to treat you.</p>
-      <h4>The Psychology of Why We Struggle to Set Them</h4>
-      <p>Fear of rejection. Fear of conflict. Deep-seated people-pleasing tendencies. The belief (often subconscious) that our needs matter less than others'. Sometimes, a history of being punished for asserting needs in childhood. Understanding your personal barrier isn't just intellectually interesting — it's the key to beginning to move through it rather than around it.</p>
+      <p>Boundaries are not walls. They are not cold or unfriendly. They are honest, compassionate expressions of what you need to feel safe, respected, and whole in any relationship — romantic, platonic, professional, or familial. Setting them is an act of self-respect. And self-respect teaches others how to treat you.</p>
       <h4>How to Set Boundaries with Compassion and Clarity</h4>
-      <p>The formula is simple, even if the execution takes practice: State what you can and cannot do, and be honest about why. "I care about our friendship, and I need to tell you honestly: I'm not able to lend money to people I'm close to. It changes the dynamic for me in ways I don't handle well." Clear. Kind. No apology for having a limit. No lengthy justification that invites negotiation.</p>
+      <p>The formula is simple, even if the execution takes practice: State what you can and cannot do, and be honest about why. "I care about our friendship, and I need to tell you honestly: I'm not able to lend money to people I'm close to. It changes the dynamic for me in ways I don't handle well." Clear. Kind. No apology for having a limit.</p>
       <h4>The Hardest Boundaries — Family and Long-Term Relationships</h4>
-      <p>Boundaries with family are the hardest because the stakes feel highest and the patterns run deepest. You may have decades of established dynamics to rewrite. Expect pushback. Expect guilt. Expect the people who benefited most from your lack of boundaries to be the most resistant to your having them. Hold anyway. Your peace is worth the discomfort of the transition.</p>
+      <p>Boundaries with family are the hardest because the stakes feel highest and the patterns run deepest. You may have decades of established dynamics to rewrite. Expect pushback. Expect guilt. Hold anyway. Your peace is worth the discomfort of the transition.</p>
       <h4>Boundaries at Work in 2026</h4>
-      <p>Professional boundaries include: your working hours (and sticking to them), not being the default person for tasks outside your role, not accepting credit-taking or disrespect, and advocating for your needs around flexibility, workload, and communication. In 2026, remote and hybrid work has blurred the lines between personal and professional life more than ever — which makes intentional work boundaries more important than ever.</p>
+      <p>Professional boundaries include: your working hours, not being the default person for tasks outside your role, not accepting credit-taking or disrespect, and advocating for your needs around flexibility and workload. Remote and hybrid work has blurred the lines between personal and professional life — which makes intentional work boundaries more important than ever.</p>
       <div class="cta-box">
         <h4>You Deserve Relationships That Respect You 💑</h4>
         <p>HerWorld is a safe space to discuss the nuances of relationships, boundaries, and self-worth. Join our sisterhood in 2026.</p>
@@ -753,7 +775,9 @@ const blogs = [
       </div>`
   },
   {
-    id:9, emoji:"🌸", tag:"Wellness",
+    id:9,
+    img:"https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
+    tag:"Wellness",
     title:"Hormone Health 101: Understanding Your Body's Signals in 2026",
     desc:"Your hormones are always communicating with you. Here's how to finally learn to listen.",
     date:"March 2, 2026", readTime:"11 min read",
@@ -766,15 +790,15 @@ const blogs = [
           <div class="inf-stat"><h5>80%</h5><p>PMS treatable with lifestyle changes</p></div>
         </div>
       </div>
-      <p>Your hormones are not just about your menstrual cycle. They orchestrate virtually everything about how you feel, function, and experience your body and mind: your energy levels, your mood, your sleep quality, your skin, your metabolism, your libido, your ability to concentrate. When they are in balance, you feel like yourself. When they're off, everything feels off — and often you can't even articulate why.</p>
+      <p>Your hormones are not just about your menstrual cycle. They orchestrate virtually everything about how you feel, function, and experience your body and mind: your energy levels, your mood, your sleep quality, your skin, your metabolism, your libido, your ability to concentrate. When they are in balance, you feel like yourself. When they're off, everything feels off.</p>
       <h4>The Major Hormones Women Need to Know</h4>
-      <p>Estrogen governs reproduction, bone density, cardiovascular health, and mood regulation. Progesterone is the calming, stabilizing hormone that supports sleep and counterbalances estrogen. Testosterone (yes, women have it too) supports libido, muscle mass, energy, and confidence. Cortisol, the stress hormone, should spike and fall rhythmically — chronic elevation disrupts everything else. Insulin regulates blood sugar and fat storage — imbalance here affects weight, energy, and hormonal cascade throughout.</p>
+      <p>Estrogen governs reproduction, bone density, cardiovascular health, and mood regulation. Progesterone is the calming, stabilizing hormone that supports sleep and counterbalances estrogen. Testosterone (yes, women have it too) supports libido, muscle mass, energy, and confidence. Cortisol, the stress hormone, should spike and fall rhythmically — chronic elevation disrupts everything else.</p>
       <h4>Signs Your Hormones May Be Out of Balance</h4>
-      <p>Irregular, painful, or absent periods. PMS so severe it disrupts your daily life. Unexplained weight gain or loss, particularly around the midsection. Persistent acne especially around the chin and jaw. Hair thinning or loss. Debilitating fatigue that sleep doesn't resolve. Brain fog. Anxiety or depression with no obvious external cause. A libido that's disappeared. These are all signals worth investigating — not symptoms to push through.</p>
-      <h4>PCOS: The Most Underdiagnosed Condition Affecting Women</h4>
-      <p>Polycystic ovary syndrome affects 1 in 10 women of reproductive age and takes an average of two years to diagnose. It involves hormonal imbalance, irregular ovulation, insulin resistance, and often — though not always — ovarian cysts. Symptoms include irregular periods, excess androgen (leading to acne, hair growth, hair loss), and difficulty managing weight. It is manageable with the right support — but you have to know you have it first.</p>
+      <p>Irregular, painful, or absent periods. PMS so severe it disrupts your daily life. Unexplained weight gain or loss. Persistent acne especially around the chin and jaw. Hair thinning or loss. Debilitating fatigue. Brain fog. Anxiety or depression with no obvious cause. These are all signals worth investigating — not symptoms to push through.</p>
+      <h4>PCOS: The Most Underdiagnosed Condition</h4>
+      <p>Polycystic ovary syndrome affects 1 in 10 women of reproductive age and takes an average of two years to diagnose. Symptoms include irregular periods, excess androgen leading to acne and hair changes, and difficulty managing weight. It is manageable with the right support — but you have to know you have it first.</p>
       <h4>Supporting Your Hormones Through Lifestyle</h4>
-      <p>Prioritize 7-9 hours of quality sleep — cortisol regulation and growth hormone release happen primarily at night. Reduce sugar and refined carbohydrates — they spike insulin and disrupt the hormonal cascade. Manage stress actively, not passively — exercise, meditation, therapy, boundaries. Eat enough — chronic undereating disrupts the hypothalamic-pituitary-adrenal axis and can cause hormonal chaos. Limit alcohol and environmental toxins where possible.</p>
+      <p>Prioritize 7-9 hours of quality sleep. Reduce sugar and refined carbohydrates. Manage stress actively. Eat enough — chronic undereating disrupts hormonal balance. Limit alcohol and environmental toxins where possible. These lifestyle choices directly impact your hormonal health.</p>
       <div class="cta-box">
         <h4>Take Your Health Seriously in 2026 🌸</h4>
         <p>Join the HerWorld wellness community where we share evidence-based health information and real women's experiences every week.</p>
@@ -782,7 +806,9 @@ const blogs = [
       </div>`
   },
   {
-    id:10, emoji:"🎓", tag:"Career",
+    id:10,
+    img:"https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&q=80",
+    tag:"Career",
     title:"Overcoming Imposter Syndrome: Why High-Achieving Women Feel Like Frauds",
     desc:"70% of people experience imposter syndrome. Here's why it hits women harder — and exactly how to overcome it.",
     date:"March 9, 2026", readTime:"9 min read",
@@ -797,15 +823,13 @@ const blogs = [
       </div>
       <p>You've worked hard. You've earned every qualification on your resume and every achievement in your career. And yet — there's a quiet voice in the back of your mind waiting for someone to figure out that you don't really belong here. That you've somehow fooled everyone. That your success is a fluke that luck and circumstance could just as easily take away. Does this sound familiar?</p>
       <h4>The Origin of Imposter Syndrome</h4>
-      <p>Psychologists Pauline Clance and Suzanne Imes first identified and named this phenomenon in 1978 — and they originally studied it exclusively in high-achieving women. They found that despite impressive accomplishments, these women consistently attributed their success to luck, timing, and charm rather than to their own intelligence and capability. The pattern has only been studied more widely since then.</p>
-      <h4>Why It Hits Women — Especially Women of Color — Harder</h4>
-      <p>Girls are socialized to be humble, to minimize their achievements, and to attribute success to external factors. Boys are more often socialized to take credit and project confidence. Add to this the structural reality that women — particularly women of color — often are in spaces where they have fewer predecessors, fewer mentors who look like them, and are held to different and higher standards. The internal experience of imposter syndrome is reinforced by external reality.</p>
-      <h4>What Imposter Syndrome Actually Looks Like</h4>
-      <p>Overworking to compensate for feared "exposure." Downplaying accomplishments in conversation. Attributing praise to luck rather than skill. Feeling like you need to know everything before you're "ready" to apply for a job or take on a project. Intense fear of failure disproportionate to the stakes. Difficulty internalizing positive feedback while readily absorbing criticism.</p>
+      <p>Psychologists Pauline Clance and Suzanne Imes first identified and named this phenomenon in 1978 — and they originally studied it exclusively in high-achieving women. They found that despite impressive accomplishments, these women consistently attributed their success to luck, timing, and charm rather than to their own intelligence and capability.</p>
+      <h4>Why It Hits Women Harder</h4>
+      <p>Girls are socialized to be humble, to minimize their achievements, and to attribute success to external factors. Add to this the structural reality that women — particularly women of color — often are in spaces where they have fewer predecessors, fewer mentors who look like them, and are held to different and higher standards.</p>
       <h4>Evidence-Based Strategies to Overcome It</h4>
-      <p>First: name it. "This is imposter syndrome talking — it's not fact." Externalizing the experience reduces its power. Second: keep a wins journal. Every compliment, every achievement, every successful project. When the doubt hits, go to evidence. Third: share your experience with trusted colleagues. You will almost universally discover that accomplished people you admire feel the same way. Community normalizes the experience and dissolves shame.</p>
+      <p>First: name it. "This is imposter syndrome talking — it's not fact." Externalizing the experience reduces its power. Second: keep a wins journal. Every compliment, every achievement, every successful project. When the doubt hits, go to evidence. Third: share your experience with trusted colleagues. You will almost universally discover that accomplished people you admire feel the same way.</p>
       <h4>Reframing: From "I Don't Belong" to "I'm Still Learning"</h4>
-      <p>The most powerful reframe is this: feeling uncertain doesn't mean you don't belong. It means you're in a growth zone — which is exactly where you should be. The most competent, skilled people in any field are often the most aware of how much they don't know. This awareness is not evidence of inadequacy. It's evidence of sophistication.</p>
+      <p>The most powerful reframe is this: feeling uncertain doesn't mean you don't belong. It means you're in a growth zone — which is exactly where you should be. The most competent people in any field are often the most aware of how much they don't know. This awareness is not inadequacy. It's sophistication.</p>
       <div class="cta-box">
         <h4>You Belong Here — Fully and Completely 🎓</h4>
         <p>Connect with women who are building careers with confidence and strategy. HerWorld's career community is here for you in 2026.</p>
@@ -813,7 +837,9 @@ const blogs = [
       </div>`
   },
   {
-    id:11, emoji:"🍽️", tag:"Wellness",
+    id:11,
+    img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
+    tag:"Wellness",
     title:"Intuitive Eating: Making Complete Peace with Food in 2026",
     desc:"Ditch the diet culture for good. Here's how to rebuild a healthy, joyful, sustainable relationship with food.",
     date:"March 16, 2026", readTime:"10 min read",
@@ -826,17 +852,15 @@ const blogs = [
           <div class="inf-stat"><h5>84%</h5><p>Dieters regain all weight in 5 years</p></div>
         </div>
       </div>
-      <p>We have been taught, explicitly and implicitly, that our bodies are problems to be solved. That eating is something to be controlled, restricted, earned, and compensated for. That some foods are "good" and some foods are "bad" — and that our moral worth as women is somehow tied to which ones we choose. This is diet culture. And it has caused immeasurable harm to women's bodies, minds, and relationships with food for generations.</p>
+      <p>We have been taught, explicitly and implicitly, that our bodies are problems to be solved. That eating is something to be controlled, restricted, earned, and compensated for. That some foods are "good" and some foods are "bad" — and that our moral worth as women is somehow tied to which ones we choose. This is diet culture. And it has caused immeasurable harm to women for generations.</p>
       <h4>What Is Intuitive Eating, Really?</h4>
-      <p>Intuitive eating is a framework developed by registered dietitians Evelyn Tribole and Elyse Resch, built on 10 core principles that help you reconnect with your body's natural hunger and fullness signals. It is not "eat whatever you want whenever you want" — it's learning to hear and trust your body's wisdom after years, sometimes decades, of diet culture overriding it.</p>
-      <h4>Principle 1: Reject the Diet Mentality</h4>
+      <p>Intuitive eating is a framework developed by registered dietitians Evelyn Tribole and Elyse Resch, built on 10 core principles that help you reconnect with your body's natural hunger and fullness signals. It is not "eat whatever you want whenever you want" — it's learning to hear and trust your body's wisdom after years of diet culture overriding it.</p>
+      <h4>Reject the Diet Mentality</h4>
       <p>This is the foundation — and for many women, the hardest step. It means recognizing that diets are not failed personal endeavors. They are products designed to be sold repeatedly because they don't produce lasting results. The problem has never been your willpower or your discipline. The problem is the diet itself.</p>
-      <h4>Principle 2: Honor Your Hunger</h4>
-      <p>Hunger is not the enemy. It is a biological signal, as natural and important as thirst. When you restrict food chronically, your body responds by intensifying hunger signals, slowing metabolism, and increasing preoccupation with food. This is not weakness — it is survival biology. Eating when you're hungry is the most basic act of self-care.</p>
-      <h4>Principle 3: Make Peace with All Foods</h4>
-      <p>When every food is allowed, food loses its power. The cookies stop being dangerous when you know you can have them anytime. The ice cream stops being a "binge trigger" when it's no longer forbidden. Permission is paradoxically the path to moderation — not restriction.</p>
+      <h4>Honor Your Hunger</h4>
+      <p>Hunger is not the enemy. It is a biological signal, as natural and important as thirst. When you restrict food chronically, your body responds by intensifying hunger signals and increasing preoccupation with food. This is not weakness — it is survival biology. Eating when you're hungry is the most basic act of self-care.</p>
       <h4>The Research on Intuitive Eating</h4>
-      <p>Over 125 peer-reviewed studies have examined intuitive eating, finding consistent links to improved body image, lower rates of disordered eating, better psychological wellbeing, and — notably — similar or better physical health outcomes compared to dieting. It is not the "easy way out." It is the sustainable way through.</p>
+      <p>Over 125 peer-reviewed studies have examined intuitive eating, finding consistent links to improved body image, lower rates of disordered eating, better psychological wellbeing, and similar or better physical health outcomes compared to dieting. It is not the "easy way out." It is the sustainable way through.</p>
       <div class="cta-box">
         <h4>Your Body Is Not the Problem 🍽️</h4>
         <p>Join the HerWorld wellness community where we talk about food, bodies, and health with radical kindness and zero judgment throughout 2026.</p>
@@ -844,7 +868,9 @@ const blogs = [
       </div>`
   },
   {
-    id:12, emoji:"👩‍👧", tag:"Motherhood",
+    id:12,
+    img:"https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=800&q=80",
+    tag:"Motherhood",
     title:"Raising Daughters Who Know Their Unshakeable Worth in 2026",
     desc:"The most powerful gift you can give your daughter is a confidence that no one can take from her.",
     date:"March 23, 2026", readTime:"9 min read",
@@ -857,15 +883,13 @@ const blogs = [
           <div class="inf-stat"><h5>3×</h5><p>Girls with mentors stay in school longer</p></div>
         </div>
       </div>
-      <p>Your daughter is watching everything. How you talk about your own body in the mirror. How you handle disagreement and conflict. Whether you ask for help or pretend you don't need it. How you respond to failure. How you treat yourself on hard days. You are her first and most influential teacher of what it means to be a woman — and that is the most extraordinary responsibility and opportunity imaginable.</p>
+      <p>Your daughter is watching everything. How you talk about your own body in the mirror. How you handle disagreement and conflict. Whether you ask for help or pretend you don't need it. How you respond to failure. How you treat yourself on hard days. You are her first and most influential teacher of what it means to be a woman.</p>
       <h4>Watch Your Language Around Your Own Body</h4>
-      <p>Children absorb everything, especially from the people they love most. When you say "I look fat" or "I can't eat that" or "I hate my [body part]," your daughter hears: this is how women are supposed to feel about their bodies. Instead, try "I feel strong today" or "I'm grateful my body can do this." The language she grows up hearing becomes the voice in her head for decades.</p>
+      <p>Children absorb everything, especially from the people they love most. When you say "I look fat" or "I hate my [body part]," your daughter hears: this is how women are supposed to feel about their bodies. Instead, try "I feel strong today" or "I'm grateful my body can do this." The language she grows up hearing becomes the voice in her head for decades.</p>
       <h4>Praise Effort and Process, Not Outcome and Appearance</h4>
-      <p>Research by Carol Dweck on growth mindset shows that children praised for effort ("You worked really hard on that") develop more resilience and capability than those praised for fixed traits ("You're so smart/pretty"). Separate her worth from her appearance and her performance. Her value is inherent — not earned.</p>
+      <p>Research on growth mindset shows that children praised for effort develop more resilience and capability than those praised for fixed traits. Separate her worth from her appearance and her performance. Her value is inherent — not earned.</p>
       <h4>Teach Body Autonomy from the Beginning</h4>
-      <p>Allow her to decide who touches her body. Don't force hugs or kisses, even with family members. Let her say no to physical affection — and validate that right. This isn't about being antisocial; it's about teaching her from the earliest age that her body belongs to her and her "no" has power. These lessons become the foundation of consent, safety, and self-advocacy.</p>
-      <h4>Expose Her to Women Who Look Like Possibility</h4>
-      <p>Women scientists, engineers, athletes, politicians, artists, entrepreneurs, activists, doctors. Let her see what women can be and do — across all fields, all backgrounds, all body types and appearances. The more representations of womanhood she encounters, the more expansive her self-concept becomes.</p>
+      <p>Allow her to decide who touches her body. Don't force hugs or kisses, even with family members. This isn't about being antisocial; it's about teaching her from the earliest age that her body belongs to her and her "no" has power. These lessons become the foundation of consent, safety, and self-advocacy.</p>
       <h4>Model Emotional Intelligence Openly</h4>
       <p>Show her how to name emotions. "I'm feeling frustrated right now because..." Let her see you struggle and recover. Let her see you apologize when you're wrong. Let her see you get back up after disappointment. Emotional intelligence is the skill that will serve her more than almost any other throughout her entire life.</p>
       <div class="cta-box">
@@ -875,7 +899,9 @@ const blogs = [
       </div>`
   },
   {
-    id:13, emoji:"✈️", tag:"Lifestyle",
+    id:13,
+    img:"https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80",
+    tag:"Lifestyle",
     title:"Solo Travel for Women in 2026: Everything You Need to Know",
     desc:"Traveling alone is one of the most transformative things a woman can do for herself. Here's how to do it well.",
     date:"April 5, 2026", readTime:"10 min read",
@@ -888,17 +914,15 @@ const blogs = [
           <div class="inf-stat"><h5>85%</h5><p>Say it boosted their confidence</p></div>
         </div>
       </div>
-      <p>There is something uniquely, irreplacably powerful about navigating a foreign city alone. About ordering food in a language you barely speak and figuring it out. About making decisions entirely for yourself — where to go, how long to stay, when to rest, what to try. Solo travel strips away the performance of who you are for others and shows you, with stunning clarity, who you actually are. It's one of the greatest gifts you can give yourself.</p>
+      <p>There is something uniquely, irreplaceably powerful about navigating a foreign city alone. About ordering food in a language you barely speak and figuring it out. About making decisions entirely for yourself — where to go, how long to stay, when to rest, what to try. Solo travel strips away the performance of who you are for others and shows you, with stunning clarity, who you actually are.</p>
       <h4>Why Solo Travel Transforms Women Differently</h4>
-      <p>Women who travel solo consistently report profound shifts in confidence, self-reliance, and sense of personal capability. When you handle a missed train in a foreign country, navigate a language barrier, or simply spend an entire day moving at your own pace without accommodating anyone else — you come home knowing you can handle things. That knowledge changes how you move through all of life, not just travel.</p>
+      <p>Women who travel solo consistently report profound shifts in confidence, self-reliance, and sense of personal capability. When you handle a missed train in a foreign country, navigate a language barrier, or simply spend an entire day moving at your own pace without accommodating anyone else — you come home knowing you can handle things.</p>
       <h4>Starting Smart: Your First Solo Trip</h4>
-      <p>Your first solo adventure doesn't have to be a six-month backpacking expedition. Start with a weekend trip to a city you've always wanted to explore — ideally somewhere with easy transport, English widely spoken, and infrastructure you feel comfortable in. Build your confidence with smaller trips before going bigger and more remote. Every solo trip you complete expands your sense of what's possible.</p>
+      <p>Your first solo adventure doesn't have to be a six-month backpacking expedition. Start with a weekend trip to a city you've always wanted to explore. Build your confidence with smaller trips before going bigger and more remote. Every solo trip you complete expands your sense of what's possible.</p>
       <h4>Safety Without Fear in 2026</h4>
-      <p>Research your destination thoroughly from women's perspectives specifically — travel forums and Instagram communities for female travelers are invaluable. Share your itinerary with someone who loves you. Stay in reputable, well-reviewed accommodation. Trust your instincts — they are your most sophisticated safety tool. Don't let fear be the boss, but do respect it as useful data worth considering.</p>
-      <h4>Top Destinations for Solo Female Travelers in 2026</h4>
-      <p>Japan continues to lead global rankings for safety and ease. Portugal and Iceland offer stunning landscapes with welcoming, safe environments. New Zealand combines adventure and accessibility beautifully. Colombia's major cities have transformed dramatically and offer incredible culture. Japan, Portugal, Iceland, New Zealand, Canada, and Japan again — the world is more open to solo women travelers than ever before in 2026.</p>
+      <p>Research your destination thoroughly from women's perspectives specifically. Share your itinerary with someone who loves you. Stay in reputable, well-reviewed accommodation. Trust your instincts — they are your most sophisticated safety tool. Don't let fear be the boss, but do respect it as useful data.</p>
       <h4>The Most Important Thing You'll Discover</h4>
-      <p>You are braver than you think. More capable than you've been told. Better at adapting, problem-solving, and enjoying your own company than you imagined. You don't need a partner or a group to experience the world fully. You are, in fact, excellent company. Solo travel will show you this in a way nothing else quite can.</p>
+      <p>You are braver than you think. More capable than you've been told. Better at adapting, problem-solving, and enjoying your own company than you imagined. You don't need a partner or a group to experience the world fully. You are excellent company. Solo travel will show you this in a way nothing else quite can.</p>
       <div class="cta-box">
         <h4>Your Adventure Awaits in 2026 ✈️</h4>
         <p>Connect with HerWorld women who travel solo, share tips, and build the confidence to explore the world on their own beautiful terms.</p>
@@ -906,7 +930,9 @@ const blogs = [
       </div>`
   },
   {
-    id:14, emoji:"🔮", tag:"Empowerment",
+    id:14,
+    img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+    tag:"Empowerment",
     title:"Reclaiming Your Power After a Toxic Relationship",
     desc:"Healing is not linear — but it is absolutely possible. Here's your roadmap back to yourself.",
     date:"April 12, 2026", readTime:"11 min read",
@@ -919,17 +945,15 @@ const blogs = [
           <div class="inf-stat"><h5>91%</h5><p>Report stronger self-worth after healing</p></div>
         </div>
       </div>
-      <p>Toxic relationships don't always announce themselves with red flags you can see clearly from the outside. Sometimes they're the slow erosion — the constant subtle criticism that makes you doubt your own perceptions. The gaslighting that makes you question your reality. The control that feels like love until you realize you've made yourself smaller to accommodate someone else's needs for years. Whatever your experience: your healing is valid, your pain is real, and you deserve to come back to yourself fully.</p>
+      <p>Toxic relationships don't always announce themselves with red flags you can see clearly from the outside. Sometimes they're the slow erosion — the constant subtle criticism that makes you doubt your own perceptions. The gaslighting that makes you question your reality. Whatever your experience: your healing is valid, your pain is real, and you deserve to come back to yourself fully.</p>
       <h4>Naming What Happened</h4>
-      <p>The first act of reclaiming your power is naming your experience accurately. Toxic behavior is not love, even when it's wrapped in declarations of love. Manipulation is not care, even when it's rationalized as concern. Control is not protection, even when it's presented that way. Naming the reality clearly is not an act of anger — it's an act of sanity. You cannot heal from something you haven't acknowledged.</p>
+      <p>The first act of reclaiming your power is naming your experience accurately. Toxic behavior is not love, even when it's wrapped in declarations of love. Manipulation is not care, even when it's rationalized as concern. Naming the reality clearly is not an act of anger — it's an act of sanity. You cannot heal from something you haven't acknowledged.</p>
       <h4>Understanding Trauma Bonding</h4>
-      <p>If you've ever wondered why leaving was so hard, or why you find yourself still missing someone who hurt you, trauma bonding explains it. The cycle of tension, incident, reconciliation, and calm in toxic relationships creates powerful neurological bonds — similar to addiction in brain chemistry. Your difficulty leaving or letting go was not weakness. It was the predictable neurological response to intermittent reinforcement. Understanding this is the beginning of self-compassion.</p>
+      <p>If you've ever wondered why leaving was so hard, or why you find yourself still missing someone who hurt you, trauma bonding explains it. The cycle of tension, incident, reconciliation, and calm in toxic relationships creates powerful neurological bonds — similar to addiction in brain chemistry. Your difficulty leaving was not weakness. It was a predictable neurological response.</p>
       <h4>Rebuilding Your Identity</h4>
-      <p>Long-term toxic relationships often erode your sense of self — who you are, what you like, what you believe, what you value. Begin by reconnecting with who you were before. What did you love doing? Who were your people? What dreams had you quietly set aside? Return to those things. Start small. Curiosity is the gentlest form of healing.</p>
-      <h4>Rewriting the Internal Narrative</h4>
-      <p>The voice in your head that says you deserved it, that you're too much or never enough, that no one else will want you — that is not your authentic voice. That is the internalized echo of someone who could not handle your fullness and projected their limitations onto you. Healing includes slowly, persistently replacing those messages with truth. It takes time. It takes therapy for many women. It is absolutely worth it.</p>
+      <p>Long-term toxic relationships often erode your sense of self. Begin by reconnecting with who you were before. What did you love doing? Who were your people? What dreams had you quietly set aside? Return to those things. Start small. Curiosity is the gentlest form of healing.</p>
       <h4>The Timeline of Healing</h4>
-      <p>There is no universal timeline, and anyone who tells you there is hasn't done the work. Some days you'll feel completely free and like yourself again. Others will knock you backward unexpectedly. Both are part of healing. Grief is not linear. Progress is not linear. But overall, with support and time, healing moves forward — even when it doesn't feel that way in the moment.</p>
+      <p>There is no universal timeline. Some days you'll feel completely free. Others will knock you backward unexpectedly. Both are part of healing. Grief is not linear. Progress is not linear. But overall, with support and time, healing moves forward — even when it doesn't feel that way in the moment.</p>
       <div class="cta-box">
         <h4>You Are Whole — Even Now 🔮</h4>
         <p>The HerWorld community includes women at every stage of healing. You don't have to navigate this alone. We're here in 2026.</p>
@@ -937,7 +961,9 @@ const blogs = [
       </div>`
   },
   {
-    id:15, emoji:"🌙", tag:"Wellness",
+    id:15,
+    img:"https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800&q=80",
+    tag:"Wellness",
     title:"The Science of Sleep: Why Women Desperately Need More Rest in 2026",
     desc:"Research shows women need more sleep than men — yet we're getting significantly less. Here's why that matters deeply.",
     date:"April 19, 2026", readTime:"9 min read",
@@ -950,17 +976,15 @@ const blogs = [
           <div class="inf-stat"><h5>40%</h5><p>Hormones regulate during sleep</p></div>
         </div>
       </div>
-      <p>We celebrate hustle. We brag about functioning on five hours. We wear exhaustion like a badge of seriousness and commitment. And in doing so, we are quietly, chronically undermining our health, our mental clarity, our emotional regulation, and our longevity. The science is unambiguous: sleep is not optional, and women — biologically, physiologically — need more of it than we're getting.</p>
+      <p>We celebrate hustle. We brag about functioning on five hours. We wear exhaustion like a badge of seriousness and commitment. And in doing so, we are quietly, chronically undermining our health, our mental clarity, our emotional regulation, and our longevity. The science is unambiguous: sleep is not optional, and women need more of it than we're getting.</p>
       <h4>Why Women Biologically Need More Sleep</h4>
-      <p>Research from Duke University found that poor sleep was significantly more harmful to women than to men, leading to increased inflammation, higher psychological distress, and greater risk of cardiovascular disease. Women's brains complete more multitasking and complex processing than men's brains on average — and therefore require more recovery time. This is not weakness; it is neurological reality.</p>
+      <p>Research from Duke University found that poor sleep was significantly more harmful to women than to men, leading to increased inflammation, higher psychological distress, and greater risk of cardiovascular disease. Women's brains complete more multitasking and complex processing — and therefore require more recovery time. This is neurological reality.</p>
       <h4>The Hormonal-Sleep Connection</h4>
-      <p>Estrogen supports REM sleep and helps regulate the sleep-wake cycle. Progesterone has sedative properties and supports deep sleep. As these hormones fluctuate throughout the menstrual cycle, pregnancy, postpartum, and menopause, sleep quality changes significantly. The week before your period, when both estrogen and progesterone drop, many women experience significantly disrupted sleep — which compounds PMS symptoms. Understanding this connection allows you to plan accordingly rather than fighting your body.</p>
+      <p>Estrogen supports REM sleep and helps regulate the sleep-wake cycle. Progesterone has sedative properties and supports deep sleep. As these hormones fluctuate throughout the menstrual cycle, pregnancy, postpartum, and menopause, sleep quality changes significantly. Understanding this connection allows you to plan accordingly rather than fighting your body.</p>
       <h4>What Actually Destroys Sleep Quality</h4>
-      <p>Screens before bed (blue light suppresses melatonin). Alcohol (disrupts REM sleep despite making you feel drowsy). Irregular sleep and wake times (destroys your circadian rhythm). A bedroom that's too warm (optimal temperature is 65-68°F). Caffeine consumed after 2pm. Doom-scrolling. Stress with no outlet before sleep. Knowing your sleep saboteurs is the first step to eliminating them.</p>
+      <p>Screens before bed (blue light suppresses melatonin). Alcohol (disrupts REM sleep despite making you feel drowsy). Irregular sleep and wake times. A bedroom that's too warm. Caffeine consumed after 2pm. Knowing your sleep saboteurs is the first step to eliminating them.</p>
       <h4>Building a Sleep Sanctuary in 2026</h4>
-      <p>Invest in your sleep environment as seriously as you would invest in any other aspect of your health. Blackout curtains. A cooling mattress pad if you sleep hot. White noise if external sounds disrupt you. A non-screen pre-sleep ritual — a bath, light reading, journaling, gentle stretching, a conversation. These aren't luxuries; they're infrastructure for your health.</p>
-      <h4>When to Seek Medical Help</h4>
-      <p>If you're doing everything right and still sleeping poorly, speak with your doctor. Women are significantly underdiagnosed with sleep apnea (often assumed to be a condition affecting overweight men). Insomnia that lasts more than a month is worth treating — cognitive behavioral therapy for insomnia (CBT-I) is more effective than medication and has no side effects.</p>
+      <p>Invest in your sleep environment seriously. Blackout curtains. A cooling mattress pad if you sleep hot. White noise if external sounds disrupt you. A non-screen pre-sleep ritual — a bath, light reading, journaling, gentle stretching. These aren't luxuries; they're infrastructure for your health.</p>
       <div class="cta-box">
         <h4>Rest is Your Most Powerful Tool 🌙</h4>
         <p>In 2026, HerWorld champions rest, recovery, and the radical act of taking your health seriously. Join our community.</p>
@@ -968,7 +992,9 @@ const blogs = [
       </div>`
   },
   {
-    id:16, emoji:"🎨", tag:"Lifestyle",
+    id:16,
+    img:"https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80",
+    tag:"Lifestyle",
     title:"The Healing Power of Creative Expression for Women in 2026",
     desc:"Art, writing, music, dance — creativity is not a hobby. For women, it's essential medicine for the soul.",
     date:"April 26, 2026", readTime:"8 min read",
@@ -981,15 +1007,15 @@ const blogs = [
           <div class="inf-stat"><h5>2×</h5><p>Faster trauma processing with creativity</p></div>
         </div>
       </div>
-      <p>Somewhere between childhood and adulthood, most of us stop creating. We decide — or someone decides for us — that we're not talented enough, not serious enough, that creativity is frivolous or indulgent or reserved for artists. This loss is quiet and enormous. Because creativity is not just expression — it's processing, it's healing, it's how we make sense of being human. And women, who carry so much, need this outlet profoundly.</p>
+      <p>Somewhere between childhood and adulthood, most of us stop creating. We decide — or someone decides for us — that we're not talented enough, not serious enough, that creativity is frivolous or indulgent. This loss is quiet and enormous. Because creativity is not just expression — it's processing, it's healing, it's how we make sense of being human.</p>
       <h4>The Science of Creativity and Emotional Healing</h4>
-      <p>A landmark study at Drexel University found that just 45 minutes of art-making significantly reduced cortisol levels regardless of artistic experience or skill. Art therapy is used in trauma centers, cancer wards, psychiatric units, and palliative care worldwide — because creating something with your hands engages the prefrontal cortex, quiets the amygdala, and allows emotional processing that linear, verbal communication often cannot reach.</p>
+      <p>A landmark study at Drexel University found that just 45 minutes of art-making significantly reduced cortisol levels regardless of artistic experience or skill. Art therapy is used in trauma centers, cancer wards, psychiatric units, and palliative care worldwide — because creating something engages the prefrontal cortex, quiets the amygdala, and allows emotional processing that verbal communication often cannot reach.</p>
       <h4>You Don't Have to Be "Good"</h4>
-      <p>The healing power of creative expression has absolutely nothing to do with talent and everything to do with process. You don't journal to become a writer. You journal to understand yourself. You don't paint to create a masterpiece. You paint to give form to something you couldn't otherwise say. Release the outcome. Inhabit the process.</p>
+      <p>The healing power of creative expression has nothing to do with talent and everything to do with process. You don't journal to become a writer. You journal to understand yourself. You don't paint to create a masterpiece. You paint to give form to something you couldn't otherwise say. Release the outcome. Inhabit the process.</p>
       <h4>Finding Your Medium</h4>
-      <p>Writing and journaling. Painting or drawing. Collaging. Dancing — alone, in your kitchen, counts completely. Cooking and baking as creative acts. Gardening. Knitting or crocheting. Photography. Pottery. Singing in your car. Playing an instrument even badly. Storytelling. There is no hierarchy among creative mediums. The one that makes you feel most alive and most yourself is the right one.</p>
+      <p>Writing and journaling. Painting or drawing. Collaging. Dancing alone in your kitchen. Cooking as a creative act. Gardening. Knitting. Photography. Pottery. Singing in your car. There is no hierarchy among creative mediums. The one that makes you feel most alive and most yourself is the right one.</p>
       <h4>Making It a Consistent Practice in 2026</h4>
-      <p>Schedule it. Put 30-60 minutes of creative time on your calendar weekly and treat it with the same non-negotiable seriousness as a doctor's appointment or a work meeting. Creative practice requires protection from the demands that constantly pull at women's time. Give yourself permission to take this seriously, and watch what unfolds in your life over months of consistent creative expression.</p>
+      <p>Schedule it. Put 30-60 minutes of creative time on your calendar weekly and treat it with the same non-negotiable seriousness as a doctor's appointment. Creative practice requires protection from the demands that constantly pull at women's time. Give yourself permission to take this seriously.</p>
       <div class="cta-box">
         <h4>Create Something Today 🎨</h4>
         <p>HerWorld celebrates women who create, express, and heal through art in all its beautiful forms. Share your creative journey with our community in 2026.</p>
@@ -997,7 +1023,9 @@ const blogs = [
       </div>`
   },
   {
-    id:17, emoji:"🤝", tag:"Empowerment",
+    id:17,
+    img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
+    tag:"Empowerment",
     title:"Building Your Sisterhood: The Life-Changing Power of Female Friendships",
     desc:"Research shows that strong female friendships literally extend your lifespan. Here's how to build and nurture them.",
     date:"May 3, 2026", readTime:"9 min read",
@@ -1010,15 +1038,15 @@ const blogs = [
           <div class="inf-stat"><h5>1 in 4</h5><p>Women have no close confidante</p></div>
         </div>
       </div>
-      <p>UCLA researchers coined the term "tend and befriend" to describe the female stress response — the biologically wired drive women have to seek connection and community under pressure. While men's fight-or-flight response often drives them toward isolation or aggression in stress, women's neurological response is to reach toward other women. Female friendship is not a luxury or a social nicety. It is a biological necessity that literally keeps women alive longer and healthier.</p>
+      <p>UCLA researchers coined the term "tend and befriend" to describe the female stress response — the biologically wired drive women have to seek connection and community under pressure. Female friendship is not a luxury or a social nicety. It is a biological necessity that literally keeps women alive longer and healthier.</p>
       <h4>What Makes Female Friendships Unique and Powerful</h4>
-      <p>Women's friendships are characterized by emotional intimacy, mutual vulnerability, and reciprocal support in ways that are biologically and neurologically distinct. The sharing of personal experience, the validation of emotional reality, the comfort of being truly known — these interactions release oxytocin and serotonin more powerfully than almost any other social bond. They are, quite literally, medicine.</p>
+      <p>Women's friendships are characterized by emotional intimacy, mutual vulnerability, and reciprocal support. The sharing of personal experience, the validation of emotional reality, the comfort of being truly known — these interactions release oxytocin and serotonin more powerfully than almost any other social bond. They are, quite literally, medicine.</p>
       <h4>The Modern Epidemic of Female Loneliness</h4>
-      <p>Despite living in the most connected era in human history, a profound loneliness epidemic runs beneath the surface of women's lives. We're busy. We're guarded. We've moved away from hometown networks. We're navigating comparison culture. We've bought into the myth that we should be enough for ourselves. And the cost is significant — not just emotional, but physical. Chronic loneliness is as harmful to health as smoking 15 cigarettes a day.</p>
+      <p>Despite living in the most connected era in human history, a profound loneliness epidemic runs beneath the surface of women's lives. We're busy. We're guarded. We've moved away from hometown networks. And the cost is significant — not just emotional, but physical. Chronic loneliness is as harmful to health as smoking 15 cigarettes a day.</p>
       <h4>Why Adult Friendships Are Hard — and Worth the Effort</h4>
-      <p>Adult friendships require more intentionality than childhood friendships, which formed through proximity and shared circumstance. As adults, we have to choose to invest. We have to be the one who reaches out first, sometimes many times. We have to be willing to be vulnerable with people we don't know well yet. This takes courage. It is worth every bit of it.</p>
+      <p>Adult friendships require more intentionality than childhood friendships. As adults, we have to choose to invest. We have to be the one who reaches out first, sometimes many times. We have to be willing to be vulnerable with people we don't know well yet. This takes courage. It is worth every bit of it.</p>
       <h4>How to Build Real Friendships in 2026</h4>
-      <p>Start by showing up consistently in spaces you care about — a class, a community, a volunteer role, a professional group. Take the initiative to suggest plans. Reach out after a good conversation. Be genuinely curious about other people's lives and actually remember what they tell you. Be honest and appropriately vulnerable. Show up in difficulty — the friends who appear in hard moments are the ones who last.</p>
+      <p>Start by showing up consistently in spaces you care about. Take the initiative to suggest plans. Be genuinely curious about other people's lives. Be honest and appropriately vulnerable. Show up in difficulty — the friends who appear in hard moments are the ones who last.</p>
       <div class="cta-box">
         <h4>Find Your Sisterhood Here 🤝</h4>
         <p>HerWorld exists to connect women who want real, meaningful community. Join us and find your people in 2026.</p>
@@ -1026,7 +1054,9 @@ const blogs = [
       </div>`
   },
   {
-    id:18, emoji:"🧘", tag:"Mental Health",
+    id:18,
+    img:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
+    tag:"Mental Health",
     title:"Mindfulness for Busy Women: 5-Minute Practices That Actually Work in 2026",
     desc:"You don't need an hour on a meditation cushion. Start with 5 minutes and watch your life change.",
     date:"May 10, 2026", readTime:"8 min read",
@@ -1039,17 +1069,15 @@ const blogs = [
           <div class="inf-stat"><h5>37%</h5><p>Better emotional regulation reported</p></div>
         </div>
       </div>
-      <p>Mindfulness has been marketized, commodified, and over-spiritualized to the point where many women feel it's something they don't have time for, can't do correctly, or can only access through expensive apps and retreats. But the core of mindfulness is radically simple: it is the practice of paying deliberate, non-judgmental attention to the present moment. You can do this anywhere. For five minutes. Right now.</p>
+      <p>Mindfulness has been marketized and over-spiritualized to the point where many women feel it's something they don't have time for or can't do correctly. But the core of mindfulness is radically simple: it is the practice of paying deliberate, non-judgmental attention to the present moment. You can do this anywhere. For five minutes. Right now.</p>
       <h4>The Neuroscience of Why It Works</h4>
-      <p>Consistent mindfulness practice literally reshapes the brain. Studies using MRI imaging show that regular practitioners have measurably increased gray matter density in the prefrontal cortex (responsible for decision-making and self-regulation) and reduced amygdala reactivity (the brain's alarm system). You're not just feeling calmer — you're building a structurally more regulated brain over time.</p>
+      <p>Consistent mindfulness practice literally reshapes the brain. Studies using MRI imaging show that regular practitioners have measurably increased gray matter density in the prefrontal cortex and reduced amygdala reactivity. You're not just feeling calmer — you're building a structurally more regulated brain over time.</p>
       <h4>Practice 1: The 4-7-8 Breath (90 seconds)</h4>
-      <p>Inhale through your nose for 4 counts. Hold for 7. Exhale slowly through your mouth for 8. This specific rhythm activates the parasympathetic nervous system — your "rest and digest" mode — almost immediately. Do this before a stressful meeting, when anxiety spikes, before a difficult conversation, or any time you need to regulate quickly.</p>
+      <p>Inhale through your nose for 4 counts. Hold for 7. Exhale slowly through your mouth for 8. This specific rhythm activates the parasympathetic nervous system — your "rest and digest" mode — almost immediately. Do this before a stressful meeting, when anxiety spikes, or any time you need to regulate quickly.</p>
       <h4>Practice 2: The Morning Body Scan (3 minutes)</h4>
-      <p>Before picking up your phone in the morning, spend 3 minutes lying still and scanning your body from the crown of your head to the soles of your feet. Notice sensations — tension, warmth, heaviness — without trying to change anything. This simple practice brings you into your body and out of your racing mind before the day begins. It sets an intentional, present tone for everything that follows.</p>
+      <p>Before picking up your phone in the morning, spend 3 minutes lying still and scanning your body from the crown of your head to the soles of your feet. This simple practice brings you into your body and out of your racing mind before the day begins. It sets an intentional, present tone for everything that follows.</p>
       <h4>Practice 3: The 5-4-3-2-1 Grounding Technique (2 minutes)</h4>
-      <p>When anxiety spikes or you feel disconnected from the present moment, use your senses to ground yourself: Name 5 things you can see. 4 things you can physically feel (feet on floor, shirt on skin). 3 things you can hear. 2 things you can smell. 1 thing you can taste. This technique is clinically used for anxiety and panic attacks because it rapidly anchors you in sensory reality and away from spiral thinking.</p>
-      <h4>Practice 4: Mindful Meal (15 minutes, once daily)</h4>
-      <p>Eat one meal per day without screens — no phone, no television, no laptop. Notice the colors of your food. The smell before the first bite. The texture. The flavors and how they change. Eating mindfully improves digestion, satisfaction, relationship with food, and genuine presence in daily life. It transforms an automatic habit into an act of full aliveness.</p>
+      <p>When anxiety spikes, use your senses: Name 5 things you can see. 4 things you can physically feel. 3 things you can hear. 2 things you can smell. 1 thing you can taste. This technique is clinically used for anxiety and panic attacks because it rapidly anchors you in sensory reality and away from spiral thinking.</p>
       <div class="cta-box">
         <h4>5 Minutes Can Change Everything 🧘</h4>
         <p>Join HerWorld's mindfulness and wellness community where women share practices, support each other, and cultivate presence together in 2026.</p>
@@ -1087,7 +1115,7 @@ function filterCat(cat) { activeCategory=cat; renderBlogsPage(); }
 
 function blogCard(b) {
   return `<div class="blog-card" onclick="openBlog(${b.id})">
-    <div class="card-img">${b.emoji}</div>
+    <div class="card-img"><img src="${b.img}" alt="${b.title}" loading="lazy"></div>
     <div class="card-body">
       <span class="card-tag">${b.tag}</span>
       <h3>${b.title}</h3>
@@ -1104,7 +1132,9 @@ function blogCard(b) {
 // ===================== MODAL =====================
 function openBlog(id) {
   const b = blogs.find(x=>x.id===id); if(!b) return;
-  document.getElementById('modal-img').innerHTML = `<button class="modal-close" onclick="closeModal()">×</button>${b.emoji}`;
+  // Set modal image
+  document.getElementById('modal-img-tag').src = b.img;
+  document.getElementById('modal-img-tag').alt = b.title;
   document.getElementById('modal-tag').textContent = b.tag;
   document.getElementById('modal-title').textContent = b.title;
   document.getElementById('modal-date').textContent = b.date;
@@ -1158,7 +1188,7 @@ function renderAdminList() {
   document.getElementById('admin-list').innerHTML = blogs.map(b=>`
     <div class="admin-blog-item">
       <div>
-        <h4>${b.emoji} ${b.title}</h4>
+        <h4>${b.title}</h4>
         <span>${b.tag} · ${b.date} · ${b.readTime}</span>
       </div>
       <div class="admin-actions">
@@ -1180,7 +1210,7 @@ function editBlog(id) {
   document.getElementById('new-title').value=b.title;
   document.getElementById('new-cat').value=b.tag;
   document.getElementById('new-desc').value=b.desc;
-  document.getElementById('new-emoji').value=b.emoji;
+  document.getElementById('new-emoji').value='';
   document.getElementById('new-content').value=b.content;
   document.getElementById('editor-title').textContent='Edit Blog Post';
   document.getElementById('publish-btn').textContent='💾 Save Changes';
@@ -1198,6 +1228,7 @@ function publishBlog() {
   const emoji=document.getElementById('new-emoji').value||'📝';
   const content=document.getElementById('new-content').value;
   if(!title||!content){ showToast('Please fill in title and content!'); return; }
+  const defaultImg = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80';
 
   if(editingId) {
     const idx=blogs.findIndex(b=>b.id===editingId);
@@ -1207,7 +1238,7 @@ function publishBlog() {
     document.getElementById('publish-btn').textContent='🚀 Publish Blog';
     showToast('✅ Blog updated successfully!');
   } else {
-    blogs.unshift({id:Date.now(),emoji,tag,title,desc,
+    blogs.unshift({id:Date.now(),img:defaultImg,emoji,tag,title,desc,
       date:new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
       readTime:'8 min read',content});
     showToast('🚀 Blog published: '+title);

@@ -300,10 +300,44 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(253,246,240,0.9
 .editor-mode-tab{padding:0.5rem 1.2rem;border-radius:50px;border:2px solid #EDD8DC;background:white;color:var(--muted);cursor:pointer;font-weight:600;font-size:0.82rem;transition:all 0.3s;font-family:'DM Sans',sans-serif;}
 .editor-mode-tab.active{background:var(--rose);color:white;border-color:var(--rose);}
 
-/* EDITABLE FIELDS */
-[contenteditable="true"]{outline:none;cursor:text;}
-[contenteditable="true"]:hover{background:rgba(232,85,109,0.05);border-radius:4px;}
-[contenteditable="true"]:focus{background:rgba(232,85,109,0.08);border-radius:4px;box-shadow:0 0 0 2px rgba(232,85,109,0.3);}
+/* ===== INLINE EDIT SYSTEM ===== */
+.editable-field{position:relative;display:inline-block;width:100%;}
+.editable-field:hover .edit-trigger{opacity:1;}
+.edit-trigger{opacity:0;position:absolute;top:-8px;right:-8px;background:var(--rose);color:white;border:none;border-radius:50%;width:26px;height:26px;font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:opacity 0.2s;box-shadow:0 2px 8px rgba(232,85,109,0.4);}
+.edit-trigger:hover{background:var(--dark);}
+.inline-editor-overlay{display:none;position:fixed;inset:0;background:rgba(26,10,15,0.6);z-index:3000;align-items:center;justify-content:center;padding:1.5rem;}
+.inline-editor-overlay.open{display:flex;}
+.inline-editor-box{background:white;border-radius:20px;padding:2rem;max-width:640px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.inline-editor-box h4{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:1.2rem;color:var(--dark);}
+.inline-editor-box textarea,.inline-editor-box input[type="text"]{width:100%;padding:0.9rem 1rem;border:1.5px solid #EDD8DC;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.92rem;outline:none;background:var(--cream);resize:vertical;}
+.inline-editor-box textarea{min-height:120px;}
+.inline-editor-box input[type="text"]:focus,.inline-editor-box textarea:focus{border-color:var(--rose);}
+.inline-editor-actions{display:flex;gap:0.8rem;margin-top:1rem;justify-content:flex-end;}
+.btn-save-inline{background:var(--rose);color:white;border:none;padding:0.65rem 1.4rem;border-radius:50px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-cancel-inline{background:#f5e8eb;color:var(--muted);border:none;padding:0.65rem 1.2rem;border-radius:50px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* EDITABLE PUB ITEM */
+.pub-item-wrap{position:relative;}
+.pub-item-wrap:hover .pub-edit-btn{opacity:1;}
+.pub-edit-btn{opacity:0;position:absolute;top:8px;right:0;background:var(--blush);color:var(--rose);border:none;border-radius:8px;padding:0.25rem 0.6rem;font-size:0.72rem;font-weight:700;cursor:pointer;transition:opacity 0.2s;}
+
+/* TAG EDITOR */
+.tag-editable{cursor:pointer;position:relative;}
+.tag-editable:hover{opacity:0.8;text-decoration:underline;}
+
+/* SITE CARD EDIT */
+.site-card-wrap{position:relative;}
+.site-card-wrap:hover .site-edit-btn{opacity:1;}
+.site-edit-btn{opacity:0;position:absolute;top:6px;right:6px;background:var(--rose);color:white;border:none;border-radius:6px;padding:0.2rem 0.5rem;font-size:0.68rem;cursor:pointer;transition:opacity 0.2s;z-index:5;}
+
+/* APP CARD EDIT */
+.app-card-wrap{position:relative;}
+.app-card-wrap:hover .app-edit-btn{opacity:1;}
+.app-edit-btn{opacity:0;position:absolute;top:6px;right:6px;background:var(--rose);color:white;border:none;border-radius:6px;padding:0.2rem 0.5rem;font-size:0.68rem;cursor:pointer;transition:opacity 0.2s;z-index:5;}
+
+/* PASSWORD REVEAL */
+.pass-wrap{position:relative;}
+.pass-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted);}
 
 /* FOOTER */
 footer{background:var(--dark);color:rgba(255,255,255,0.6);text-align:center;padding:3rem 5%;}
@@ -319,10 +353,6 @@ footer a{color:var(--rose);text-decoration:none;}
 
 .toast{position:fixed;bottom:2rem;right:1rem;background:var(--rose);color:white;padding:1rem 1.5rem;border-radius:12px;font-weight:600;z-index:9999;display:none;animation:slideIn 0.3s ease;max-width:calc(100vw - 2rem);}
 @keyframes slideIn{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}
-
-/* PASSWORD REVEAL */
-.pass-wrap{position:relative;}
-.pass-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;color:var(--muted);}
 
 /* ======= RESPONSIVE ======= */
 @media(max-width:900px){
@@ -371,6 +401,18 @@ footer a{color:var(--rose);text-decoration:none;}
 </head>
 <body>
 
+<!-- INLINE EDITOR OVERLAY -->
+<div class="inline-editor-overlay" id="inline-editor-overlay">
+  <div class="inline-editor-box">
+    <h4 id="inline-editor-title">Edit Content</h4>
+    <div id="inline-editor-input-wrap"></div>
+    <div class="inline-editor-actions">
+      <button class="btn-cancel-inline" onclick="closeInlineEditor()">Cancel</button>
+      <button class="btn-save-inline" onclick="saveInlineEdit()">💾 Save</button>
+    </div>
+  </div>
+</div>
+
 <!-- NAV -->
 <nav>
   <div class="logo" onclick="showPage('home')">Her<span>World</span></div>
@@ -407,8 +449,8 @@ footer a{color:var(--rose);text-decoration:none;}
     <div>
       <div class="hero-badge">✦ New for 2026</div>
       <div class="hero-year">Est. 2026 · Your Year to Rise</div>
-      <h1>Empowering Women to <em>Rise, Bloom</em> & Lead</h1>
-      <p>Your go-to space for wellness, career, mental health, and sisterhood — crafted for the modern woman of 2026. Written for women, by women, with heart.</p>
+      <h1 id="hero-h1">Empowering Women to <em>Rise, Bloom</em> & Lead</h1>
+      <p id="hero-sub">Your go-to space for wellness, career, mental health, and sisterhood — crafted for the modern woman of 2026. Written for women, by women, with heart.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="showPage('blogs')">Explore Stories →</button>
         <button class="btn-secondary" onclick="showPage('about')">About Us</button>
@@ -424,8 +466,6 @@ footer a{color:var(--rose);text-decoration:none;}
     <div class="stat"><h3>9</h3><p>Topics covered</p></div>
     <div class="stat"><h3>100%</h3><p>Written with heart</p></div>
   </div>
-
-  <!-- Write For Us Banner -->
   <div class="write-for-us-banner">
     <div>
       <h3>✍️ Share Your Voice with 75K+ Women</h3>
@@ -433,7 +473,6 @@ footer a{color:var(--rose);text-decoration:none;}
     </div>
     <button class="btn-primary" onclick="showPage('write-for-us')">Write For Us →</button>
   </div>
-
   <div class="section-header">
     <h2>Latest from <em>HerWorld</em> 2026</h2>
     <div class="divider"></div>
@@ -513,8 +552,8 @@ footer a{color:var(--rose);text-decoration:none;}
     <div class="author-hero">
       <div class="author-avatar-lg">🌺</div>
       <div class="author-hero-info">
-        <h2>Maria Kanwal</h2>
-        <div class="roles">Research Associate · Assistant Digital Editor · SEO Content Writer · Digital Marketing · Copywriter · Scholar · Animal Welfare Supporter</div>
+        <h2 id="auth-name">Maria Kanwal</h2>
+        <div class="roles" id="auth-roles">Research Associate · Assistant Digital Editor · SEO Content Writer · Digital Marketing · Copywriter · Scholar · Animal Welfare Supporter</div>
         <div class="contact-pills">
           <a href="mailto:medrankseo@gmail.com" class="contact-pill">📧 medrankseo@gmail.com</a>
           <a href="mailto:kanwalmaria618@gmail.com" class="contact-pill">📧 kanwalmaria618@gmail.com</a>
@@ -527,151 +566,66 @@ footer a{color:var(--rose);text-decoration:none;}
           <a href="https://maria-kanwal.blogspot.com/" target="_blank" class="contact-pill">✍️ Blog</a>
           <a href="https://www.elivapress.com/en/authors/author-9188441151/" target="_blank" class="contact-pill">📚 Eliva Press</a>
         </div>
-        <p class="author-bio-text">I am Maria Kanwal, a Research Associate, Assistant Digital Editor, Digital Marketing and Web Content Writer, SEO Content Writer, Copywriter, and Scholar. I have worked at Probyn Security Advisors, Tech Harbor, Matrix Global, Nichetech Digital, Appsians, and Dubai-based medical clinics — building expertise in content creation, editing, SEO, and digital media. My research spans Defence, Diplomacy, International Relations, Women's Empowerment, Climate, and Emerging Technologies.</p>
+        <p class="author-bio-text" id="auth-bio-full">I am Maria Kanwal, a Research Associate, Assistant Digital Editor, Digital Marketing and Web Content Writer, SEO Content Writer, Copywriter, and Scholar. I have worked at Probyn Security Advisors, Tech Harbor, Matrix Global, Nichetech Digital, Appsians, and Dubai-based medical clinics — building expertise in content creation, editing, SEO, and digital media. My research spans Defence, Diplomacy, International Relations, Women's Empowerment, Climate, and Emerging Technologies.</p>
       </div>
     </div>
 
     <!-- My Websites -->
     <div class="author-card" style="margin-bottom:2rem;">
-      <h3>🌐 My Websites & Platforms</h3>
-      <div class="sites-grid">
-        <div class="site-card"><a href="https://womenhub.sbs/" target="_blank"><div class="site-icon">🌺</div><div class="site-name">Women Hub</div><div class="site-url">womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://herworld.womenhub.sbs/" target="_blank"><div class="site-icon">🌸</div><div class="site-name">HerWorld</div><div class="site-url">herworld.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://bloomwell.womenhub.sbs/" target="_blank"><div class="site-icon">💐</div><div class="site-name">BloomWell</div><div class="site-url">bloomwell.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://sherises.womenhub.sbs/" target="_blank"><div class="site-icon">⬆️</div><div class="site-name">She Rises</div><div class="site-url">sherises.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://lumierebeauty.womenhub.sbs/" target="_blank"><div class="site-icon">✨</div><div class="site-name">Lumière Beauty</div><div class="site-url">lumierebeauty.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://yourbeautyyourglow.womenhub.sbs/" target="_blank"><div class="site-icon">💅</div><div class="site-name">Your Beauty Your Glow</div><div class="site-url">yourbeautyyourglow.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://perfectbeautytips.womenhub.sbs/" target="_blank"><div class="site-icon">💄</div><div class="site-name">Perfect Beauty Tips</div><div class="site-url">perfectbeautytips.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://lacunia-cooking-recipes.womenhub.sbs/" target="_blank"><div class="site-icon">🍳</div><div class="site-name">La Cunia Cooking</div><div class="site-url">lacunia-cooking-recipes.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="http://saveour-kitchen.womenhub.sbs/" target="_blank"><div class="site-icon">🥘</div><div class="site-name">Save Our Kitchen</div><div class="site-url">saveour-kitchen.womenhub.sbs</div></a></div>
-        <div class="site-card"><a href="https://mariakanwal123.github.io/med-rank-seo/" target="_blank"><div class="site-icon">🔍</div><div class="site-name">Med Rank SEO</div><div class="site-url">mariakanwal123.github.io</div></a></div>
+      <h3>🌐 My Websites &amp; Platforms</h3>
+      <div class="sites-grid" id="sites-grid">
+        <div class="site-card-wrap"><div class="site-card"><a href="https://womenhub.sbs/" target="_blank"><div class="site-icon">🌺</div><div class="site-name">Women Hub</div><div class="site-url">womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(0)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="http://herworld.womenhub.sbs/" target="_blank"><div class="site-icon">🌸</div><div class="site-name">HerWorld</div><div class="site-url">herworld.womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(1)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="http://bloomwell.womenhub.sbs/" target="_blank"><div class="site-icon">💐</div><div class="site-name">BloomWell</div><div class="site-url">bloomwell.womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(2)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="http://sherises.womenhub.sbs/" target="_blank"><div class="site-icon">⬆️</div><div class="site-name">She Rises</div><div class="site-url">sherises.womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(3)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="http://lumierebeauty.womenhub.sbs/" target="_blank"><div class="site-icon">✨</div><div class="site-name">Lumière Beauty</div><div class="site-url">lumierebeauty.womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(4)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="http://yourbeautyyourglow.womenhub.sbs/" target="_blank"><div class="site-icon">💅</div><div class="site-name">Your Beauty Your Glow</div><div class="site-url">yourbeautyyourglow.womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(5)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="http://perfectbeautytips.womenhub.sbs/" target="_blank"><div class="site-icon">💄</div><div class="site-name">Perfect Beauty Tips</div><div class="site-url">perfectbeautytips.womenhub.sbs</div></a></div><button class="site-edit-btn" onclick="editSiteCard(6)">✏️</button></div>
+        <div class="site-card-wrap"><div class="site-card"><a href="https://mariakanwal123.github.io/med-rank-seo/" target="_blank"><div class="site-icon">🔍</div><div class="site-name">Med Rank SEO</div><div class="site-url">mariakanwal123.github.io</div></a></div><button class="site-edit-btn" onclick="editSiteCard(7)">✏️</button></div>
       </div>
     </div>
 
     <!-- My Apps -->
     <div class="author-card" style="margin-bottom:2rem;">
       <h3>📱 My Apps</h3>
-      <div class="apps-grid">
-        <div class="app-card"><a href="https://mariakanwal123.github.io/ramadan-calendar-2026/" target="_blank"><div class="app-icon">🌙</div><div class="app-name">Ramadan Calendar 2026</div><div class="app-desc">Complete Ramadan calendar with prayer times</div></a></div>
-        <div class="app-card"><a href="https://mariakanwal123.github.io/little-muslims-islamic-app-2026/" target="_blank"><div class="app-icon">☪️</div><div class="app-name">Little Muslims Islamic App</div><div class="app-desc">Islamic learning app for children</div></a></div>
-        <div class="app-card"><a href="https://mariakanwal123.github.io/ramadan-2026-wellness-guide/" target="_blank"><div class="app-icon">💚</div><div class="app-name">Ramadan Wellness Guide</div><div class="app-desc">Health & wellness guide for Ramadan 2026</div></a></div>
+      <div class="apps-grid" id="apps-grid">
+        <div class="app-card-wrap"><div class="app-card"><a href="https://mariakanwal123.github.io/ramadan-calendar-2026/" target="_blank"><div class="app-icon">🌙</div><div class="app-name">Ramadan Calendar 2026</div><div class="app-desc">Complete Ramadan calendar with prayer times</div></a></div><button class="app-edit-btn" onclick="editAppCard(0)">✏️</button></div>
+        <div class="app-card-wrap"><div class="app-card"><a href="https://mariakanwal123.github.io/little-muslims-islamic-app-2026/" target="_blank"><div class="app-icon">☪️</div><div class="app-name">Little Muslims Islamic App</div><div class="app-desc">Islamic learning app for children</div></a></div><button class="app-edit-btn" onclick="editAppCard(1)">✏️</button></div>
+        <div class="app-card-wrap"><div class="app-card"><a href="https://mariakanwal123.github.io/ramadan-2026-wellness-guide/" target="_blank"><div class="app-icon">💚</div><div class="app-name">Ramadan Wellness Guide</div><div class="app-desc">Health &amp; wellness guide for Ramadan 2026</div></a></div><button class="app-edit-btn" onclick="editAppCard(2)">✏️</button></div>
       </div>
     </div>
 
-    <!-- Publications + Academic IDs side by side -->
+    <!-- Publications + Research Papers -->
     <div class="author-grid">
-      <!-- Publications -->
       <div class="author-card">
         <h3>📚 Books (Publications)</h3>
-        <div class="pub-item">
-          <div class="pub-icon">📘</div>
-          <div class="pub-content">
-            <h4>Revealing Environmental Influences on Breast Cancer Risk</h4>
-            <div class="pub-meta">ISBN: 978-1-304-42043-5 · Eliva Press</div>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📘</div>
-          <div class="pub-content">
-            <h4>Progressive Voices: Charting Women's Empowerment</h4>
-            <div class="pub-meta">ISBN: 978-1-304-43380-0 · Eliva Press</div>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📘</div>
-          <div class="pub-content">
-            <h4>Pakistan's Economic Transformation from Agrarian Society to an Emerging Market</h4>
-            <div class="pub-meta">ISBN: 978-1-304-42026-8 · Eliva Press</div>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📘</div>
-          <div class="pub-content">
-            <h4>Death or Evolution of Globalization during COVID-19 Era</h4>
-            <div class="pub-meta">ISBN: 978-1-304-42030-5 · Eliva Press</div>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📘</div>
-          <div class="pub-content">
-            <h4>Rise of Chinese Public Diplomacy during COVID-19 Era</h4>
-            <div class="pub-meta">Book · Eliva Press</div>
-          </div>
+        <div id="books-list">
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📘</div><div class="pub-content"><h4>Revealing Environmental Influences on Breast Cancer Risk</h4><div class="pub-meta">ISBN: 978-1-304-42043-5 · Eliva Press</div></div></div><button class="pub-edit-btn" onclick="editPubItem('books',0)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📘</div><div class="pub-content"><h4>Progressive Voices: Charting Women's Empowerment</h4><div class="pub-meta">ISBN: 978-1-304-43380-0 · Eliva Press</div></div></div><button class="pub-edit-btn" onclick="editPubItem('books',1)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📘</div><div class="pub-content"><h4>Pakistan's Economic Transformation from Agrarian Society to an Emerging Market</h4><div class="pub-meta">ISBN: 978-1-304-42026-8 · Eliva Press</div></div></div><button class="pub-edit-btn" onclick="editPubItem('books',2)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📘</div><div class="pub-content"><h4>Death or Evolution of Globalization during COVID-19 Era</h4><div class="pub-meta">ISBN: 978-1-304-42030-5 · Eliva Press</div></div></div><button class="pub-edit-btn" onclick="editPubItem('books',3)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📘</div><div class="pub-content"><h4>Rise of Chinese Public Diplomacy during COVID-19 Era</h4><div class="pub-meta">Book · Eliva Press</div></div></div><button class="pub-edit-btn" onclick="editPubItem('books',4)">✏️ Edit</button></div>
         </div>
       </div>
-
-      <!-- Research Papers -->
       <div class="author-card">
         <h3>📄 Research Papers</h3>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Assessing the Impact of the 2024 Hualien Earthquake in Taiwan</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4786199" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Natural Disaster Earthquake in Turkiye and Syria 2023: Humanitarian Response</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4382051" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>China Pakistan Economic Corridor (CPEC) 10 Years Celebrations</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4667601" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>3 Generative AI Applications for IoT You Must Know About</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4667577" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Brexit and its Implications for European Union</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4312258" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Floods in Pakistan: Global Warming or Foreign Nations</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4300138" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Rise of Chinese Public Diplomacy during COVID-19 Era</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4126228" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Nuclear Weapons a Source of Peace and Stability Between India and Pakistan</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105194" target="_blank">View on SSRN →</a>
-          </div>
-        </div>
-        <div class="pub-item">
-          <div class="pub-icon">📄</div>
-          <div class="pub-content">
-            <h4>Death of Globalization during COVID-19 Era</h4>
-            <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4101253" target="_blank">View on SSRN →</a>
-          </div>
+        <div id="papers-list">
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Assessing the Impact of the 2024 Hualien Earthquake in Taiwan</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4786199" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',0)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Natural Disaster Earthquake in Turkiye and Syria 2023: Humanitarian Response</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4382051" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',1)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>China Pakistan Economic Corridor (CPEC) 10 Years Celebrations</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4667601" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',2)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>3 Generative AI Applications for IoT You Must Know About</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4667577" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',3)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Brexit and its Implications for European Union</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4312258" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',4)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Floods in Pakistan: Global Warming or Foreign Nations</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4300138" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',5)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Rise of Chinese Public Diplomacy during COVID-19 Era</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4126228" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',6)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Nuclear Weapons a Source of Peace and Stability Between India and Pakistan</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105194" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',7)">✏️ Edit</button></div>
+          <div class="pub-item-wrap"><div class="pub-item"><div class="pub-icon">📄</div><div class="pub-content"><h4>Death of Globalization during COVID-19 Era</h4><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4101253" target="_blank">View on SSRN →</a></div></div><button class="pub-edit-btn" onclick="editPubItem('papers',8)">✏️ Edit</button></div>
         </div>
       </div>
     </div>
 
     <!-- Academic IDs -->
     <div class="author-card" style="margin-bottom:2rem;">
-      <h3>🆔 Academic & Researcher IDs</h3>
+      <h3>🆔 Academic &amp; Researcher IDs</h3>
       <div class="academic-grid">
         <div class="academic-item"><span>🎓</span><a href="https://scholar.google.com/citations?user=6jmGlYwAAAAJ" target="_blank">Google Scholar — 6jmGlYwAAAAJ</a></div>
         <div class="academic-item"><span>📄</span><a href="https://ssrn.com/author=5225172" target="_blank">SSRN Author — 5225172</a></div>
@@ -687,38 +641,40 @@ footer a{color:var(--rose);text-decoration:none;}
     <div class="author-grid">
       <div class="author-card">
         <h3>🔬 Research Interests</h3>
-        <div class="tags-wrap">
-          <span class="tag">Defence</span><span class="tag">Diplomacy</span><span class="tag">International Relations</span><span class="tag">Foreign Policies</span><span class="tag">Peace & Conflict Studies</span><span class="tag">Strategic Studies</span><span class="tag">Humanitarian Assistance</span><span class="tag">SDGs</span><span class="tag">Climate & Environment</span><span class="tag">Emerging Technologies</span><span class="tag">Artificial Intelligence</span><span class="tag">Digital Era</span><span class="tag">Women Empowerment</span><span class="tag">Medical & Health</span><span class="tag">International Politics</span>
+        <div class="tags-wrap" id="research-tags">
+          <span class="tag">Defence</span><span class="tag">Diplomacy</span><span class="tag">International Relations</span><span class="tag">Foreign Policies</span><span class="tag">Peace &amp; Conflict Studies</span><span class="tag">Strategic Studies</span><span class="tag">Humanitarian Assistance</span><span class="tag">SDGs</span><span class="tag">Climate &amp; Environment</span><span class="tag">Emerging Technologies</span><span class="tag">Artificial Intelligence</span><span class="tag">Digital Era</span><span class="tag">Women Empowerment</span><span class="tag">Medical &amp; Health</span><span class="tag">International Politics</span>
         </div>
         <h3 style="margin-top:1.5rem;">🛠️ Skills</h3>
-        <div class="tags-wrap">
-          <span class="tag">SEO (On/Off/Technical)</span><span class="tag">SEM</span><span class="tag">SMM</span><span class="tag">Email Marketing</span><span class="tag">Content Creation</span><span class="tag">Editing & Proofreading</span><span class="tag">Research</span><span class="tag">Graphic Design</span><span class="tag">Microsoft Office</span><span class="tag">Adobe Creative Suite</span><span class="tag">Canva</span><span class="tag">Video Editing</span>
+        <div class="tags-wrap" id="skills-tags">
+          <span class="tag">SEO (On/Off/Technical)</span><span class="tag">SEM</span><span class="tag">SMM</span><span class="tag">Email Marketing</span><span class="tag">Content Creation</span><span class="tag">Editing &amp; Proofreading</span><span class="tag">Research</span><span class="tag">Graphic Design</span><span class="tag">Microsoft Office</span><span class="tag">Adobe Creative Suite</span><span class="tag">Canva</span><span class="tag">Video Editing</span>
         </div>
       </div>
       <div class="author-card">
         <h3>🏆 Certifications</h3>
-        <div class="cert-item">Certificate of Excellence in Peer Reviewing (BP International)</div>
-        <div class="cert-item">Certificate of Publication — Globalization during COVID-19 Era (ELIVA PRESS)</div>
-        <div class="cert-item">Certificate of Publication — Rise of Chinese Public Diplomacy (ELIVA PRESS)</div>
-        <div class="cert-item">Human Rights and the Environment (UNITAR)</div>
-        <div class="cert-item">Women's Empowerment, SDGs, and ICT (UN-APCICT/ESCAP)</div>
-        <div class="cert-item">Death Penalty Law & Capital Punishment</div>
-        <div class="cert-item">Digital Law Group Virtual Experience (HERBERT SMITH FREEHILLS)</div>
-        <div class="cert-item">Cyber Security Global Virtual Internship (CLIFFORD CHANCE)</div>
-        <div class="cert-item">Social Media Marketing: Strategy & Optimization (LinkedIn Learning)</div>
-        <div class="cert-item">Effective Leadership (HP LIFE)</div>
-        <div class="cert-item">Strategic Planning (HP FOUNDATION)</div>
-        <div class="cert-item">Human Resource Management (Great Learning)</div>
-        <div class="cert-item">Intro to Graphic Designing with Photoshop (Great Learning)</div>
-        <div class="cert-item">Master Course in Journalism & Mass Communication 3.0 (Udemy)</div>
-        <div class="cert-item">Certificate of Achievement (Tech Harbor)</div>
+        <div id="certs-list">
+          <div class="cert-item">Certificate of Excellence in Peer Reviewing (BP International)</div>
+          <div class="cert-item">Certificate of Publication — Globalization during COVID-19 Era (ELIVA PRESS)</div>
+          <div class="cert-item">Certificate of Publication — Rise of Chinese Public Diplomacy (ELIVA PRESS)</div>
+          <div class="cert-item">Human Rights and the Environment (UNITAR)</div>
+          <div class="cert-item">Women's Empowerment, SDGs, and ICT (UN-APCICT/ESCAP)</div>
+          <div class="cert-item">Death Penalty Law &amp; Capital Punishment</div>
+          <div class="cert-item">Digital Law Group Virtual Experience (HERBERT SMITH FREEHILLS)</div>
+          <div class="cert-item">Cyber Security Global Virtual Internship (CLIFFORD CHANCE)</div>
+          <div class="cert-item">Social Media Marketing: Strategy &amp; Optimization (LinkedIn Learning)</div>
+          <div class="cert-item">Effective Leadership (HP LIFE)</div>
+          <div class="cert-item">Strategic Planning (HP FOUNDATION)</div>
+          <div class="cert-item">Human Resource Management (Great Learning)</div>
+          <div class="cert-item">Intro to Graphic Designing with Photoshop (Great Learning)</div>
+          <div class="cert-item">Master Course in Journalism &amp; Mass Communication 3.0 (Udemy)</div>
+          <div class="cert-item">Certificate of Achievement (Tech Harbor)</div>
+        </div>
       </div>
     </div>
 
     <!-- Education -->
-    <div class="author-card author-card-full" style="margin-bottom:2rem;">
+    <div class="author-card" style="margin-bottom:2rem;">
       <h3>🎓 Education</h3>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;" id="education-grid">
         <div style="background:var(--cream);border-radius:14px;padding:1.2rem;border:1px solid var(--blush);">
           <div style="font-size:1.5rem;margin-bottom:0.5rem;">🎓</div>
           <div style="font-weight:700;font-size:0.9rem;color:var(--dark);">BDDS (Defence and Diplomatic Studies)</div>
@@ -842,7 +798,8 @@ footer a{color:var(--rose);text-decoration:none;}
           <a href="http://sherises.womenhub.sbs/" target="_blank" class="platform-tab">She Rises</a>
           <a href="http://lumierebeauty.womenhub.sbs/" target="_blank" class="platform-tab">Lumière Beauty</a>
           <a href="http://perfectbeautytips.womenhub.sbs/" target="_blank" class="platform-tab">Perfect Beauty Tips</a>
-          <a href="http://lacunia-cooking-recipes.womenhub.sbs/" target="_blank" class="platform-tab">La Cunia Cooking</a>
+          <a href="http://lacuniacokingrecipes.womenhub.sbs/" target="_blank" class="platform-tab">La Cunia Cooking</a>
+          <a href="http://saveourkitchen.womenhub.sbs/" target="_blank" class="platform-tab">Save Our Kitchen</a>
         </div>
       </div>
     </div>
@@ -921,13 +878,10 @@ footer a{color:var(--rose);text-decoration:none;}
     <!-- ADD/EDIT BLOG -->
     <div id="tab-add" class="admin-section">
       <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1rem" id="editor-title">Add New Blog Post</h3>
-      
-      <!-- Input mode tabs -->
       <div class="editor-mode-tabs">
         <button class="editor-mode-tab active" id="mode-text-btn" onclick="setEditorMode('text')">✏️ Text / Rich</button>
         <button class="editor-mode-tab" id="mode-html-btn" onclick="setEditorMode('html')">🖥️ HTML Code</button>
       </div>
-
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;">
         <div class="form-group" style="grid-column:1/-1"><label>Blog Title *</label><input type="text" id="new-title" placeholder="Enter compelling blog title..."></div>
         <div class="form-group">
@@ -940,21 +894,15 @@ footer a{color:var(--rose);text-decoration:none;}
         <div class="form-group" style="grid-column:1/-1"><label>Short Description (shown on card)</label><input type="text" id="new-desc" placeholder="Brief description visible on the blog card..."></div>
         <div class="form-group" style="grid-column:1/-1"><label>Cover Image URL (optional)</label><input type="text" id="new-img" placeholder="https://images.unsplash.com/..."></div>
       </div>
-
-      <!-- TEXT MODE -->
       <div id="text-editor-wrap" class="form-group" style="margin-top:0.8rem">
         <label>✏️ Write Your Blog Content (Text Mode)</label>
-        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">Type your content freely below. Use blank lines to separate paragraphs. Headings: type a line starting with ## for a heading. Lists: start lines with - for bullet points.</p>
-        <textarea id="new-content-text" placeholder="Write your blog post here...&#10;&#10;## Introduction&#10;Start your introduction paragraph here...&#10;&#10;## Section Heading&#10;Write your section content...&#10;&#10;- Bullet point 1&#10;- Bullet point 2" style="width:100%;min-height:280px;padding:1rem;border:1.5px solid #EDD8DC;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:var(--cream);outline:none;resize:vertical;line-height:1.7;"></textarea>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">Use blank lines to separate paragraphs. ## for headings. - for bullet points.</p>
+        <textarea id="new-content-text" placeholder="Write your blog post here...&#10;&#10;## Introduction&#10;Start here...&#10;&#10;## Section&#10;Content...&#10;&#10;- Bullet 1&#10;- Bullet 2" style="width:100%;min-height:280px;padding:1rem;border:1.5px solid #EDD8DC;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.9rem;background:var(--cream);outline:none;resize:vertical;line-height:1.7;"></textarea>
       </div>
-
-      <!-- HTML MODE -->
       <div id="html-editor-wrap" class="form-group" style="margin-top:0.8rem;display:none;">
         <label>🖥️ HTML Code Editor</label>
-        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem">Paste or write complete HTML blog content here.</p>
-        <textarea class="code-editor" id="new-content-html" placeholder="<!-- Paste your blog HTML content here -->&#10;<p>Your introduction paragraph...</p>&#10;<h4>Section Heading</h4>&#10;<p>Content...</p>"></textarea>
+        <textarea class="code-editor" id="new-content-html" placeholder="<!-- Paste your blog HTML here -->&#10;<p>Your introduction...</p>"></textarea>
       </div>
-
       <div style="margin-bottom:1rem">
         <label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">Live Content Preview</label>
         <div class="preview-area" id="preview-area"><em style="color:var(--muted);font-size:0.9rem">Click "Preview" to see your content rendered here...</em></div>
@@ -972,21 +920,40 @@ footer a{color:var(--rose);text-decoration:none;}
       <div style="display:grid;gap:1.5rem;max-width:700px">
         <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">🏠 Homepage — Hero Title</label><input id="ep-hero-title" type="text" value="Empowering Women to Rise, Bloom & Lead" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.95rem;font-family:'DM Sans',sans-serif;"></div>
         <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">🏠 Homepage — Hero Subtitle</label><textarea id="ep-hero-sub" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:80px;font-family:'DM Sans',sans-serif;">Your go-to space for wellness, career, mental health, and sisterhood — crafted for the modern woman of 2026.</textarea></div>
-        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Mission Paragraph</label><textarea id="ep-mission" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:100px;font-family:'DM Sans',sans-serif;">HerWorld was born from a simple, powerful belief: every woman deserves a space where her voice is heard, her stories matter, and her growth is celebrated without limits.</textarea></div>
-        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Author Bio (short)</label><textarea id="ep-bio" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:120px;font-family:'DM Sans',sans-serif;">Maria Kanwal is the founder and lead author of HerWorld — a platform she built in 2026 with one mission...</textarea></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Mission Paragraph 1</label><textarea id="ep-mission" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:100px;font-family:'DM Sans',sans-serif;">HerWorld was born from a simple, powerful belief: every woman deserves a space where her voice is heard, her stories matter, and her growth is celebrated without limits.</textarea></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Mission Paragraph 2</label><textarea id="ep-mission2" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:80px;font-family:'DM Sans',sans-serif;">Launched in 2026, we cover everything from mental health and wellness to career strategy, financial freedom, relationships, and motherhood.</textarea></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Mission Paragraph 3</label><textarea id="ep-mission3" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:80px;font-family:'DM Sans',sans-serif;">Our vision is a world where every woman has access to the knowledge, sisterhood, and inspiration she needs to thrive.</textarea></div>
+        <div><label style="font-weight:700;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:0.5rem">👩 About Page — Author Bio</label><textarea id="ep-bio" style="width:100%;padding:0.8rem;border:1.5px solid #EDD8DC;border-radius:10px;font-size:0.9rem;min-height:120px;font-family:'DM Sans',sans-serif;">Maria Kanwal is the founder and lead author of HerWorld — a platform she built in 2026 with one mission...</textarea></div>
         <button class="btn-primary" onclick="savePageEdits()" style="width:fit-content">💾 Save All Changes</button>
       </div>
     </div>
 
     <!-- EDIT AUTHOR PROFILE -->
     <div id="tab-author-edit" class="admin-section">
-      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Edit Author Profile (About Page)</h3>
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:1.5rem">Edit Author Profile</h3>
       <div style="display:grid;gap:1.2rem;max-width:700px;">
         <div class="form-group"><label>Author Name</label><input type="text" id="ae-name" value="Maria Kanwal"></div>
-        <div class="form-group"><label>Title / Roles (shown under name)</label><input type="text" id="ae-roles" value="Research Associate · Assistant Digital Editor · SEO Content Writer · Digital Marketing · Copywriter · Scholar · Animal Welfare Supporter"></div>
+        <div class="form-group"><label>Title / Roles</label><input type="text" id="ae-roles" value="Research Associate · Assistant Digital Editor · SEO Content Writer · Digital Marketing · Copywriter · Scholar · Animal Welfare Supporter"></div>
         <div class="form-group"><label>Primary Email</label><input type="email" id="ae-email" value="medrankseo@gmail.com"></div>
-        <div class="form-group"><label>Short Bio (shown on About page)</label><textarea id="ae-bio-short" style="min-height:100px;">Maria Kanwal is the founder and lead author of HerWorld — a platform she built in 2026 with one mission: to create a digital home where every woman's story is valued.</textarea></div>
-        <div class="form-group"><label>Full Bio (shown on Author page)</label><textarea id="ae-bio-full" style="min-height:160px;">I am Maria Kanwal, a Research Associate, Assistant Digital Editor, Digital Marketing and Web Content Writer, SEO Content Writer, Copywriter, and Scholar. I have worked at Probyn Security Advisors, Tech Harbor, Matrix Global, Nichetech Digital, Appsians, and Dubai-based medical clinics.</textarea></div>
+        <div class="form-group"><label>Short Bio (About page)</label><textarea id="ae-bio-short" style="min-height:100px;">Maria Kanwal is the founder and lead author of HerWorld — a platform she built in 2026 with one mission: to create a digital home where every woman's story is valued.</textarea></div>
+        <div class="form-group"><label>Full Bio (Author page)</label><textarea id="ae-bio-full" style="min-height:160px;">I am Maria Kanwal, a Research Associate, Assistant Digital Editor, Digital Marketing and Web Content Writer, SEO Content Writer, Copywriter, and Scholar. I have worked at Probyn Security Advisors, Tech Harbor, Matrix Global, Nichetech Digital, Appsians, and Dubai-based medical clinics.</textarea></div>
+        <div class="form-group"><label>Research Interests (comma-separated)</label><textarea id="ae-research" style="min-height:80px;">Defence,Diplomacy,International Relations,Foreign Policies,Peace &amp; Conflict Studies,Strategic Studies,Humanitarian Assistance,SDGs,Climate &amp; Environment,Emerging Technologies,Artificial Intelligence,Digital Era,Women Empowerment,Medical &amp; Health,International Politics</textarea></div>
+        <div class="form-group"><label>Skills (comma-separated)</label><textarea id="ae-skills" style="min-height:80px;">SEO (On/Off/Technical),SEM,SMM,Email Marketing,Content Creation,Editing &amp; Proofreading,Research,Graphic Design,Microsoft Office,Adobe Creative Suite,Canva,Video Editing</textarea></div>
+        <div class="form-group"><label>Certifications (one per line)</label><textarea id="ae-certs" style="min-height:200px;">Certificate of Excellence in Peer Reviewing (BP International)
+Certificate of Publication — Globalization during COVID-19 Era (ELIVA PRESS)
+Certificate of Publication — Rise of Chinese Public Diplomacy (ELIVA PRESS)
+Human Rights and the Environment (UNITAR)
+Women's Empowerment, SDGs, and ICT (UN-APCICT/ESCAP)
+Death Penalty Law &amp; Capital Punishment
+Digital Law Group Virtual Experience (HERBERT SMITH FREEHILLS)
+Cyber Security Global Virtual Internship (CLIFFORD CHANCE)
+Social Media Marketing: Strategy &amp; Optimization (LinkedIn Learning)
+Effective Leadership (HP LIFE)
+Strategic Planning (HP FOUNDATION)
+Human Resource Management (Great Learning)
+Intro to Graphic Designing with Photoshop (Great Learning)
+Master Course in Journalism &amp; Mass Communication 3.0 (Udemy)
+Certificate of Achievement (Tech Harbor)</textarea></div>
         <button class="btn-primary" onclick="saveAuthorProfile()" style="width:fit-content">💾 Save Author Profile</button>
       </div>
     </div>
@@ -1000,7 +967,7 @@ footer a{color:var(--rose);text-decoration:none;}
         <div class="form-group"><label>New Admin Password</label><input type="password" placeholder="Enter new password..." id="set-pass"></div>
         <div class="form-group"><label>Confirm New Password</label><input type="password" placeholder="Confirm new password..." id="set-pass2"></div>
         <div style="background:var(--cream);border-radius:12px;padding:1rem;font-size:0.85rem;color:var(--muted);border:1px solid var(--blush);">
-          <strong>⚠️ Note:</strong> Your login credentials are private and only visible here after logging in. They are never shown on the public login page.
+          <strong>⚠️ Note:</strong> Your login credentials are private and only visible here after logging in.
         </div>
         <button class="btn-primary" onclick="saveSettings()" style="width:fit-content">💾 Save Settings</button>
       </div>
@@ -1051,8 +1018,8 @@ footer a{color:var(--rose);text-decoration:none;}
     <a href="http://sherises.womenhub.sbs/" target="_blank">She Rises</a>
     <a href="http://lumierebeauty.womenhub.sbs/" target="_blank">Lumière Beauty</a>
     <a href="http://perfectbeautytips.womenhub.sbs/" target="_blank">Perfect Beauty Tips</a>
-    <a href="http://lacunia-cooking-recipes.womenhub.sbs/" target="_blank">La Cunia Cooking</a>
-    <a href="http://saveour-kitchen.womenhub.sbs/" target="_blank">Save Our Kitchen</a>
+    <a href="http://lacuniacokingrecipes.womenhub.sbs/" target="_blank">La Cunia Cooking</a>
+    <a href="http://saveourkitchen.womenhub.sbs/" target="_blank">Save Our Kitchen</a>
   </div>
   <p>By <a href="mailto:medrankseo@gmail.com">Maria Kanwal</a> · medrankseo@gmail.com</p>
   <p style="margin-top:0.5rem;opacity:0.4;font-size:0.78rem">© 2026 HerWorld. All rights reserved.</p>
@@ -1060,7 +1027,7 @@ footer a{color:var(--rose);text-decoration:none;}
 <div class="toast" id="toast"></div>
 
 <script>
-// ===================== FAQ TOGGLE =====================
+// ===================== FAQ =====================
 function toggleFaq(el) {
   const answer = el.nextElementSibling;
   const isOpen = el.classList.contains('open');
@@ -1069,21 +1036,12 @@ function toggleFaq(el) {
     q.classList.remove('open');
     q.nextElementSibling.classList.remove('open');
   });
-  if (!isOpen) {
-    el.classList.add('open');
-    answer.classList.add('open');
-  }
+  if (!isOpen) { el.classList.add('open'); answer.classList.add('open'); }
 }
 
 // ===================== MOBILE NAV =====================
-function toggleMobileNav() {
-  document.getElementById('mobile-nav').classList.toggle('open');
-}
-function closeMobileNav() {
-  document.getElementById('mobile-nav').classList.remove('open');
-}
-
-// ===================== PASS VISIBILITY =====================
+function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+function closeMobileNav() { document.getElementById('mobile-nav').classList.remove('open'); }
 function togglePassVis() {
   const inp = document.getElementById('admin-pass');
   inp.type = inp.type === 'password' ? 'text' : 'password';
@@ -1092,212 +1050,228 @@ function togglePassVis() {
 // ===================== ADMIN STATE =====================
 let adminPassword = 'herworld2026';
 let adminUsername = 'maria';
-
-// ===================== BLOG DATA (stored in memory, persists within session) =====================
 let editingId = null;
 let activeCategory = 'All';
 let currentEditorMode = 'text';
 
-function extras(conclusion, takeaways, faqs) {
-  const ktItems = takeaways.map(t => `<li>${t}</li>`).join('');
-  const faqItems = faqs.map((f,i) => `
-    <div class="faq-item">
-      <button class="faq-question" onclick="toggleFaq(this)">
-        ${f.q}
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-answer"><p>${f.a}</p></div>
-    </div>`).join('');
-  return `
-    <div class="conclusion-box"><h4>🌸 Conclusion</h4><p>${conclusion}</p></div>
-    <div class="key-takeaways"><h4>✦ Key Takeaways</h4><ul>${ktItems}</ul></div>
-    <div class="faq-section"><h4>❓ Frequently Asked Questions</h4>${faqItems}</div>`;
+// ===================== INLINE EDITOR =====================
+let _inlineCallback = null;
+
+function openInlineEditor(title, currentVal, multiline, cb) {
+  document.getElementById('inline-editor-title').textContent = title;
+  const wrap = document.getElementById('inline-editor-input-wrap');
+  if (multiline) {
+    wrap.innerHTML = `<textarea style="width:100%;min-height:120px;padding:0.9rem;border:1.5px solid #EDD8DC;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.92rem;outline:none;background:var(--cream);resize:vertical;" id="inline-inp">${currentVal}</textarea>`;
+  } else {
+    wrap.innerHTML = `<input type="text" style="width:100%;padding:0.9rem 1rem;border:1.5px solid #EDD8DC;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:0.92rem;outline:none;background:var(--cream);" id="inline-inp" value="${currentVal.replace(/"/g,'&quot;')}">`;
+  }
+  setTimeout(() => { const el = document.getElementById('inline-inp'); if(el) el.focus(); }, 100);
+  _inlineCallback = cb;
+  document.getElementById('inline-editor-overlay').classList.add('open');
 }
 
-// Load blogs from localStorage or use defaults
+function closeInlineEditor() {
+  document.getElementById('inline-editor-overlay').classList.remove('open');
+  _inlineCallback = null;
+}
+
+function saveInlineEdit() {
+  const val = document.getElementById('inline-inp').value;
+  if (_inlineCallback) _inlineCallback(val);
+  closeInlineEditor();
+  showToast('✅ Saved!');
+}
+
+// ===================== SITE CARDS DATA =====================
+let siteCards = [
+  { href:'https://womenhub.sbs/', icon:'🌺', name:'Women Hub', url:'womenhub.sbs' },
+  { href:'http://herworld.womenhub.sbs/', icon:'🌸', name:'HerWorld', url:'herworld.womenhub.sbs' },
+  { href:'http://bloomwell.womenhub.sbs/', icon:'💐', name:'BloomWell', url:'bloomwell.womenhub.sbs' },
+  { href:'http://sherises.womenhub.sbs/', icon:'⬆️', name:'She Rises', url:'sherises.womenhub.sbs' },
+  { href:'http://lumierebeauty.womenhub.sbs/', icon:'✨', name:'Lumière Beauty', url:'lumierebeauty.womenhub.sbs' },
+  { href:'http://yourbeautyyourglow.womenhub.sbs/', icon:'💅', name:'Your Beauty Your Glow', url:'yourbeautyyourglow.womenhub.sbs' },
+  { href:'http://perfectbeautytips.womenhub.sbs/', icon:'💄', name:'Perfect Beauty Tips', url:'perfectbeautytips.womenhub.sbs' },
+  { href:'https://mariakanwal123.github.io/med-rank-seo/', icon:'🔍', name:'Med Rank SEO', url:'mariakanwal123.github.io' }
+];
+
+let appCards = [
+  { href:'https://mariakanwal123.github.io/ramadan-calendar-2026/', icon:'🌙', name:'Ramadan Calendar 2026', desc:'Complete Ramadan calendar with prayer times' },
+  { href:'https://mariakanwal123.github.io/little-muslims-islamic-app-2026/', icon:'☪️', name:'Little Muslims Islamic App', desc:'Islamic learning app for children' },
+  { href:'https://mariakanwal123.github.io/ramadan-2026-wellness-guide/', icon:'💚', name:'Ramadan Wellness Guide', desc:'Health & wellness guide for Ramadan 2026' }
+];
+
+function loadSiteAppCards() {
+  try {
+    const sc = localStorage.getItem('herworld_siteCards');
+    if (sc) siteCards = JSON.parse(sc);
+    const ac = localStorage.getItem('herworld_appCards');
+    if (ac) appCards = JSON.parse(ac);
+  } catch(e){}
+}
+
+function renderSiteCards() {
+  const grid = document.getElementById('sites-grid');
+  if (!grid) return;
+  grid.innerHTML = siteCards.map((s,i) => `
+    <div class="site-card-wrap">
+      <div class="site-card">
+        <a href="${s.href}" target="_blank">
+          <div class="site-icon">${s.icon}</div>
+          <div class="site-name">${s.name}</div>
+          <div class="site-url">${s.url}</div>
+        </a>
+      </div>
+      <button class="site-edit-btn" onclick="editSiteCard(${i})">✏️</button>
+    </div>`).join('');
+}
+
+function renderAppCards() {
+  const grid = document.getElementById('apps-grid');
+  if (!grid) return;
+  grid.innerHTML = appCards.map((a,i) => `
+    <div class="app-card-wrap">
+      <div class="app-card">
+        <a href="${a.href}" target="_blank">
+          <div class="app-icon">${a.icon}</div>
+          <div class="app-name">${a.name}</div>
+          <div class="app-desc">${a.desc}</div>
+        </a>
+      </div>
+      <button class="app-edit-btn" onclick="editAppCard(${i})">✏️</button>
+    </div>`).join('');
+}
+
+function editSiteCard(i) {
+  const s = siteCards[i];
+  openInlineEditor(`Edit Site: ${s.name}`, `${s.icon}|${s.name}|${s.url}|${s.href}`, false, val => {
+    const parts = val.split('|');
+    if (parts.length === 4) {
+      siteCards[i] = { icon: parts[0].trim(), name: parts[1].trim(), url: parts[2].trim(), href: parts[3].trim() };
+      try { localStorage.setItem('herworld_siteCards', JSON.stringify(siteCards)); } catch(e){}
+      renderSiteCards();
+    } else {
+      showToast('Format: emoji|Name|url|https://link');
+    }
+  });
+  // Override the label
+  document.getElementById('inline-editor-input-wrap').insertAdjacentHTML('beforebegin', '<p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;">Format: emoji|Name|domain|full-url — e.g. 🌺|Women Hub|womenhub.sbs|https://womenhub.sbs/</p>');
+}
+
+function editAppCard(i) {
+  const a = appCards[i];
+  openInlineEditor(`Edit App: ${a.name}`, `${a.icon}|${a.name}|${a.desc}|${a.href}`, false, val => {
+    const parts = val.split('|');
+    if (parts.length === 4) {
+      appCards[i] = { icon: parts[0].trim(), name: parts[1].trim(), desc: parts[2].trim(), href: parts[3].trim() };
+      try { localStorage.setItem('herworld_appCards', JSON.stringify(appCards)); } catch(e){}
+      renderAppCards();
+    } else {
+      showToast('Format: emoji|Name|description|https://link');
+    }
+  });
+  document.getElementById('inline-editor-input-wrap').insertAdjacentHTML('beforebegin', '<p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;">Format: emoji|Name|description|full-url</p>');
+}
+
+// ===================== PUB ITEM EDIT =====================
+let pubData = { books: [], papers: [] };
+
+function loadPubData() {
+  try {
+    const saved = localStorage.getItem('herworld_pubData');
+    if (saved) pubData = JSON.parse(saved);
+    else {
+      pubData.books = [
+        {title:'Revealing Environmental Influences on Breast Cancer Risk', meta:'ISBN: 978-1-304-42043-5 · Eliva Press', link:''},
+        {title:"Progressive Voices: Charting Women's Empowerment", meta:'ISBN: 978-1-304-43380-0 · Eliva Press', link:''},
+        {title:"Pakistan's Economic Transformation from Agrarian Society to an Emerging Market", meta:'ISBN: 978-1-304-42026-8 · Eliva Press', link:''},
+        {title:'Death or Evolution of Globalization during COVID-19 Era', meta:'ISBN: 978-1-304-42030-5 · Eliva Press', link:''},
+        {title:'Rise of Chinese Public Diplomacy during COVID-19 Era', meta:'Book · Eliva Press', link:''}
+      ];
+      pubData.papers = [
+        {title:'Assessing the Impact of the 2024 Hualien Earthquake in Taiwan', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4786199'},
+        {title:'Natural Disaster Earthquake in Turkiye and Syria 2023: Humanitarian Response', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4382051'},
+        {title:'China Pakistan Economic Corridor (CPEC) 10 Years Celebrations', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4667601'},
+        {title:'3 Generative AI Applications for IoT You Must Know About', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4667577'},
+        {title:'Brexit and its Implications for European Union', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4312258'},
+        {title:'Floods in Pakistan: Global Warming or Foreign Nations', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4300138'},
+        {title:'Rise of Chinese Public Diplomacy during COVID-19 Era', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4126228'},
+        {title:'Nuclear Weapons a Source of Peace and Stability Between India and Pakistan', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4105194'},
+        {title:'Death of Globalization during COVID-19 Era', meta:'', link:'https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4101253'}
+      ];
+    }
+  } catch(e){}
+}
+
+function renderPubItems() {
+  ['books','papers'].forEach(type => {
+    const el = document.getElementById(type+'-list');
+    if (!el) return;
+    const icon = type==='books' ? '📘' : '📄';
+    el.innerHTML = pubData[type].map((p,i) => `
+      <div class="pub-item-wrap">
+        <div class="pub-item">
+          <div class="pub-icon">${icon}</div>
+          <div class="pub-content">
+            <h4>${p.title}</h4>
+            ${p.meta ? `<div class="pub-meta">${p.meta}</div>` : ''}
+            ${p.link ? `<a href="${p.link}" target="_blank">View on SSRN →</a>` : ''}
+          </div>
+        </div>
+        <button class="pub-edit-btn" onclick="editPubItem('${type}',${i})">✏️ Edit</button>
+      </div>`).join('');
+  });
+}
+
+function editPubItem(type, i) {
+  const p = pubData[type][i];
+  openInlineEditor(`Edit ${type==='books'?'Book':'Paper'}: ${p.title.substring(0,40)}...`,
+    `${p.title}||${p.meta||''}||${p.link||''}`, true, val => {
+      const parts = val.split('||');
+      pubData[type][i] = { title: parts[0]||p.title, meta: parts[1]||'', link: parts[2]||'' };
+      try { localStorage.setItem('herworld_pubData', JSON.stringify(pubData)); } catch(e){}
+      renderPubItems();
+  });
+  document.getElementById('inline-editor-input-wrap').insertAdjacentHTML('beforebegin',
+    '<p style="font-size:0.8rem;color:var(--muted);margin-bottom:0.5rem;">Format: Title||Meta/ISBN||Link URL (use || to separate)</p>');
+}
+
+// ===================== BLOG DATA =====================
 let blogs = [];
 
 function loadBlogs() {
   try {
     const saved = localStorage.getItem('herworld_blogs');
-    if (saved) {
-      blogs = JSON.parse(saved);
-      return;
-    }
+    if (saved) { blogs = JSON.parse(saved); return; }
   } catch(e) {}
   blogs = getDefaultBlogs();
 }
 
 function saveBlogs() {
-  try {
-    localStorage.setItem('herworld_blogs', JSON.stringify(blogs));
-  } catch(e) {}
+  try { localStorage.setItem('herworld_blogs', JSON.stringify(blogs)); } catch(e) {}
+}
+
+function extras(conclusion, takeaways, faqs) {
+  const ktItems = takeaways.map(t => `<li>${t}</li>`).join('');
+  const faqItems = faqs.map((f,i) => `
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">${f.q}<span class="faq-icon">+</span></button>
+      <div class="faq-answer"><p>${f.a}</p></div>
+    </div>`).join('');
+  return `<div class="conclusion-box"><h4>🌸 Conclusion</h4><p>${conclusion}</p></div>
+    <div class="key-takeaways"><h4>✦ Key Takeaways</h4><ul>${ktItems}</ul></div>
+    <div class="faq-section"><h4>❓ Frequently Asked Questions</h4>${faqItems}</div>`;
 }
 
 function getDefaultBlogs() {
   return [
-  {
-    id:1,
-    img:"https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",
-    tag:"Empowerment",
-    title:"10 Daily Habits That Will Transform Your Life in 2026",
-    desc:"Small changes done consistently create massive shifts. Here are 10 habits every woman should adopt this year.",
-    date:"January 5, 2026", readTime:"9 min read",
-    content:`<div class="infographic"><h4>⚡ Power Habits at a Glance — 2026 Edition</h4><div class="inf-stats"><div class="inf-stat"><h5>21</h5><p>Days to form a new habit</p></div><div class="inf-stat"><h5>68%</h5><p>Women who journal report lower stress</p></div><div class="inf-stat"><h5>3×</h5><p>More productivity with a morning routine</p></div></div></div><p>Transformation doesn't happen overnight — it happens through the quiet, consistent choices you make every single day. As we step into 2026, the question isn't "what do I want to change?" It's "what small action will I take today?"</p><h4>1. Begin Every Morning with Gratitude</h4><p>Before you pick up your phone, open your eyes and name three things you're genuinely grateful for. This simple practice rewires your brain over time to default toward positivity, even in hard seasons.</p><h4>2. Move Your Body for at Least 30 Minutes</h4><p>Exercise isn't just about aesthetics — it's about energy, emotional regulation, and longevity. The best movement is the one you'll actually do consistently.</p><h4>3. Read 10 Pages Every Day</h4><p>That's roughly one book per month. Replace 10 minutes of scrolling with 10 pages of reading and watch your mind expand.</p><h4>4. Guard Your Mornings from Social Media</h4><p>Give yourself at least 30 minutes of screen-free morning time. Your first waking hour sets the emotional tone for your entire day.</p><h4>5. Drink Water Before Anything Else</h4><p>Before coffee, before your phone — drink a full glass of water. The simplest act of self-care imaginable.</p><h4>6. Choose Your Three Daily Priorities</h4><p>Instead of a sprawling to-do list, choose just three things that genuinely matter today. Focus is the new superpower.</p><h4>7. Make One Real Human Connection Daily</h4><p>Not a like on Instagram. A real conversation — genuine connection is increasingly rare and therefore increasingly valuable.</p><h4>8. Learn Something New Every Week</h4><p>A podcast while you cook. A YouTube tutorial. Curiosity is a choice — choose it deliberately and often in 2026.</p><h4>9. Rest Without Guilt</h4><p>Rest is productive. Rest is the foundation of creativity, emotional intelligence, and sustained energy.</p><h4>10. End Each Day with Reflection</h4><p>Before you sleep, ask: What went well? What would I do differently? What am I grateful for?</p><div class="cta-box"><h4>Ready to Start Your Transformation Journey? 🌸</h4><p>Join 75,000+ women in the HerWorld community and get weekly empowerment straight to your inbox every Monday in 2026.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button></div>` + extras("Real transformation is built on small, intentional daily actions. Start with one habit today.",["Habits take an average of 21 days to form — consistency matters more than perfection.","Morning routines set the emotional tone for your entire day; guard them fiercely.","Reading just 10 pages daily adds up to 12+ books a year.","Real human connection nourishes the soul more than digital interaction.","Rest is productive — sustainable high performance requires deliberate recovery."],[{q:"How long does it take for a new habit to stick?",a:"Research suggests 21 to 66 days depending on complexity. The key is consistency, not perfection."},{q:"Should I try to adopt all 10 habits at once?",a:"Absolutely not. Start with one or two, build them for a few weeks, then layer the next."},{q:"What if I miss a day?",a:"Missing one day does not break a habit. The pattern matters, not perfection. Never miss twice in a row."}])
-  },
-  {
-    id:2,
-    img:"https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&q=80",
-    tag:"Mental Health",
-    title:"Breaking the Stigma: A Complete Guide to Women's Mental Health in 2026",
-    desc:"Mental health is health. Let's talk about it openly, honestly, and with the compassion it deserves.",
-    date:"January 12, 2026", readTime:"11 min read",
-    content:`<div class="infographic"><h4>🧠 Women's Mental Health — 2026 Reality Check</h4><div class="inf-stats"><div class="inf-stat"><h5>1 in 5</h5><p>Women experience a mental illness</p></div><div class="inf-stat"><h5>40%</h5><p>Don't seek help due to stigma</p></div><div class="inf-stat"><h5>60%</h5><p>Recovery rate with proper support</p></div></div></div><p>For far too long, mental health has been wrapped in silence and shame. In 2026, we are done with that. Your mental health deserves the same care and investment as your physical health.</p><h4>Understanding What Mental Health Actually Means</h4><p>Mental health is your emotional, psychological, and social wellbeing. It's how you process stress, relate to others, and make decisions.</p><h4>Why Women Are Disproportionately Affected</h4><p>Women experience anxiety and depression at twice the rate of men. This is not weakness — it's biology, sociology, and circumstance combined.</p><h4>Common Signs That Deserve Attention</h4><p>Persistent sadness. Withdrawal from things you once loved. Sleep changes. Difficulty concentrating. These are symptoms, not character flaws, and symptoms deserve treatment.</p><h4>Finding the Right Support in 2026</h4><p>Therapy (including teletherapy), support groups, mental health apps, trusted friends. There is a form of support that works for every woman.</p><div class="cta-box"><h4>You're Not Alone in This 💙</h4><p>Connect with the HerWorld community — a safe, supportive space full of women who understand.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Reach Out to Us →</button></div>` + extras("Your healing matters — to you, to the women around you, and to every generation that follows.",["Mental health is wellbeing, not just the absence of illness.","40% of women don't seek help due to stigma — talking openly is the most powerful antidote.","Teletherapy has made mental health care more accessible than ever in 2026.","Self-care is survival, not selfishness."],[{q:"How do I know if what I'm experiencing is serious enough for therapy?",a:"If your mental state is affecting your daily functioning, relationships, or joy — it is serious enough."},{q:"What if I can't afford traditional therapy?",a:"Community mental health centers, apps like Headspace or BetterHelp, and crisis text lines are all accessible options."}])
-  },
-  {
-    id:3,
-    img:"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
-    tag:"Career",
-    title:"How to Ask for the Raise You Deserve — and Actually Get It in 2026",
-    desc:"The gender pay gap is real. Here's how to advocate for your worth with research, confidence, and strategy.",
-    date:"January 19, 2026", readTime:"10 min read",
-    content:`<div class="infographic"><h4>💼 The Pay Gap Reality — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>82¢</h5><p>Women earn per $1 men make</p></div><div class="inf-stat"><h5>57%</h5><p>Women never negotiate their salary</p></div><div class="inf-stat"><h5>$1M+</h5><p>Lifetime earnings lost to the wage gap</p></div></div></div><p>Let's be direct: you are probably being underpaid. The good news is that negotiation is a skill, and skills can be learned. In 2026, let's make "asking for what you're worth" non-negotiable.</p><h4>Step 1: Do Your Research Before Anything Else</h4><p>Research market rates for your exact role using Glassdoor, LinkedIn Salary Insights, and Payscale. Come with a specific range, not a single number — and anchor high within reason.</p><h4>Step 2: Build Your "Brag File"</h4><p>A running document of every accomplishment, positive feedback, and project you've led. Quantify everything: "I reduced preparation time by 30%." Data beats feelings in every negotiation room.</p><h4>Step 3: Time It Right</h4><p>Best times: after a major win, during a performance review, when you've taken on more responsibility. Worst times: during layoffs, when your manager is stressed.</p><h4>Step 4: Practice Your Ask Out Loud</h4><p>Say your number out loud. In the mirror. To a trusted friend. The discomfort you feel is the exact discomfort you need to move through before the real conversation.</p><h4>Step 5: Handle "No" Like a Professional</h4><p>Ask clearly: "What would need to happen for this to be possible in the next 6 months?" Turn a no into a roadmap.</p><div class="cta-box"><h4>Know Your Worth — Own It in 2026 💪</h4><p>Join thousands of women in the HerWorld community building careers with confidence and strategy.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Career Community →</button></div>` + extras("In 2026, make negotiation a non-negotiable part of your career toolkit.",["Women earn 82¢ for every dollar men make — negotiation is essential, not optional.","A brag file of quantified accomplishments is your most powerful negotiation weapon.","Timing matters: negotiate after wins, during review cycles, or with a competing offer.","A 'no' today should become a clearly defined roadmap to 'yes' in 6 months."],[{q:"Isn't it risky to ask for a raise?",a:"When done professionally, asking carries very little actual risk. The worst realistic outcome is a polite 'not right now'."},{q:"How much of a raise should I ask for?",a:"Industry standard is 3-5%, but if you're underpaid relative to market rates, anchor higher. Research your range first."}])
-  },
-  {
-    id:4,
-    img:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
-    tag:"Wellness",
-    title:"The Art of Slow Living: Why Rest Is Radical in 2026",
-    desc:"In a world that glorifies hustle, choosing slow, intentional living is a revolutionary act of self-love.",
-    date:"January 26, 2026", readTime:"8 min read",
-    content:`<div class="infographic"><h4>🌿 The Real Cost of Burnout</h4><div class="inf-stats"><div class="inf-stat"><h5>77%</h5><p>Workers experience burnout</p></div><div class="inf-stat"><h5>63%</h5><p>Cite burnout as reason to quit</p></div><div class="inf-stat"><h5>23%</h5><p>More productive after genuine rest</p></div></div></div><p>We live in a culture obsessed with productivity. But somewhere in the relentless pursuit of doing more, many women have lost the ability to simply be. In 2026, slow living is the foundation of sustainable excellence.</p><h4>What Slow Living Actually Means</h4><p>Slow living is not about doing nothing. It's about doing things with full presence and intention. Choosing depth over speed, quality over quantity.</p><h4>Rest as a Form of Resistance</h4><p>When you choose to rest, you are refusing to define your worth by your output. That is a radical, necessary, beautiful act in 2026.</p><div class="cta-box"><h4>Give Yourself Permission to Rest 🌿</h4><p>HerWorld's community celebrates wholeness — not hustle. Join women redefining success on their own terms.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join the Conversation →</button></div>` + extras("In 2026, let rest be your revolution.",["Slow living means doing things with intention and presence.","77% of workers experience burnout — recognizing early warning signs is essential.","Rest is a form of resistance against a culture that measures women's worth by their output."],[{q:"Doesn't slow living conflict with ambition?",a:"Not at all — rest and recovery are what make sustained high performance possible."}])
-  },
-  {
-    id:5,
-    img:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",
-    tag:"Finance",
-    title:"Financial Freedom for Women: Your Complete 2026 Money Guide",
-    desc:"Money management is not a man's game. Here's how to build lasting financial freedom starting right now.",
-    date:"February 2, 2026", readTime:"12 min read",
-    content:`<div class="infographic"><h4>💰 Women & Wealth — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>30%</h5><p>Less retirement savings than men</p></div><div class="inf-stat"><h5>70%</h5><p>Women manage household finances</p></div><div class="inf-stat"><h5>40yr</h5><p>Average investing horizon for women</p></div></div></div><p>Financial independence is one of the most powerful forms of freedom a woman can hold. In 2026, more tools and communities exist to help women build it than ever before.</p><h4>Step 1: Understand Exactly Where You Are</h4><p>Track every dollar for 30 days. Awareness is the non-negotiable first step.</p><h4>Step 2: Build Your Emergency Fund First</h4><p>Start with $1,000. Then work toward 3-6 months of essential living expenses. This fund transforms a crisis into a manageable inconvenience.</p><h4>Step 3: Start Investing — Even If It's $50 a Month</h4><p>Start with your employer's 401(k), then open a Roth IRA. Invest in low-cost index funds. Consistency, time, and compound interest are on your side.</p><div class="cta-box"><h4>Start Building Wealth in 2026 💰</h4><p>Join the HerWorld community where women talk openly about money and build financial futures together.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Connect With Our Community →</button></div>` + extras("Your financial future starts with the choices you make today.",["Financial independence gives women the freedom to choose meaningful work.","An emergency fund of 3-6 months transforms crises into manageable setbacks.","Low-cost index funds and time are the most powerful wealth tools available."],[{q:"I'm living paycheck to paycheck. Where do I start?",a:"Start with awareness. Track every dollar for one month without judgment, then redirect even $25-50 toward a starter emergency fund."},{q:"Is it too late to start investing if I'm in my 40s or 50s?",a:"It is never too late. A woman who starts at 45 still has 20+ years of compound growth ahead."}])
-  },
-  {
-    id:6,
-    img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=800&q=80",
-    tag:"Motherhood",
-    title:"The Unspoken Truth About Postpartum Mental Health in 2026",
-    desc:"Postpartum depression is not a sign of weakness. It's a medical condition that deserves real recognition.",
-    date:"February 9, 2026", readTime:"10 min read",
-    content:`<div class="infographic"><h4>🤱 Postpartum Mental Health — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>1 in 5</h5><p>New mothers experience PPD</p></div><div class="inf-stat"><h5>50%</h5><p>Of cases go undiagnosed</p></div><div class="inf-stat"><h5>95%</h5><p>Recovery rate with proper treatment</p></div></div></div><p>Society places a newborn in your arms and expects nothing but pure joy. But sometimes you feel terror, sadness, numbness, or profound loss — and that's real. And it's far more common than anyone tells you before the baby arrives.</p><h4>You Are Not a Bad Mother</h4><p>Postpartum mental health struggles have nothing to do with how much you love your baby. They are a medical condition. Asking for help is the most loving thing you can do.</p><div class="cta-box"><h4>You Are Not Alone in This Journey 🤱</h4><p>HerWorld is a safe space for mothers to share, support, and be seen. Join our community in 2026.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Village →</button></div>` + extras("With proper treatment, 95% of women fully recover. Reaching out is the most loving thing you can do.",["1 in 5 new mothers experience postpartum depression.","50% of PPD cases go undiagnosed because women feel shame.","PPD has nothing to do with how much you love your baby — it is a medical condition."],[{q:"How long after birth can PPD develop?",a:"PPD can develop anytime in the first year after birth, not just in the first few weeks."}])
-  },
-  {
-    id:7,
-    img:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",
-    tag:"Fitness",
-    title:"Movement for Every Body: Reclaiming Exercise Without Guilt in 2026",
-    desc:"Fitness was never meant to be punishment. Here's how to find joyful movement that lasts.",
-    date:"February 16, 2026", readTime:"8 min read",
-    content:`<div class="infographic"><h4>🏃‍♀️ Movement & Wellbeing — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>30min</h5><p>Daily movement for health benefits</p></div><div class="inf-stat"><h5>48%</h5><p>Mood improvement post-exercise</p></div><div class="inf-stat"><h5>60%</h5><p>Lower depression risk with movement</p></div></div></div><p>Somewhere along the way, fitness became intertwined with punishment and shame. In 2026, we are reclaiming movement as a celebration of what our bodies can do — not a correction for how they look.</p><h4>Finding Your Joyful Movement</h4><p>The most sustainable exercise routine is the one you actually look forward to. Hate running? Don't run. Love dancing? Dance. The best movement is the one you'll maintain.</p><h4>Strength Training: A Game-Changer for Women</h4><p>Strength training increases muscle mass, improves bone density, boosts confidence, and makes daily life physically easier. If you're not strength training, 2026 is the year to start.</p><div class="cta-box"><h4>Move in a Way That Celebrates YOU 🏃‍♀️</h4><p>Join the HerWorld community where we talk about fitness and bodies with kindness — all through 2026.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button></div>` + extras("Movement is a celebration of what your body can do, not a punishment for how it looks.",["The best exercise routine is the one you'll actually maintain — joy beats intensity.","Exercise increases serotonin, dopamine, and endorphins while reducing cortisol.","Strength training does not make women bulky — it builds bone density and confidence."],[{q:"How much exercise do I actually need?",a:"WHO recommends 150-300 minutes of moderate-intensity movement per week. It accumulates throughout your day."}])
-  },
-  {
-    id:8,
-    img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
-    tag:"Relationships",
-    title:"Setting Healthy Boundaries Without Guilt: A Woman's Complete Guide",
-    desc:"No is a complete sentence. Here's how to set boundaries with love, clarity, and zero apology.",
-    date:"February 23, 2026", readTime:"9 min read",
-    content:`<div class="infographic"><h4>💑 Boundaries & Relationship Health</h4><div class="inf-stats"><div class="inf-stat"><h5>78%</h5><p>Women over-apologize daily</p></div><div class="inf-stat"><h5>3×</h5><p>Better relationships with clear limits</p></div><div class="inf-stat"><h5>67%</h5><p>Less resentment with honest boundaries</p></div></div></div><p>Saying yes when you mean no doesn't make you kind. It makes you resentful. In 2026, let's learn to set boundaries from a place of love and clarity.</p><h4>What Boundaries Actually Are</h4><p>Boundaries are honest, compassionate expressions of what you need to feel safe, respected, and whole. Setting them is an act of self-respect — and self-respect teaches others how to treat you.</p><h4>The Formula</h4><p>"I care about our friendship, and I need to tell you honestly: I'm not able to do X. It doesn't work for me." Clear. Kind. No apology for having a limit.</p><div class="cta-box"><h4>You Deserve Relationships That Respect You 💑</h4><p>HerWorld is a safe space to discuss boundaries and self-worth. Join our sisterhood in 2026.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Sisterhood →</button></div>` + extras("Boundaries are the architecture that makes real love possible.",["Saying yes when you mean no builds resentment that damages relationships.","Boundaries are compassionate expressions of your needs, not cold rejections.","78% of women over-apologize daily; owning your limits without apology is a radical act."],[{q:"Why do I feel so guilty after setting a boundary?",a:"Guilt after boundary-setting is almost universal for women because we've been socialized to prioritize others' comfort over our own. This is a conditioned response, not an accurate signal that you did something wrong."}])
-  },
-  {
-    id:9,
-    img:"https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80",
-    tag:"Wellness",
-    title:"Hormone Health 101: Understanding Your Body's Signals in 2026",
-    desc:"Your hormones are always communicating with you. Here's how to finally learn to listen.",
-    date:"March 2, 2026", readTime:"11 min read",
-    content:`<div class="infographic"><h4>🌸 Hormonal Health Statistics</h4><div class="inf-stats"><div class="inf-stat"><h5>1 in 10</h5><p>Women have PCOS</p></div><div class="inf-stat"><h5>60%</h5><p>Of thyroid issues affect women</p></div><div class="inf-stat"><h5>80%</h5><p>PMS treatable with lifestyle changes</p></div></div></div><p>Your hormones regulate energy, mood, sleep, metabolism, libido, and cognitive function. When they are in balance, you feel like yourself. When they're off, everything feels off.</p><h4>The Major Hormones Women Need to Know</h4><p>Estrogen governs reproduction, bone density, and mood. Progesterone is the calming hormone that supports sleep. Testosterone (yes, women have it) supports libido, muscle mass, and energy. Cortisol should spike and fall rhythmically — chronic elevation disrupts everything else.</p><h4>PCOS: The Most Underdiagnosed Condition</h4><p>Polycystic ovary syndrome affects 1 in 10 women of reproductive age and takes an average of two years to diagnose. It is manageable — but you have to know you have it first.</p><div class="cta-box"><h4>Take Your Health Seriously in 2026 🌸</h4><p>Join the HerWorld wellness community where we share evidence-based health information every week.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Space →</button></div>` + extras("Learning to listen to your body's hormonal signals is one of the most powerful investments in your long-term health.",["Hormones regulate everything — energy, mood, sleep, metabolism, libido, and cognition.","Chin/jaw acne, hair thinning, and severe PMS are hormonal signals worth investigating.","PCOS affects 1 in 10 women and takes an average of 2 years to diagnose — be your own advocate."],[{q:"How do I know if my symptoms are hormonal?",a:"Symptoms that consistently follow a cyclical pattern — worsening at the same phase of your menstrual cycle each month — are strong indicators of hormonal involvement."}])
-  },
-  {
-    id:10,
-    img:"https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?w=800&q=80",
-    tag:"Career",
-    title:"Overcoming Imposter Syndrome: Why High-Achieving Women Feel Like Frauds",
-    desc:"70% of people experience imposter syndrome. Here's why it hits women harder — and exactly how to overcome it.",
-    date:"March 9, 2026", readTime:"9 min read",
-    content:`<div class="infographic"><h4>🎓 Imposter Syndrome & Women</h4><div class="inf-stats"><div class="inf-stat"><h5>70%</h5><p>People experience it at some point</p></div><div class="inf-stat"><h5>75%</h5><p>Executive women report feeling it</p></div><div class="inf-stat"><h5>2×</h5><p>More common in women than men</p></div></div></div><p>You've worked hard. You've earned every qualification on your resume. And yet — there's a quiet voice waiting for someone to figure out that you don't really belong here. Does this sound familiar?</p><h4>Why It Hits Women Harder</h4><p>Girls are socialized to be humble and to minimize their achievements. Add the structural reality that women often have fewer visible predecessors and mentors who look like them.</p><h4>Evidence-Based Strategies to Overcome It</h4><p>First: name it. "This is imposter syndrome talking — not fact." Second: keep a wins journal. Third: share with trusted colleagues — you'll almost universally discover they feel the same way.</p><div class="cta-box"><h4>You Belong Here — Fully and Completely 🎓</h4><p>Connect with women building careers with confidence. HerWorld's career community is here for you.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Connect with Career Women →</button></div>` + extras("You have always belonged here.",["Imposter syndrome was first identified exclusively in high-achieving women — it's a phenomenon of success, not failure.","Naming it immediately reduces its psychological power over you.","A wins journal creates an evidence base to return to when self-doubt is loudest."],[{q:"Does imposter syndrome ever fully go away?",a:"For most people, it doesn't fully disappear — but it becomes more manageable. With practice you learn to recognize it, name it accurately, and take action despite it."}])
-  },
-  {
-    id:11,
-    img:"https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&q=80",
-    tag:"Wellness",
-    title:"Intuitive Eating: Making Complete Peace with Food in 2026",
-    desc:"Ditch the diet culture for good. Here's how to rebuild a healthy, joyful, sustainable relationship with food.",
-    date:"March 16, 2026", readTime:"10 min read",
-    content:`<div class="infographic"><h4>🍽️ Diet Culture's Devastating Reality</h4><div class="inf-stats"><div class="inf-stat"><h5>95%</h5><p>Diets fail within 1-5 years</p></div><div class="inf-stat"><h5>$70B</h5><p>Diet industry annual revenue</p></div><div class="inf-stat"><h5>84%</h5><p>Dieters regain all weight in 5 years</p></div></div></div><p>We have been taught that our bodies are problems to be solved. That eating is something to be controlled and earned. This is diet culture — and it has caused immeasurable harm to women for generations.</p><h4>What Is Intuitive Eating, Really?</h4><p>Intuitive eating is a framework built on 10 core principles that help you reconnect with your body's natural hunger and fullness signals. It is not "eat whatever you want" — it's learning to hear and trust your body's wisdom.</p><h4>Honor Your Hunger</h4><p>Hunger is not the enemy. It is a biological signal, as natural and important as thirst. Eating when you're hungry is the most basic act of self-care.</p><div class="cta-box"><h4>Your Body Is Not the Problem 🍽️</h4><p>Join the HerWorld wellness community where we talk about food and bodies with radical kindness.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Community →</button></div>` + extras("In 2026, you deserve to eat without fear, to nourish yourself with joy.",["95% of diets fail within 5 years — the problem is never your willpower.","Intuitive eating is built on 10 evidence-based principles.","Over 125 peer-reviewed studies link intuitive eating to improved body image and wellbeing."],[{q:"Doesn't intuitive eating mean eating junk food all day?",a:"This is the most common misconception. Intuitive eating includes 'gentle nutrition' — when you remove forbidden foods, they often lose their pull and you naturally gravitate toward a varied, balanced way of eating."}])
-  },
-  {
-    id:12,
-    img:"https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=800&q=80",
-    tag:"Motherhood",
-    title:"Raising Daughters Who Know Their Unshakeable Worth in 2026",
-    desc:"The most powerful gift you can give your daughter is a confidence that no one can take from her.",
-    date:"March 23, 2026", readTime:"9 min read",
-    content:`<div class="infographic"><h4>👩‍👧 Girls' Self-Esteem & Confidence</h4><div class="inf-stats"><div class="inf-stat"><h5>Age 7</h5><p>When girls' confidence begins declining</p></div><div class="inf-stat"><h5>30%</h5><p>Drop in self-esteem during adolescence</p></div><div class="inf-stat"><h5>3×</h5><p>Girls with mentors stay in school longer</p></div></div></div><p>Your daughter is watching everything — how you talk about your own body, how you handle conflict, how you treat yourself on hard days. You are her first and most influential teacher of what it means to be a woman.</p><h4>Watch Your Language Around Your Own Body</h4><p>When you say "I hate my [body part]," your daughter hears: this is how women are supposed to feel about their bodies. Instead, try "I feel strong today" or "I'm grateful my body can do this."</p><h4>Teach Body Autonomy from the Beginning</h4><p>Allow her to decide who touches her body. Don't force hugs or kisses, even with family members. Her "no" has power from the very beginning.</p><div class="cta-box"><h4>Raise Her With a Village Behind Her 👩‍👧</h4><p>HerWorld's motherhood community is full of women navigating parenthood with honesty and imperfection.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Mom Village →</button></div>` + extras("The greatest inheritance is an unshakeable belief in her own worth, voice, and capability.",["Girls' confidence begins declining as early as age 7 — the window is early and critical.","How you speak about your own body becomes the voice inside your daughter's head for decades.","Teaching body autonomy early — the right to refuse hugs — is the foundation of safety and consent."],[{q:"My daughter is a teenager and struggling. Is it too late?",a:"It is absolutely not too late. Start by listening more than advising. Create safety for honest conversations. Every positive interaction is meaningful."}])
-  },
-  {
-    id:13,
-    img:"https://images.unsplash.com/photo-1488085061387-422e29b40080?w=800&q=80",
-    tag:"Lifestyle",
-    title:"Solo Travel for Women in 2026: Everything You Need to Know",
-    desc:"Traveling alone is one of the most transformative things a woman can do for herself. Here's how to do it well.",
-    date:"April 5, 2026", readTime:"10 min read",
-    content:`<div class="infographic"><h4>✈️ Women Solo Travel — 2026 Trends</h4><div class="inf-stats"><div class="inf-stat"><h5>74%</h5><p>Women book their own travel</p></div><div class="inf-stat"><h5>3×</h5><p>Increase in female solo travelers</p></div><div class="inf-stat"><h5>85%</h5><p>Say it boosted their confidence</p></div></div></div><p>There is something uniquely powerful about navigating a foreign city alone. Solo travel strips away the performance of who you are for others and shows you, with stunning clarity, who you actually are.</p><h4>Starting Smart: Your First Solo Trip</h4><p>Your first solo adventure doesn't have to be a six-month backpacking expedition. Start with a weekend trip to a city you've always wanted to explore. Build confidence with smaller trips before going bigger.</p><h4>Safety Without Fear in 2026</h4><p>Research your destination from women's perspectives. Share your itinerary with someone who loves you. Trust your instincts — they are your most sophisticated safety tool.</p><div class="cta-box"><h4>Your Adventure Awaits in 2026 ✈️</h4><p>Connect with HerWorld women who travel solo and build the confidence to explore the world.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Connect with Fellow Travelers →</button></div>` + extras("The world is extraordinary. So are you.",["85% of solo female travelers report significant boosts in confidence.","Start with a domestic weekend trip — solo confidence is built incrementally.","Your instincts are your most sophisticated safety tool — trust and respect them."],[{q:"Is solo travel actually safe for women?",a:"Yes — with thoughtful preparation. Research your destination from women's perspectives, stay in well-reviewed accommodation, share your itinerary, and trust your instincts."}])
-  },
-  {
-    id:14,
-    img:"https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
-    tag:"Empowerment",
-    title:"Reclaiming Your Power After a Toxic Relationship",
-    desc:"Healing is not linear — but it is absolutely possible. Here's your roadmap back to yourself.",
-    date:"April 12, 2026", readTime:"11 min read",
-    content:`<div class="infographic"><h4>🔮 Recovery & Healing — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>1 in 3</h5><p>Women experience relationship trauma</p></div><div class="inf-stat"><h5>18mo</h5><p>Average healing time after toxic relationship</p></div><div class="inf-stat"><h5>91%</h5><p>Report stronger self-worth after healing</p></div></div></div><p>Toxic relationships don't always announce themselves with red flags. Sometimes they're the slow erosion — the constant subtle criticism that makes you doubt your own perceptions. Whatever your experience: your healing is valid.</p><h4>Understanding Trauma Bonding</h4><p>The cycle of tension, incident, reconciliation, and calm creates powerful neurological bonds. Your difficulty leaving was not weakness — it was a predictable neurological response.</p><h4>Rebuilding Your Identity</h4><p>Reconnect with who you were before. What did you love doing? What dreams had you quietly set aside? Return to those things. Curiosity is the gentlest form of healing.</p><div class="cta-box"><h4>You Are Whole — Even Now 🔮</h4><p>The HerWorld community includes women at every stage of healing. You don't have to navigate this alone.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Find Support & Sisterhood →</button></div>` + extras("91% of women report stronger self-worth after full recovery — and that includes you.",["Naming what happened accurately is the first and most essential step to healing.","Trauma bonding explains why leaving was hard; it's neurological, not a personal weakness.","Healing is non-linear — backward days are not failures, they are part of the recovery spiral."],[{q:"Why do I still miss someone who treated me badly?",a:"Trauma bonding is a neurological reality — the intermittent reinforcement cycle creates powerful bonds. Missing them does not mean you made the wrong choice. It means your nervous system is healing."}])
-  },
-  {
-    id:15,
-    img:"https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?w=800&q=80",
-    tag:"Wellness",
-    title:"The Science of Sleep: Why Women Desperately Need More Rest in 2026",
-    desc:"Research shows women need more sleep than men — yet we're getting significantly less. Here's why that matters.",
-    date:"April 19, 2026", readTime:"9 min read",
-    content:`<div class="infographic"><h4>🌙 Sleep & Women's Health — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>20min</h5><p>More sleep women need than men</p></div><div class="inf-stat"><h5>67%</h5><p>Women report poor sleep quality</p></div><div class="inf-stat"><h5>40%</h5><p>Hormones regulate during sleep</p></div></div></div><p>We celebrate hustle. We brag about functioning on five hours. And in doing so, we are quietly, chronically undermining our health. The science is unambiguous: sleep is not optional, and women need more of it than we're getting.</p><h4>Why Women Biologically Need More Sleep</h4><p>Research from Duke University found that poor sleep was significantly more harmful to women, leading to increased inflammation and greater cardiovascular disease risk. Women's brains require more recovery time.</p><h4>Building a Sleep Sanctuary in 2026</h4><p>Invest in your sleep environment seriously: blackout curtains, a cooling mattress pad, white noise, and a non-screen pre-sleep ritual. These aren't luxuries — they're infrastructure for your health.</p><div class="cta-box"><h4>Rest is Your Most Powerful Tool 🌙</h4><p>In 2026, HerWorld champions rest, recovery, and the radical act of taking your health seriously.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Wellness Space →</button></div>` + extras("Invest in your sleep. Watch how profoundly rest transforms every other area of your life.",["Women need approximately 20 more minutes of sleep per night than men.","Poor sleep is significantly more harmful to women — raising inflammation and cardiovascular risk.","Screens before bed, alcohol, and irregular wake times are the three biggest sleep disruptors."],[{q:"How many hours of sleep do women actually need?",a:"Most adults need 7-9 hours per night, but research suggests women may need closer to the higher end — and potentially 20+ additional minutes compared to men."}])
-  },
-  {
-    id:16,
-    img:"https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80",
-    tag:"Lifestyle",
-    title:"The Healing Power of Creative Expression for Women in 2026",
-    desc:"Art, writing, music, dance — creativity is not a hobby. For women, it's essential medicine for the soul.",
-    date:"April 26, 2026", readTime:"8 min read",
-    content:`<div class="infographic"><h4>🎨 Creativity & Healing Science</h4><div class="inf-stats"><div class="inf-stat"><h5>45min</h5><p>Of art reduces cortisol measurably</p></div><div class="inf-stat"><h5>75%</h5><p>Feel significantly better after creating</p></div><div class="inf-stat"><h5>2×</h5><p>Faster trauma processing with creativity</p></div></div></div><p>Somewhere between childhood and adulthood, most of us stop creating. We decide — or someone decides for us — that we're not talented enough. This loss is quiet and enormous. Creativity is not just expression — it's healing.</p><h4>You Don't Have to Be "Good"</h4><p>The healing power of creative expression has nothing to do with talent and everything to do with process. You don't journal to become a writer. You journal to understand yourself.</p><h4>Making It a Consistent Practice in 2026</h4><p>Schedule it. Put 30-60 minutes of creative time on your calendar weekly and treat it with the same non-negotiable seriousness as a doctor's appointment.</p><div class="cta-box"><h4>Create Something Today 🎨</h4><p>HerWorld celebrates women who create, express, and heal through art in all its beautiful forms.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Share Your Creative Journey →</button></div>` + extras("In 2026, reclaim your creative life with the conviction it deserves.",["45 minutes of art-making measurably reduces cortisol regardless of skill.","The healing power of creativity has everything to do with process and nothing to do with talent.","Schedule creative time as a non-negotiable — it requires protection from demands."],[{q:"I'm not creative. How can this help me?",a:"Creativity is not a fixed trait. You can journal, doodle, cook a new recipe, tend a garden. These are all creative acts. Start where you are."}])
-  },
-  {
-    id:17,
-    img:"https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
-    tag:"Empowerment",
-    title:"Building Your Sisterhood: The Life-Changing Power of Female Friendships",
-    desc:"Research shows that strong female friendships literally extend your lifespan. Here's how to build and nurture them.",
-    date:"May 3, 2026", readTime:"9 min read",
-    content:`<div class="infographic"><h4>🤝 The Power of Sisterhood — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>2-3×</h5><p>Longer lifespan with strong friendships</p></div><div class="inf-stat"><h5>50%</h5><p>Stress reduction response with friends</p></div><div class="inf-stat"><h5>1 in 4</h5><p>Women have no close confidante</p></div></div></div><p>Female friendship is not a luxury — it is a biological necessity that literally keeps women alive longer and healthier. UCLA researchers coined the term "tend and befriend" to describe the female stress response.</p><h4>The Modern Epidemic of Female Loneliness</h4><p>Despite living in the most connected era in history, a profound loneliness epidemic runs beneath the surface of women's lives. Chronic loneliness is as harmful to health as smoking 15 cigarettes a day.</p><h4>How to Build Real Friendships in 2026</h4><p>Show up consistently in spaces you care about. Take the initiative. Be genuinely curious. Be appropriately vulnerable. Show up in difficulty — the friends who appear in hard moments are the ones who last.</p><div class="cta-box"><h4>Find Your Sisterhood Here 🤝</h4><p>HerWorld exists to connect women who want real, meaningful community. Join us in 2026.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Sisterhood →</button></div>` + extras("In 2026, reach out first. Be the friend you want to have. Your sisterhood is waiting.",["Strong female friendships are associated with a 2-3x longer lifespan — they are life-saving.","Chronic loneliness is as harmful as smoking 15 cigarettes a day.","1 in 4 women has no close confidante — building sisterhood is the antidote."],[{q:"How do I make new friends as an adult woman?",a:"Proximity and repetition are the foundations of adult friendship. Find communities around things you genuinely care about. Show up consistently. Initiate plans specifically, not vaguely."}])
-  },
-  {
-    id:18,
-    img:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",
-    tag:"Mental Health",
-    title:"Mindfulness for Busy Women: 5-Minute Practices That Actually Work in 2026",
-    desc:"You don't need an hour on a meditation cushion. Start with 5 minutes and watch your life change.",
-    date:"May 10, 2026", readTime:"8 min read",
-    content:`<div class="infographic"><h4>🧘 Mindfulness & Wellbeing — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>5min</h5><p>Daily mindfulness reduces anxiety measurably</p></div><div class="inf-stat"><h5>43%</h5><p>Stress reduction after 8 weeks of practice</p></div><div class="inf-stat"><h5>37%</h5><p>Better emotional regulation reported</p></div></div></div><p>Mindfulness is radically simple: deliberate, non-judgmental attention to the present moment. You can do this anywhere. For five minutes. Right now.</p><h4>Practice 1: The 4-7-8 Breath (90 seconds)</h4><p>Inhale through your nose for 4 counts. Hold for 7. Exhale slowly for 8. This activates the parasympathetic nervous system — your "rest and digest" mode — almost immediately.</p><h4>Practice 2: The 5-4-3-2-1 Grounding Technique</h4><p>Name 5 things you can see, 4 you can feel, 3 you can hear, 2 you can smell, 1 you can taste. This rapidly anchors you in sensory reality and away from spiral thinking.</p><div class="cta-box"><h4>5 Minutes Can Change Everything 🧘</h4><p>Join HerWorld's mindfulness and wellness community where women share practices and cultivate presence together.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Mindfulness Community →</button></div>` + extras("In 2026, you don't need more time. You need to use the moments you have with more presence.",["Mindfulness is simply deliberate, non-judgmental attention to the present moment.","The 4-7-8 breath activates the parasympathetic nervous system almost immediately.","43% stress reduction after 8 weeks of daily practice — consistency matters more than duration."],[{q:"I can't stop my thoughts when I try to meditate. Am I doing it wrong?",a:"No — the goal is not to stop thoughts. The goal is to notice thoughts without being pulled into them, and gently return your attention to the present moment. Every return is the practice."}])
-  }
+  {id:1,img:"https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80",tag:"Empowerment",title:"10 Daily Habits That Will Transform Your Life in 2026",desc:"Small changes done consistently create massive shifts. Here are 10 habits every woman should adopt this year.",date:"January 5, 2026",readTime:"9 min read",content:`<div class="infographic"><h4>⚡ Power Habits at a Glance — 2026 Edition</h4><div class="inf-stats"><div class="inf-stat"><h5>21</h5><p>Days to form a new habit</p></div><div class="inf-stat"><h5>68%</h5><p>Women who journal report lower stress</p></div><div class="inf-stat"><h5>3×</h5><p>More productivity with a morning routine</p></div></div></div><p>Transformation doesn't happen overnight — it happens through the quiet, consistent choices you make every single day.</p><h4>1. Begin Every Morning with Gratitude</h4><p>Before you pick up your phone, open your eyes and name three things you're genuinely grateful for.</p><h4>2. Move Your Body for at Least 30 Minutes</h4><p>Exercise isn't just about aesthetics — it's about energy, emotional regulation, and longevity.</p><h4>3. Read 10 Pages Every Day</h4><p>That's roughly one book per month. Replace 10 minutes of scrolling with 10 pages of reading.</p><h4>4. Guard Your Mornings from Social Media</h4><p>Give yourself at least 30 minutes of screen-free morning time.</p><h4>5. Drink Water Before Anything Else</h4><p>Before coffee, before your phone — drink a full glass of water.</p><div class="cta-box"><h4>Ready to Start Your Transformation Journey? 🌸</h4><p>Join 75,000+ women in the HerWorld community.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button></div>`+extras("Real transformation is built on small, intentional daily actions.",["Habits take an average of 21 days to form — consistency matters more than perfection.","Morning routines set the emotional tone for your entire day.","Reading just 10 pages daily adds up to 12+ books a year."],[{q:"How long does it take for a new habit to stick?",a:"Research suggests 21 to 66 days depending on complexity."},{q:"Should I try to adopt all 10 habits at once?",a:"Start with one or two, build them for a few weeks, then layer the next."}])},
+  {id:2,img:"https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800&q=80",tag:"Mental Health",title:"Breaking the Stigma: A Complete Guide to Women's Mental Health in 2026",desc:"Mental health is health. Let's talk about it openly, honestly, and with the compassion it deserves.",date:"January 12, 2026",readTime:"11 min read",content:`<div class="infographic"><h4>🧠 Women's Mental Health — 2026 Reality Check</h4><div class="inf-stats"><div class="inf-stat"><h5>1 in 5</h5><p>Women experience a mental illness</p></div><div class="inf-stat"><h5>40%</h5><p>Don't seek help due to stigma</p></div><div class="inf-stat"><h5>60%</h5><p>Recovery rate with proper support</p></div></div></div><p>For far too long, mental health has been wrapped in silence and shame. In 2026, we are done with that.</p><h4>Understanding What Mental Health Actually Means</h4><p>Mental health is your emotional, psychological, and social wellbeing.</p><h4>Why Women Are Disproportionately Affected</h4><p>Women experience anxiety and depression at twice the rate of men. This is not weakness — it's biology, sociology, and circumstance combined.</p><div class="cta-box"><h4>You're Not Alone in This 💙</h4><p>Connect with the HerWorld community — a safe, supportive space.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Reach Out to Us →</button></div>`+extras("Your healing matters.",["40% of women don't seek help due to stigma.","Teletherapy has made mental health care more accessible than ever."],[{q:"How do I know if I need therapy?",a:"If your mental state is affecting your daily functioning or joy — it is serious enough."}])},
+  {id:3,img:"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",tag:"Career",title:"How to Ask for the Raise You Deserve — and Actually Get It in 2026",desc:"The gender pay gap is real. Here's how to advocate for your worth with research, confidence, and strategy.",date:"January 19, 2026",readTime:"10 min read",content:`<div class="infographic"><h4>💼 The Pay Gap Reality — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>82¢</h5><p>Women earn per $1 men make</p></div><div class="inf-stat"><h5>57%</h5><p>Women never negotiate salary</p></div><div class="inf-stat"><h5>$1M+</h5><p>Lifetime earnings lost to wage gap</p></div></div></div><p>You are probably being underpaid. Negotiation is a skill — and skills can be learned.</p><h4>Step 1: Do Your Research</h4><p>Research market rates using Glassdoor, LinkedIn Salary Insights, and Payscale.</p><h4>Step 2: Build Your Brag File</h4><p>A running document of every accomplishment and project you've led. Quantify everything.</p><div class="cta-box"><h4>Know Your Worth 💪</h4><p>Join thousands of women building careers with confidence.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Career Community →</button></div>`+extras("Make negotiation a non-negotiable part of your career toolkit.",["Women earn 82¢ for every dollar men make.","A brag file of quantified accomplishments is your most powerful weapon."],[{q:"Isn't it risky to ask for a raise?",a:"When done professionally, the worst realistic outcome is a polite 'not right now'."}])},
+  {id:4,img:"https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80",tag:"Wellness",title:"The Art of Slow Living: Why Rest Is Radical in 2026",desc:"In a world that glorifies hustle, choosing slow, intentional living is a revolutionary act of self-love.",date:"January 26, 2026",readTime:"8 min read",content:`<div class="infographic"><h4>🌿 The Real Cost of Burnout</h4><div class="inf-stats"><div class="inf-stat"><h5>77%</h5><p>Workers experience burnout</p></div><div class="inf-stat"><h5>63%</h5><p>Cite burnout as reason to quit</p></div><div class="inf-stat"><h5>23%</h5><p>More productive after genuine rest</p></div></div></div><p>We live in a culture obsessed with productivity. In 2026, slow living is the foundation of sustainable excellence.</p><h4>What Slow Living Actually Means</h4><p>Slow living is about doing things with full presence and intention. Choosing depth over speed, quality over quantity.</p><div class="cta-box"><h4>Give Yourself Permission to Rest 🌿</h4><p>HerWorld's community celebrates wholeness — not hustle.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join the Conversation →</button></div>`+extras("In 2026, let rest be your revolution.",["Slow living means doing things with intention.","77% of workers experience burnout."],[{q:"Doesn't slow living conflict with ambition?",a:"Not at all — rest and recovery are what make sustained high performance possible."}])},
+  {id:5,img:"https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&q=80",tag:"Finance",title:"Financial Freedom for Women: Your Complete 2026 Money Guide",desc:"Money management is not a man's game. Here's how to build lasting financial freedom starting right now.",date:"February 2, 2026",readTime:"12 min read",content:`<div class="infographic"><h4>💰 Women & Wealth — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>30%</h5><p>Less retirement savings than men</p></div><div class="inf-stat"><h5>70%</h5><p>Women manage household finances</p></div><div class="inf-stat"><h5>40yr</h5><p>Average investing horizon</p></div></div></div><p>Financial independence is one of the most powerful forms of freedom a woman can hold.</p><h4>Step 1: Understand Exactly Where You Are</h4><p>Track every dollar for 30 days. Awareness is the non-negotiable first step.</p><div class="cta-box"><h4>Start Building Wealth in 2026 💰</h4><p>Join the HerWorld community where women talk openly about money.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Connect With Our Community →</button></div>`+extras("Your financial future starts with the choices you make today.",["An emergency fund of 3-6 months transforms crises into setbacks.","Low-cost index funds and time are the most powerful wealth tools."],[{q:"Where do I start if I'm living paycheck to paycheck?",a:"Track every dollar for one month, then redirect even $25-50 toward a starter emergency fund."}])},
+  {id:6,img:"https://images.unsplash.com/photo-1519689680058-324335c77eba?w=800&q=80",tag:"Motherhood",title:"The Unspoken Truth About Postpartum Mental Health in 2026",desc:"Postpartum depression is not a sign of weakness. It's a medical condition that deserves real recognition.",date:"February 9, 2026",readTime:"10 min read",content:`<div class="infographic"><h4>🤱 Postpartum Mental Health — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>1 in 5</h5><p>New mothers experience PPD</p></div><div class="inf-stat"><h5>50%</h5><p>Of cases go undiagnosed</p></div><div class="inf-stat"><h5>95%</h5><p>Recovery rate with proper treatment</p></div></div></div><p>Society places a newborn in your arms and expects nothing but pure joy. Sometimes you feel terror, sadness, or numbness — and that's real.</p><div class="cta-box"><h4>You Are Not Alone 🤱</h4><p>HerWorld is a safe space for mothers to share and be seen.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Find Your Village →</button></div>`+extras("With proper treatment, 95% of women fully recover.",["1 in 5 new mothers experience postpartum depression.","PPD has nothing to do with how much you love your baby."],[{q:"How long after birth can PPD develop?",a:"PPD can develop anytime in the first year after birth."}])},
+  {id:7,img:"https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80",tag:"Fitness",title:"Movement for Every Body: Reclaiming Exercise Without Guilt in 2026",desc:"Fitness was never meant to be punishment. Here's how to find joyful movement that lasts.",date:"February 16, 2026",readTime:"8 min read",content:`<div class="infographic"><h4>🏃‍♀️ Movement & Wellbeing — 2026</h4><div class="inf-stats"><div class="inf-stat"><h5>30min</h5><p>Daily movement for health benefits</p></div><div class="inf-stat"><h5>48%</h5><p>Mood improvement post-exercise</p></div><div class="inf-stat"><h5>60%</h5><p>Lower depression risk with movement</p></div></div></div><p>In 2026, we are reclaiming movement as a celebration of what our bodies can do.</p><div class="cta-box"><h4>Move in a Way That Celebrates YOU 🏃‍♀️</h4><p>Join HerWorld where we talk about fitness with kindness.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Community →</button></div>`+extras("Movement is a celebration of what your body can do.",["The best exercise routine is the one you'll actually maintain.","Strength training builds bone density and confidence."],[{q:"How much exercise do I actually need?",a:"WHO recommends 150-300 minutes of moderate-intensity movement per week."}])},
+  {id:8,img:"https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",tag:"Relationships",title:"Setting Healthy Boundaries Without Guilt: A Woman's Complete Guide",desc:"No is a complete sentence. Here's how to set boundaries with love, clarity, and zero apology.",date:"February 23, 2026",readTime:"9 min read",content:`<div class="infographic"><h4>💑 Boundaries & Relationship Health</h4><div class="inf-stats"><div class="inf-stat"><h5>78%</h5><p>Women over-apologize daily</p></div><div class="inf-stat"><h5>3×</h5><p>Better relationships with clear limits</p></div><div class="inf-stat"><h5>67%</h5><p>Less resentment with honest boundaries</p></div></div></div><p>Saying yes when you mean no doesn't make you kind. It makes you resentful.</p><div class="cta-box"><h4>You Deserve Relationships That Respect You 💑</h4><p>HerWorld is a safe space to discuss boundaries and self-worth.</p><button class="btn-primary" onclick="closeModal();showPage('contact')">Join Our Sisterhood →</button></div>`+extras("Boundaries are the architecture that makes real love possible.",["Saying yes when you mean no builds resentment.","78% of women over-apologize daily."],[{q:"Why do I feel guilty after setting a boundary?",a:"Guilt after boundary-setting is almost universal for women — it's a conditioned response, not an accurate signal."}])},
   ];
 }
 
@@ -1337,10 +1311,7 @@ function blogCard(b) {
       <span class="card-tag">${b.tag}</span>
       <h3>${b.title}</h3>
       <p>${b.desc}</p>
-      <div class="card-meta">
-        <div class="avatar">MK</div>
-        <span><strong>Maria Kanwal</strong> · ${b.date}</span>
-      </div>
+      <div class="card-meta"><div class="avatar">MK</div><span><strong>Maria Kanwal</strong> · ${b.date}</span></div>
       <span class="card-read">Read Article → ${b.readTime}</span>
     </div>
   </div>`;
@@ -1364,12 +1335,13 @@ function closeModal() {
   document.body.style.overflow='';
 }
 document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+document.getElementById('inline-editor-overlay').addEventListener('click',function(e){ if(e.target===this) closeInlineEditor(); });
 
 // ===================== NEWSLETTER =====================
 function subscribeNewsletter(inputId) {
   const val = document.getElementById(inputId).value;
   if(!val || !val.includes('@')) { showToast('Please enter a valid email address!'); return; }
-  showToast('Welcome to HerWorld 2026! 🌸 You\'re subscribed!');
+  showToast("Welcome to HerWorld 2026! 🌸 You're subscribed!");
   document.getElementById(inputId).value = '';
 }
 
@@ -1379,7 +1351,7 @@ function submitContact() {
     showToast('Please fill in all required fields.'); return;
   }
   document.getElementById('form-success').style.display='block';
-  showToast('Message sent to Maria! She\'ll reply within 48 hours 💌');
+  showToast("Message sent to Maria! She'll reply within 48 hours 💌");
   setTimeout(()=>{ document.getElementById('form-success').style.display='none'; },5000);
 }
 
@@ -1427,43 +1399,27 @@ function setEditorMode(mode) {
 }
 
 function getEditorContent() {
-  if(currentEditorMode === 'html') {
-    return document.getElementById('new-content-html').value;
-  } else {
-    return parseTextContent(document.getElementById('new-content-text').value);
-  }
+  if(currentEditorMode === 'html') return document.getElementById('new-content-html').value;
+  return parseTextContent(document.getElementById('new-content-text').value);
 }
 
 function parseTextContent(text) {
   if(!text.trim()) return '';
   const lines = text.split('\n');
-  let html = '';
-  let inList = false;
-  
+  let html = '', inList = false;
   for(let line of lines) {
     const trimmed = line.trim();
-    if(!trimmed) {
-      if(inList) { html += '</ul>'; inList=false; }
-      continue;
-    }
-    if(trimmed.startsWith('## ')) {
-      if(inList) { html += '</ul>'; inList=false; }
-      html += `<h4>${trimmed.substring(3)}</h4>`;
-    } else if(trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-      if(!inList) { html += '<ul>'; inList=true; }
-      html += `<li>${trimmed.substring(2)}</li>`;
-    } else {
-      if(inList) { html += '</ul>'; inList=false; }
-      html += `<p>${trimmed}</p>`;
-    }
+    if(!trimmed) { if(inList){html+='</ul>';inList=false;} continue; }
+    if(trimmed.startsWith('## ')) { if(inList){html+='</ul>';inList=false;} html+=`<h4>${trimmed.substring(3)}</h4>`; }
+    else if(trimmed.startsWith('- ')||trimmed.startsWith('* ')) { if(!inList){html+='<ul>';inList=true;} html+=`<li>${trimmed.substring(2)}</li>`; }
+    else { if(inList){html+='</ul>';inList=false;} html+=`<p>${trimmed}</p>`; }
   }
-  if(inList) html += '</ul>';
+  if(inList) html+='</ul>';
   return html;
 }
 
 function setEditorContent(content) {
-  // Try to detect if it's HTML or plain text
-  if(content.trim().startsWith('<') || content.includes('<h4>') || content.includes('<p>')) {
+  if(content.trim().startsWith('<')||content.includes('<h4>')||content.includes('<p>')) {
     setEditorMode('html');
     document.getElementById('new-content-html').value = content;
     document.getElementById('new-content-text').value = '';
@@ -1479,10 +1435,7 @@ function renderAdminList() {
   document.getElementById('blog-count').textContent = `(${blogs.length} posts)`;
   document.getElementById('admin-list').innerHTML = blogs.map(b=>`
     <div class="admin-blog-item">
-      <div>
-        <h4>${b.title}</h4>
-        <span>${b.tag} · ${b.date} · ${b.readTime}</span>
-      </div>
+      <div><h4>${b.title}</h4><span>${b.tag} · ${b.date} · ${b.readTime}</span></div>
       <div class="admin-actions">
         <button class="btn-edit" onclick="editBlog(${b.id})">✏️ Edit</button>
         <button class="btn-del" onclick="deleteBlog(${b.id})">🗑 Delete</button>
@@ -1507,7 +1460,6 @@ function editBlog(id) {
   setEditorContent(b.content);
   document.getElementById('editor-title').textContent='Edit Blog Post';
   document.getElementById('publish-btn').textContent='💾 Save Changes';
-  // Activate add tab
   document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-add').classList.add('active');
@@ -1526,33 +1478,21 @@ function publishBlog() {
   const emoji=document.getElementById('new-emoji').value||'📝';
   const imgVal=document.getElementById('new-img').value;
   const content=getEditorContent();
-  
   if(!title||!content){ showToast('Please fill in title and content!'); return; }
-  
-  const defaultImg = 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80';
-  const img = imgVal || defaultImg;
-
+  const img = imgVal || 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&q=80';
   if(editingId) {
     const idx=blogs.findIndex(b=>b.id===editingId);
-    if(idx>-1) { blogs[idx]={...blogs[idx],title,tag,desc,emoji,content,img}; }
+    if(idx>-1){blogs[idx]={...blogs[idx],title,tag,desc,emoji,content,img};}
     editingId=null;
     document.getElementById('editor-title').textContent='Add New Blog Post';
     document.getElementById('publish-btn').textContent='🚀 Publish Blog';
     showToast('✅ Blog updated successfully!');
   } else {
-    const newBlog = {
-      id: Date.now(),
-      img, emoji, tag, title, desc,
-      date: new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),
-      readTime: '8 min read',
-      content
-    };
-    blogs.unshift(newBlog);
-    showToast('🚀 Blog published: ' + title);
+    blogs.unshift({id:Date.now(),img,emoji,tag,title,desc,date:new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}),readTime:'8 min read',content});
+    showToast('🚀 Blog published: '+title);
   }
   saveBlogs();
   clearEditor();
-  // Switch to manage tab
   document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-manage').classList.add('active');
@@ -1574,54 +1514,78 @@ function clearEditor() {
 
 // ===================== PAGE EDITS =====================
 function savePageEdits() {
-  const heroTitle=document.getElementById('ep-hero-title').value;
-  const heroSub=document.getElementById('ep-hero-sub').value;
-  const mission=document.getElementById('ep-mission').value;
-  const bio=document.getElementById('ep-bio').value;
-  if(heroTitle){ const el=document.querySelector('.hero h1'); if(el) el.innerHTML=heroTitle.replace('Rise, Bloom','<em>Rise, Bloom</em>'); }
-  if(heroSub){ const el=document.querySelector('.hero > div > p'); if(el) el.textContent=heroSub; }
-  if(mission){ const el=document.getElementById('about-p1'); if(el) el.textContent=mission; }
-  if(bio){ const el=document.getElementById('author-bio'); if(el) el.textContent=bio; }
-  try {
-    localStorage.setItem('herworld_pageEdits', JSON.stringify({heroTitle,heroSub,mission,bio}));
-  } catch(e){}
+  const d = {
+    heroTitle: document.getElementById('ep-hero-title').value,
+    heroSub: document.getElementById('ep-hero-sub').value,
+    mission: document.getElementById('ep-mission').value,
+    mission2: document.getElementById('ep-mission2').value,
+    mission3: document.getElementById('ep-mission3').value,
+    bio: document.getElementById('ep-bio').value
+  };
+  applyPageEdits(d);
+  try { localStorage.setItem('herworld_pageEdits', JSON.stringify(d)); } catch(e){}
   showToast('✅ Page content saved successfully!');
 }
 
-// ===================== AUTHOR PROFILE EDIT =====================
+function applyPageEdits(d) {
+  if(d.heroSub){ const el=document.querySelector('.hero > div > p'); if(el) el.textContent=d.heroSub; }
+  if(d.mission){ const el=document.getElementById('about-p1'); if(el) el.textContent=d.mission; }
+  if(d.mission2){ const el=document.getElementById('about-p2'); if(el) el.textContent=d.mission2; }
+  if(d.mission3){ const el=document.getElementById('about-p3'); if(el) el.textContent=d.mission3; }
+  if(d.bio){ const el=document.getElementById('author-bio'); if(el) el.textContent=d.bio; }
+}
+
+// ===================== AUTHOR PROFILE =====================
 function saveAuthorProfile() {
-  const name = document.getElementById('ae-name').value;
-  const roles = document.getElementById('ae-roles').value;
-  const email = document.getElementById('ae-email').value;
-  const bioShort = document.getElementById('ae-bio-short').value;
-  const bioFull = document.getElementById('ae-bio-full').value;
-  
-  const el1 = document.getElementById('about-author-name');
-  if(el1) el1.textContent = name;
-  const el2 = document.getElementById('author-bio');
-  if(el2) el2.textContent = bioShort;
-  
-  try {
-    localStorage.setItem('herworld_authorProfile', JSON.stringify({name,roles,email,bioShort,bioFull}));
-  } catch(e){}
+  const d = {
+    name: document.getElementById('ae-name').value,
+    roles: document.getElementById('ae-roles').value,
+    email: document.getElementById('ae-email').value,
+    bioShort: document.getElementById('ae-bio-short').value,
+    bioFull: document.getElementById('ae-bio-full').value,
+    research: document.getElementById('ae-research').value,
+    skills: document.getElementById('ae-skills').value,
+    certs: document.getElementById('ae-certs').value
+  };
+  applyAuthorProfile(d);
+  try { localStorage.setItem('herworld_authorProfile', JSON.stringify(d)); } catch(e){}
   showToast('✅ Author profile saved successfully!');
+}
+
+function applyAuthorProfile(d) {
+  if(d.name){
+    const e1=document.getElementById('about-author-name'); if(e1) e1.textContent=d.name;
+    const e2=document.getElementById('auth-name'); if(e2) e2.textContent=d.name;
+  }
+  if(d.roles){ const el=document.getElementById('auth-roles'); if(el) el.textContent=d.roles; }
+  if(d.bioShort){ const el=document.getElementById('author-bio'); if(el) el.textContent=d.bioShort; }
+  if(d.bioFull){ const el=document.getElementById('auth-bio-full'); if(el) el.textContent=d.bioFull; }
+  if(d.research){
+    const el=document.getElementById('research-tags');
+    if(el) el.innerHTML=d.research.split(',').map(t=>`<span class="tag">${t.trim()}</span>`).join('');
+  }
+  if(d.skills){
+    const el=document.getElementById('skills-tags');
+    if(el) el.innerHTML=d.skills.split(',').map(t=>`<span class="tag">${t.trim()}</span>`).join('');
+  }
+  if(d.certs){
+    const el=document.getElementById('certs-list');
+    if(el) el.innerHTML=d.certs.split('\n').filter(c=>c.trim()).map(c=>`<div class="cert-item">${c.trim()}</div>`).join('');
+  }
 }
 
 // ===================== SETTINGS =====================
 function saveSettings() {
-  const pass = document.getElementById('set-pass').value;
-  const pass2 = document.getElementById('set-pass2').value;
-  if(pass && pass !== pass2) {
-    showToast('❌ Passwords do not match!');
-    return;
-  }
-  if(pass && pass.length >= 6) {
-    adminPassword = pass;
-    try { localStorage.setItem('herworld_adminPass', pass); } catch(e){}
+  const pass=document.getElementById('set-pass').value;
+  const pass2=document.getElementById('set-pass2').value;
+  if(pass && pass!==pass2){ showToast('❌ Passwords do not match!'); return; }
+  if(pass && pass.length>=6){
+    adminPassword=pass;
+    try { localStorage.setItem('herworld_adminPass',pass); } catch(e){}
     showToast('✅ Password updated successfully!');
     document.getElementById('set-pass').value='';
     document.getElementById('set-pass2').value='';
-  } else if(pass && pass.length < 6) {
+  } else if(pass && pass.length<6){
     showToast('❌ Password must be at least 6 characters.');
   } else {
     showToast('✅ Settings saved!');
@@ -1632,28 +1596,49 @@ function saveSettings() {
 function showToast(msg) {
   const t=document.getElementById('toast');
   t.textContent=msg; t.style.display='block';
-  setTimeout(()=>t.style.display='none', 3500);
+  setTimeout(()=>t.style.display='none',3500);
 }
 
-// ===================== LOAD SAVED DATA =====================
-function loadSavedData() {
+// ===================== LOAD ALL SAVED DATA =====================
+function loadAllSavedData() {
   try {
-    const savedPass = localStorage.getItem('herworld_adminPass');
-    if(savedPass) adminPassword = savedPass;
-    
-    const pageEdits = localStorage.getItem('herworld_pageEdits');
-    if(pageEdits) {
-      const pe = JSON.parse(pageEdits);
-      if(pe.heroSub){ const el=document.querySelector('.hero > div > p'); if(el) el.textContent=pe.heroSub; }
-      if(pe.mission){ const el=document.getElementById('about-p1'); if(el) el.textContent=pe.mission; }
-      if(pe.bio){ const el=document.getElementById('author-bio'); if(el) el.textContent=pe.bio; }
-    }
+    const savedPass=localStorage.getItem('herworld_adminPass');
+    if(savedPass) adminPassword=savedPass;
+
+    const pageEdits=localStorage.getItem('herworld_pageEdits');
+    if(pageEdits) applyPageEdits(JSON.parse(pageEdits));
+
+    const authorProfile=localStorage.getItem('herworld_authorProfile');
+    if(authorProfile) applyAuthorProfile(JSON.parse(authorProfile));
+
+    // Sync admin tab fields
+    const pe=pageEdits?JSON.parse(pageEdits):{};
+    if(pe.heroSub) document.getElementById('ep-hero-sub').value=pe.heroSub;
+    if(pe.mission) document.getElementById('ep-mission').value=pe.mission;
+    if(pe.mission2) document.getElementById('ep-mission2').value=pe.mission2;
+    if(pe.mission3) document.getElementById('ep-mission3').value=pe.mission3;
+    if(pe.bio) document.getElementById('ep-bio').value=pe.bio;
+
+    const ap=authorProfile?JSON.parse(authorProfile):{};
+    if(ap.name){ document.getElementById('ae-name').value=ap.name; document.getElementById('set-name').value=ap.name; }
+    if(ap.roles) document.getElementById('ae-roles').value=ap.roles;
+    if(ap.email){ document.getElementById('ae-email').value=ap.email; document.getElementById('set-email').value=ap.email; }
+    if(ap.bioShort) document.getElementById('ae-bio-short').value=ap.bioShort;
+    if(ap.bioFull) document.getElementById('ae-bio-full').value=ap.bioFull;
+    if(ap.research) document.getElementById('ae-research').value=ap.research;
+    if(ap.skills) document.getElementById('ae-skills').value=ap.skills;
+    if(ap.certs) document.getElementById('ae-certs').value=ap.certs;
   } catch(e){}
 }
 
 // ===================== INIT =====================
 loadBlogs();
-loadSavedData();
+loadSiteAppCards();
+loadPubData();
+renderSiteCards();
+renderAppCards();
+renderPubItems();
+loadAllSavedData();
 renderHomeGrid();
 </script>
 </body>
